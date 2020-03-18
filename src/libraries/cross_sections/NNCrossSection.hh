@@ -1,0 +1,22 @@
+#ifndef __CROSS_SECTIONS_H__
+#define __CROSS_SECTIONS_H__
+
+#include "TVector3.h"
+
+enum csParam {Panin};
+
+class gcfCrossSection
+{
+ public:
+  gcfCrossSection();
+  gcfCrossSection(csParam thisParam);
+  ~gcfCrossSection();
+  double sigma_pp(double s, double t);
+  double sigma_pp_Panin(double s, double t);
+
+ private:
+  csParam myParam;
+
+};
+
+#endif
