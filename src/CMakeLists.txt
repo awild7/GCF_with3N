@@ -10,4 +10,8 @@ project (GCF_Generator_Suite)
 set(CMAKE_CXX_FLAGS "-std=c++11")
 
 set(INCLUDES ${ROOT_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/include)
-include_directories(${INCLUDES})
+set(LIBRARIES ${CMAKE_SOURCE_DIR}/libraries)
+
+include_directories(${INCLUDES} ${LIBRARIES})
+
+add_subdirectory(programs)

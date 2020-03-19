@@ -2,6 +2,7 @@
 #define __GCF_GENERATOR_H__
 
 #include "TVector3.h"
+#include "TLorentzVector.h"
 
 class gcfNucleus;
 class TRandom3;
@@ -18,8 +19,10 @@ class gcfGenerator
   void set_pRel_range(double low, double high);
   void set_pRel_cut(double new_cutoff);
   
- private:
-  void decay_function(double &weight, double &lcweight, int lead_type, int rec_type, TVector3 &vi, TVector3 &vRec);
+  protected:
+  void decay_function(double &weight, int lead_type, int rec_type, TVector3 &vi, TVector3 &vRec);
+  void t_scatter(double &weight, double m3, double m4, TLorentzVector v1, TLorentzVector v2, TLorentzVector &v3, TLorentzVector &v4);
+  
   gcfNucleus * myInfo;
   TRandom3 * myRand;  
 

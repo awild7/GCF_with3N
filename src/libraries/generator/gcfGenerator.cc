@@ -84,7 +84,7 @@ void gcfGenerator::set_pRel_cut(double new_cutoff)
   pRel_cut = new_cutoff;
 }
 
-void gcfGenerator::decay_function(double &weight, double &lcweight, int lead_type, int rec_type, TVector3 &vi, TVector3 &vRec)
+void gcfGenerator::decay_function(double &weight, int lead_type, int rec_type, TVector3 &vi, TVector3 &vRec)
 {
   
   // Pick random CM motion
@@ -101,8 +101,6 @@ void gcfGenerator::decay_function(double &weight, double &lcweight, int lead_typ
   // Factor universal functions into the weights
   weight *= (phiRelmax-phiRelmin) * (cosThetaRelmax - cosThetaRelmin) * (pRelmax - pRelmin) // Phase Space
     * sq(pRel_Mag)*myInfo->get_S(pRel_Mag,lead_type,rec_type)/pow(2.*M_PI,3); // Contacts
-  lcweight *= (phiRelmax-phiRelmin) * (cosThetaRelmax - cosThetaRelmin) * (pRelmax - pRelmin)
-    * 0.; // Lightcone weight not yet implemented
 
   // Do a safeguard cut
   if (pRel_Mag < pRel_cut)
@@ -113,3 +111,59 @@ void gcfGenerator::decay_function(double &weight, double &lcweight, int lead_typ
   vRec = 0.5*vCM - vRel;
 
 }
+
+void gcfGenerator::t_scatter(double &weight, double m3, double m4, TLorentzVector v1, TLorentzVector v2, TLorentzVector &v3, TLorentzVector &v4)
+  {
+
+    TLorentzVector Z_lab = v1 + v2;
+    double s = Z_lab.M2();
+    if (s < sq(m3 + m4))
+      {
+	weight=0.;
+	return;
+      }
+    double W_cm = sqrt(s);
+    
+    // Boost vectors to scattering CM frame
+    TVector3 m = Z_lab.BoostVector();
+    TLorentzVector v1_cm = v1;
+    TLorentzVector v2_cm = v2;
+    v1_cm.Boost(-m);
+    v2_cm.Boost(-m);
+
+    // Rotate to scattering along z-axis
+    double rot_phi = v1_cm.Vect().Phi();
+    double rot_theta = v1_cm.Vect().Theta();
+
+    // Determine scattered energy and momentum
+    double E3_cm = (s + sq(m3) - sq(m4))/(2.*W_cm);
+    double E4_cm = W_cm - E3_cm;
+    double p_cm = sqrt(sq(E3_cm) - sq(m3));
+
+    // Define Jacobian between cm scattering angle and t
+    double J = 2.*p_cm*v1_cm.Vect().Mag()/(2.*M_PI);
+
+    // Pick random CM scattering angle
+    double phi_cm = 2.*M_PI*myRand->Rndm();
+    double cosTheta_cm = -1. + 2.*myRand->Rndm();
+    double theta_cm = acos(cosTheta_cm);
+
+    weight *= J * 4.*M_PI;
+
+    // Set outgoind particle vetors
+    TVector3 v_cm;
+    v_cm.SetMagThetaPhi(p_cm,theta_cm,phi_cm);
+
+    // Rotate back
+    v_cm.RotateY(rot_theta);
+    v_cm.RotateZ(rot_phi);
+    TLorentzVector v3_cm(v_cm,E3_cm);
+    TLorentzVector v4_cm(-v_cm,E4_cm);
+    
+    // Boost to lab system
+    v3 = v3_cm;
+    v4 = v4_cm;
+    v3.Boost(m);
+    v4.Boost(m);
+    
+  }
