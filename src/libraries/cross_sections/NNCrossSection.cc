@@ -5,24 +5,24 @@
 #include "TVector3.h"
 
 #include "gcfCrossSection.hh"
-#include "gcfHelpers.hh"
+#include "helpers.hh"
 #include "constants.hh"
 
-gcfCrossSection::gcfCrossSection()
+NNCrossSection::NNCrossSection()
 {
   // Set defaults
   myParam=Panin;
 }
 
-gcfCrossSection::gcfCrossSection(csParam thisParam)
+NNCrossSection::NNCrossSection(csParam thisParam)
 {
   std::cerr << "Cross_Sections: you have selected parameterization: " << thisParam <<"\n";
   myParam=thisParam;
 }
 
-gcfCrossSection::~gcfCrossSection(){}
+NNCrossSection::~NNCrossSection(){}
 
-double gcfCrossSection::sigma_pp(double s, double t)
+double NNCrossSection::sigma_pp(double s, double t)
 {
   switch (myParam)
     {
@@ -37,7 +37,7 @@ double gcfCrossSection::sigma_pp(double s, double t)
   return 0;
 }
 
-double gcfCrossSection::sigma_pp_Panin(double s, double t)
+double NNCrossSection::sigma_pp_Panin(double s, double t)
 {
 
   double tmin = 4 * sq(mN) - s;
