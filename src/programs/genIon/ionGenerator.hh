@@ -15,7 +15,7 @@ class ionGenerator: public gcfGenerator
  public:
   ionGenerator(double E, gcfNucleus * thisInfo, NNCrossSection * thisCS, TRandom3 * thisRand);
   ~ionGenerator();
-  void generate_event(double &weight, int &lead_type, int &rec_type, TVector3 &v3, TVector3 &v4, TVector3 &vRec, TVector3 &vAm2);
+  void generate_event(double &weight, int &lead_type, int &rec_type, TLorentzVector &v3_target, TLorentzVector &v4_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target);
   
  private:
   NNCrossSection * myCS;
@@ -24,7 +24,7 @@ class ionGenerator: public gcfGenerator
   double E1;
   double p1;
   TVector3 v1;
-  TLorentzVector v1_lab;
+  TLorentzVector v1_target;
   
 };
 

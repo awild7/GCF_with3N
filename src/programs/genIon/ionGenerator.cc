@@ -27,7 +27,7 @@ ionGenerator::ionGenerator(double E, gcfNucleus * thisInfo, NNCrossSection * thi
   E1 = Ebeam + mN;
   p1 = sqrt(sq(E1) - sq(mN));
   v1.SetXYZ(0.,0.,p1);
-  v1_lab.SetXYZT(0.,0.,p1,E1);
+  v1_target.SetXYZT(0.,0.,p1,E1);
 
 }
 
@@ -35,7 +35,7 @@ ionGenerator::~ionGenerator()
 {
 }
 
-void ionGenerator::generate_event(double &weight, int &lead_type, int &rec_type, TVector3 &v3, TVector3 &v4, TVector3 &vRec, TVector3 &vAm2)
+void ionGenerator::generate_event(double &weight, int &lead_type, int &rec_type, TLorentzVector &v3_target, TLorentzVector &v4_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target)
 {
   
   // Start with weight 1. Only multiply terms to weight. If trouble, set weight=0.
@@ -55,36 +55,34 @@ void ionGenerator::generate_event(double &weight, int &lead_type, int &rec_type,
   else
     mAm2 = mAmpn;
 
-  TVector3 v2;
+  TVector3 v2, vRec;
 
   decay_function(weight, lead_type, rec_type, v2, vRec);
   
   if (weight > 0.)
     {
       
-      vAm2 = - v2 - vRec;
+      TVector3 vAm2 = - v2 - vRec;
       double EAm2 = sqrt(vAm2.Mag2() + sq(mAm2));
+      vAm2_target.SetVect(vAm2);
+      vAm2_target.SetT(EAm2);
       
       double Erec = sqrt(sq(mN) + vRec.Mag2());  
       double E2 = mA - EAm2 - Erec;
       
-      TLorentzVector v2_lab(v2,E2);
-      TLorentzVector v3_lab, v4_lab;
+      TLorentzVector v2_target(v2,E2);
 
-      t_scatter(weight, mN, mN, v1_lab, v2_lab, v3_lab, v4_lab);
+      t_scatter(weight, mN, mN, v1_target, v2_target, v3_target, v4_target);
 
       if (weight > 0.)
 	{
-	  
-	  v3 = v3_lab.Vect();
-	  v4 = v4_lab.Vect();
 
-	  double s = 2.*sq(mN) + 2.*v3_lab.Dot(v4_lab);
-	  double t = 2.*sq(mN) - 2.*v1_lab.Dot(v3_lab);
-	  double u = 2.*sq(mN) - 2.*v1_lab.Dot(v4_lab);
+	  double s = 2.*sq(mN) + 2.*v3_target.Dot(v4_target);
+	  double t = 2.*sq(mN) - 2.*v1_target.Dot(v3_target);
+	  double u = 2.*sq(mN) - 2.*v1_target.Dot(v4_target);
 	  
 	  // Calculate the flux factor on the cross section
-	  double v12 = sqrt(v1_lab.Dot(v2_lab) - sq(mN*mN))/(E1*E2);
+	  double v12 = sqrt(v1_target.Dot(v2_target) - sq(mN*mN))/(E1*E2);
 	  double v1A = p1/E1;
 	  
 	  // Calculate the weight
