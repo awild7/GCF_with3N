@@ -1,5 +1,5 @@
-#ifndef __NUCLEAR_INFO_H__
-#define __NUCLEAR_INFO_H__
+#ifndef __GCF_NUCLEUS_H__
+#define __GCF_NUCLEUS_H__
 #include <vector>
 
 enum NNModel {AV18, AV4Pc, N2LO_10, N2LO_12, N3LO_600};

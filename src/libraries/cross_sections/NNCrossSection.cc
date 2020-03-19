@@ -4,7 +4,7 @@
 
 #include "TVector3.h"
 
-#include "gcfCrossSection.hh"
+#include "NNCrossSection.hh"
 #include "helpers.hh"
 #include "constants.hh"
 
