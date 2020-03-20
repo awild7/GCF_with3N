@@ -67,7 +67,10 @@ void ionGenerator::generate_event(double &weight, int &lead_type, int &rec_type,
       vAm2_target.SetVect(vAm2);
       vAm2_target.SetT(EAm2);
       
-      double Erec = sqrt(sq(mN) + vRec.Mag2());  
+      double Erec = sqrt(sq(mN) + vRec.Mag2());
+      vRec_target.SetVect(vRec);
+      vRec_target.SetT(Erec);
+      
       double E2 = mA - EAm2 - Erec;
       
       TLorentzVector v2_target(v2,E2);
@@ -91,5 +94,44 @@ void ionGenerator::generate_event(double &weight, int &lead_type, int &rec_type,
 	}
   
     }
+  
+}
+
+bool ionGenerator::parse_phase_space_file(char* phase_space)
+{
+
+  ifstream ps_file(phase_space);
+  string param;
+  double low, high;
+  while (ps_file >> param >> low >> high)
+    {
+      if (param == "phiRel" || param == "phirel")
+	{
+	  set_phiRel_range(low,high);
+	}
+      else if (param == "phiRel_deg" || param == "phirel_deg")
+	{
+	  set_phiRel_range_deg(low,high);
+	}
+      else if (param == "thetaRel" || param == "thetarel")
+	{
+	  set_thetaRel_range(low,high);
+	}
+      else if (param == "thetaRel_deg" || param == "thetarel_deg")
+	{
+	  set_thetaRel_range_deg(low,high);
+	}
+      else if (param == "pRel" || param == "prel")
+	{
+	  set_pRel_range(low,high);
+	}
+      else
+	{
+	  cerr << "Invalid phase space parameter provided. Aborting...\n";
+	  return false;
+	}
+    }
+  
+  return true;
   
 }
