@@ -1,8 +1,7 @@
 #ifndef __GCF_NUCLEUS_H__
 #define __GCF_NUCLEUS_H__
-#include <vector>
 
-enum NNModel {AV18, AV4Pc, N2LO_10, N2LO_12, N3LO_600};
+enum NNModel {AV18, AV4Pc, N2LO_10, N2LO_12, N3LO_600, NV2_1a};
 
 class gcfNucleus
 {
@@ -84,6 +83,7 @@ class gcfNucleus
   void fill_arrays_n3lo_nonlocal();
   void fill_arrays_n2lo_12_local();
   void fill_arrays_AV4Pc();
+  void fill_arrays_NV2_1a();
   
 };
 
