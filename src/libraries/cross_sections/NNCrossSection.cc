@@ -2,8 +2,6 @@
 #include <cmath>
 #include <cstdlib>
 
-#include "TVector3.h"
-
 #include "NNCrossSection.hh"
 #include "helpers.hh"
 #include "constants.hh"
