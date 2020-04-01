@@ -87,7 +87,6 @@ void photoGenerator::generate_event(double &weight, int &meson_type, int &baryon
       vRec_target.SetT(Erec);
       
       double E1 = mA - EAm2 - Erec;
-      
       TLorentzVector v1_target(v1,E1);
 
       t_scatter(weight, mMeson, mBaryon, vbeam_target, v1_target, vMeson_target, vBaryon_target);
@@ -102,7 +101,7 @@ void photoGenerator::generate_event(double &weight, int &meson_type, int &baryon
 	  double vgamma1 = vbeam_target.Dot(v1_target)/(Ebeam*E1);
 	  
 	  // Calculate the weight
-	  weight *= vgamma1*myCS->sigma_pip_n(s,t); // Scattering cross section
+	  weight *= vgamma1*myCS->sigma_pip_n(s,t); // Photoproduction cross section
 	    
 	}
   
