@@ -1,8 +1,6 @@
 #ifndef __NN_CROSS_SECTIONS_H__
 #define __NN_CROSS_SECTIONS_H__
 
-#include "TVector3.h"
-
 enum csParam {Panin};
 
 class NNCrossSection

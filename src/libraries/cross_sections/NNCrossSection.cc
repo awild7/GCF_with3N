@@ -14,7 +14,7 @@ NNCrossSection::NNCrossSection()
 
 NNCrossSection::NNCrossSection(csParam thisParam)
 {
-  std::cerr << "Cross_Sections: you have selected parameterization: " << thisParam <<"\n";
+  std::cerr << "NNCrossSection: you have selected parameterization: " << thisParam <<"\n";
   myParam=thisParam;
 }
 
