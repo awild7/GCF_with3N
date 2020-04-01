@@ -56,10 +56,10 @@ class gcfNucleus
   double mAmnn;
   double sigmaCM;
   double d_sigmaCM;
-  double phiSq_pp0[100];
-  double phiSq_nn0[100];
-  double phiSq_pn0[100];
-  double phiSq_pn1[100];
+  double phiSq_pp0[6][100];
+  double phiSq_nn0[6][100];
+  double phiSq_pn0[6][100];
+  double phiSq_pn1[6][100];
   double Cpp0;
   double d_Cpp0;
   double Cnn0;
@@ -77,7 +77,8 @@ class gcfNucleus
   bool set_Contacts_SS_r();
   bool set_Contacts_SS_k();
   bool set_Contacts_EG2();
-  
+
+  void fill_arrays();
   void fill_arrays_AV18();
   void fill_arrays_n2lo_local();
   void fill_arrays_n3lo_nonlocal();

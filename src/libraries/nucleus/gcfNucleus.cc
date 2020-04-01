@@ -188,7 +188,7 @@ void gcfNucleus::set_Interaction(char* thisPType){
 
 void gcfNucleus::set_Interaction(NNModel thisPType){
   u = thisPType;
-
+  fill_arrays();
   if (u == AV18){
     fill_arrays_AV18();
     std::cout <<"You are using the AV18 interaction.\n";
@@ -354,12 +354,12 @@ double gcfNucleus::get_S(double k_rel, int l_type, int r_type){
 
 double gcfNucleus::get_pp(double k_rel)
 {
-  return 2. * Cpp0 * get_phiSq(phiSq_pp0,k_rel); // The 2 comes from contact definition
+  return 2. * Cpp0 * get_phiSq(phiSq_pp0[u],k_rel); // The 2 comes from contact definition
 }
 
 double gcfNucleus::get_nn(double k_rel)
 {
-  return 2. * Cnn0 * get_phiSq(phiSq_nn0,k_rel); 
+  return 2. * Cnn0 * get_phiSq(phiSq_nn0[u],k_rel); 
 }
 
 double gcfNucleus::get_pn(double k_rel)
@@ -369,12 +369,12 @@ double gcfNucleus::get_pn(double k_rel)
 
 double gcfNucleus::get_pn0(double k_rel)
 {
-  return Cpn0 * get_phiSq(phiSq_pn0,k_rel);
+  return Cpn0 * get_phiSq(phiSq_pn0[u],k_rel);
 }
 
 double gcfNucleus::get_pn1(double k_rel)
 {
-  return Cpn1 * get_phiSq(phiSq_pn1,k_rel);
+  return Cpn1 * get_phiSq(phiSq_pn1[u],k_rel);
 }
 
 double gcfNucleus::get_phiSq(double *phiPtr, double k_rel)
@@ -1309,14 +1309,24 @@ bool gcfNucleus::set_Contacts_EG2()
   return false;
 }
 
+void gcfNucleus::fill_arrays()
+{
+  fill_arrays_AV18();
+  fill_arrays_n2lo_local();
+  fill_arrays_n3lo_nonlocal();
+  fill_arrays_n2lo_12_local();
+  fill_arrays_AV4Pc();
+  fill_arrays_NV2_1a();
+}
+
 void gcfNucleus::fill_arrays_AV18()
 {
   for (int i=0 ; i<100; i++)
     {
-      phiSq_pp0[i] = AV18_pp0[i];
-      phiSq_nn0[i] = phiSq_pp0[i];
-      phiSq_pn0[i] = AV18_pn0[i];
-      phiSq_pn1[i] = AV18_pn1[i];
+      phiSq_pp0[AV18][i] = AV18_pp0[i];
+      phiSq_nn0[AV18][i] = AV18_pp0[i];
+      phiSq_pn0[AV18][i] = AV18_pn0[i];
+      phiSq_pn1[AV18][i] = AV18_pn1[i];
     }
 }
 
@@ -1325,10 +1335,10 @@ void gcfNucleus::fill_arrays_n2lo_local()
 {
   for (int i=0 ; i<100; i++)
     {
-      phiSq_pp0[i] = N2LO_pp0[i];
-      phiSq_nn0[i] = phiSq_pp0[i];
-      phiSq_pn0[i] = N2LO_pn0[i];
-      phiSq_pn1[i] = N2LO_pn1[i];
+      phiSq_pp0[N2LO_10][i] = N2LO_pp0[i];
+      phiSq_nn0[N2LO_10][i] = N2LO_pp0[i];
+      phiSq_pn0[N2LO_10][i] = N2LO_pn0[i];
+      phiSq_pn1[N2LO_10][i] = N2LO_pn1[i];
     }
 }
 
@@ -1337,10 +1347,10 @@ void gcfNucleus::fill_arrays_n3lo_nonlocal()
 {
   for (int i=0 ; i<100; i++)
     {
-      phiSq_pp0[i] = N3LO_pp0[i];
-      phiSq_nn0[i] = phiSq_pp0[i];
-      phiSq_pn0[i] = N3LO_pn0[i];
-      phiSq_pn1[i] = N3LO_pn1[i];
+      phiSq_pp0[N3LO_600][i] = N3LO_pp0[i];
+      phiSq_nn0[N3LO_600][i] = N3LO_pp0[i];
+      phiSq_pn0[N3LO_600][i] = N3LO_pn0[i];
+      phiSq_pn1[N3LO_600][i] = N3LO_pn1[i];
     }
 }
 
@@ -1348,33 +1358,31 @@ void gcfNucleus::fill_arrays_n2lo_12_local()
 {
   for (int i=0 ; i<100; i++)
     {
-      phiSq_pp0[i] = N2LO_12_pp0[i];
-      phiSq_nn0[i] = phiSq_pp0[i];
-      phiSq_pn0[i] = N2LO_12_pn0[i];
-      phiSq_pn1[i] = N2LO_12_pn1[i];
+      phiSq_pp0[N2LO_12][i] = N2LO_12_pp0[i];
+      phiSq_nn0[N2LO_12][i] = N2LO_12_pp0[i];
+      phiSq_pn0[N2LO_12][i] = N2LO_12_pn0[i];
+      phiSq_pn1[N2LO_12][i] = N2LO_12_pn1[i];
     }
 }
 
 void gcfNucleus::fill_arrays_AV4Pc()
 {
-
   for (int i=0 ; i<100; i++)
     {
-      phiSq_pp0[i] = AV4Pc_pp0[i];
-      phiSq_nn0[i] = phiSq_pp0[i];
-      phiSq_pn0[i] = AV4Pc_pn0[i];
-      phiSq_pn1[i] = AV4Pc_pn1[i];
+      phiSq_pp0[AV4Pc][i] = AV4Pc_pp0[i];
+      phiSq_nn0[AV4Pc][i] = AV4Pc_pp0[i];
+      phiSq_pn0[AV4Pc][i] = AV4Pc_pn0[i];
+      phiSq_pn1[AV4Pc][i] = AV4Pc_pn1[i];
     }
 }
 
 void gcfNucleus::fill_arrays_NV2_1a()
 {
-
   for (int i=0 ; i<100; i++)
     {
-      phiSq_pp0[i] = NV2_1a_pp0[i];
-      phiSq_nn0[i] = phiSq_pp0[i];
-      phiSq_pn0[i] = NV2_1a_pn0[i];
-      phiSq_pn1[i] = NV2_1a_pn1[i];
+      phiSq_pp0[NV2_1a][i] = NV2_1a_pp0[i];
+      phiSq_nn0[NV2_1a][i] = NV2_1a_pp0[i];
+      phiSq_pn0[NV2_1a][i] = NV2_1a_pn0[i];
+      phiSq_pn1[NV2_1a][i] = NV2_1a_pn1[i];
     }
 }
