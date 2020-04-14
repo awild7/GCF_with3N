@@ -16,7 +16,6 @@ class ionGenerator: public gcfGenerator
   ionGenerator(double E, gcfNucleus * thisInfo, NNCrossSection * thisCS, TRandom3 * thisRand);
   ~ionGenerator();
   void generate_event(double &weight, int &lead_type, int &rec_type, TLorentzVector &v3_target, TLorentzVector &v4_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target);
-  bool parse_phase_space_file(char* phase_space);
   
  private:
   NNCrossSection * myCS;

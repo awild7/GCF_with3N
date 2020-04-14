@@ -87,6 +87,85 @@ void gcfGenerator::set_pRel_cut(double new_cutoff)
   pRel_cut = new_cutoff;
 }
 
+void gcfGenerator::set_nu_range(double low, double high)
+{
+  numin = low;
+  numax = high;
+}
+
+void gcfGenerator::set_QSq_range(double low, double high)
+{
+  QSqmin = low;
+  QSqmax = high;
+}
+
+void gcfGenerator::set_phik_range(double low, double high)
+{
+  phikmin = low;
+  phikmax = high;
+}
+
+void gcfGenerator::set_phik_range_deg(double low, double high)
+{
+  phikmin = low*M_PI/180.;
+  phikmax = high*M_PI/180.;
+}
+
+bool gcfGenerator::parse_phase_space_file(char* phase_space)
+{
+
+  ifstream ps_file(phase_space);
+  string param;
+  double low, high;
+  while (ps_file >> param >> low >> high)
+    {
+      if (param == "phiRel" || param == "phirel")
+	{
+	  set_phiRel_range(low,high);
+	}
+      else if (param == "phiRel_deg" || param == "phirel_deg")
+	{
+	  set_phiRel_range_deg(low,high);
+	}
+      else if (param == "thetaRel" || param == "thetarel")
+	{
+	  set_thetaRel_range(low,high);
+	}
+      else if (param == "thetaRel_deg" || param == "thetarel_deg")
+	{
+	  set_thetaRel_range_deg(low,high);
+	}
+      else if (param == "pRel" || param == "prel")
+	{
+	  set_pRel_range(low,high);
+	}
+      else if (param == "phik" || param == "phie")
+	{
+	  set_phik_range(low,high);
+	}
+      else if (param == "phik_deg" || param == "phie_deg")
+	{
+	  set_phik_range_deg(low,high);
+	}
+      else if (param == "nu" || param == "omega")
+	{
+	  set_nu_range(low,high);
+	}
+      else if (param == "QSq" || param == "Qsq")
+	{
+	  set_QSq_range(low,high);
+	}
+      else
+	{
+	  cerr << "Invalid phase space parameter provided. Aborting...\n";
+	  return false;
+	}
+    }
+  
+  return true;
+  
+}
+
 void gcfGenerator::decay_function(double &weight, int lead_type, int rec_type, TVector3 &vi, TVector3 &vRec)
 {
   
@@ -203,3 +282,4 @@ void gcfGenerator::t_scatter(double &weight, double m3, double m4, TLorentzVecto
     v4.Boost(m);
     
   }
+

@@ -18,6 +18,12 @@ class gcfGenerator
   void set_thetaRel_range_deg(double low, double high);
   void set_pRel_range(double low, double high);
   void set_pRel_cut(double new_cutoff);
+  void set_nu_range(double low, double high);
+  void set_QSq_range(double low, double high);
+  void set_phik_range(double low, double high);
+  void set_phik_range_deg(double low, double high);
+  
+  bool parse_phase_space_file(char* phase_space);
   
   protected:
   void decay_function(double &weight, int lead_type, int rec_type, TVector3 &vi, TVector3 &vRec);
@@ -48,6 +54,13 @@ class gcfGenerator
   double cosThetaRelmax;
   double alphaRelmin;
   double alphaRelmax;
+  
+  double numin;
+  double numax;
+  double QSqmin;
+  double QSqmax;
+  double phikmin;
+  double phikmax;
   
 };
 
