@@ -21,6 +21,8 @@ class gcfGenerator
   
   protected:
   void decay_function(double &weight, int lead_type, int rec_type, TVector3 &vi, TVector3 &vRec);
+  void decay_function_lc(double &weight, int lead_type, int rec_type, double &alphai, TVector2 &vi_perp, double &alphaRec, TVector2 &vRec_perp);
+
   void t_scatter(double &weight, double m3, double m4, TLorentzVector v1, TLorentzVector v2, TLorentzVector &v3, TLorentzVector &v4);
   
   gcfNucleus * myInfo;
@@ -44,6 +46,8 @@ class gcfGenerator
   double thetaRelmax; 
   double cosThetaRelmin;
   double cosThetaRelmax;
+  double alphaRelmin;
+  double alphaRelmax;
   
 };
 

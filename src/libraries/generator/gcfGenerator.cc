@@ -8,6 +8,7 @@
 #include "gcfGenerator.hh"
 
 #include "TVector3.h"
+#include "TVector2.h"
 #include "TRandom3.h"
 
 #include "constants.hh"
@@ -38,6 +39,8 @@ gcfGenerator::gcfGenerator(gcfNucleus * thisInfo, TRandom3 * thisRand)
   thetaRelmax = M_PI;  
   cosThetaRelmin = -1.;
   cosThetaRelmax = 1.;
+  alphaRelmin = 0.;
+  alphaRelmax = 2.;
 
 }
 
@@ -111,6 +114,39 @@ void gcfGenerator::decay_function(double &weight, int lead_type, int rec_type, T
   vRec = 0.5*vCM - vRel;
 
 }
+
+void gcfGenerator::decay_function_lc(double &weight, int lead_type, int rec_type, double &alphai, TVector2 &vi_perp, double &alphaRec, TVector2 &vRec_perp)
+{
+  
+  // Pick random CM motion
+  double alphaCM = myRand->Gaus(2.,sigCM/mbar);
+  TVector2 vCM_perp(myRand->Gaus(0.,sigCM),myRand->Gaus(0.,sigCM));
+  
+  // Pick random relative motion
+  double alphaRel = alphaRelmin + (alphaRelmax-alphaRelmin)*myRand->Rndm();
+  double kmin = abs(1.-alphaRel)/sqrt(alphaRel*(2.-alphaRel));
+  double k = max(pRelmin,kmin) + (pRelmax - max(pRelmin,kmin))*myRand->Rndm();
+  double phiRel = phiRelmin + (phiRelmax-phiRelmin)*myRand->Rndm();
+  double kperpSq = alphaRel*(2.-alphaRel)*(sq(k)+sq(mN)) - sq(mN);
+  TVector2 vRel_perp;
+  vRel_perp.SetMagPhi(sqrt(kperpSq),phiRel);
+
+  // Factor universal functions into the weights
+  weight *= (alphaRelmax-alphaRelmin) * (pRelmax - max(pRelmin,kmin)) * (phiRelmax-phiRelmin) // Phase Space
+    *k*sqrt(sq(k)+sq(mN))*myInfo->get_S(k,lead_type,rec_type)/pow(2.*M_PI,3); // Contacts
+
+  // Do a safeguard cut
+  if (k < pRel_cut)
+    weight=0.;
+
+  // Determine initial nucleon momenta
+  alphai = alphaRel*alphaCM/2.;
+  vRec_perp = 0.5*vCM_perp + vRel_perp;
+  alphaRec = alphaCM - alphai;
+  vRec_perp = 0.5*vCM_perp - vRel_perp;
+
+}
+
 
 void gcfGenerator::t_scatter(double &weight, double m3, double m4, TLorentzVector v1, TLorentzVector v2, TLorentzVector &v3, TLorentzVector &v4)
   {
