@@ -117,7 +117,7 @@ double eNCrossSection::sigmaCCn(double Ebeam, TVector3 k, TVector3 p, bool isPro
       std::cerr << "Invalid cross section designation. Check and fix. Exiting\n\n\n";
     }
       
-  double sigmaMott = cmSqGeVSq * 4. * sq(alpha) * k.Mag2() * sq(cos(k.Theta()/2.)) / sq(QSq);
+  double sigmaMott = nbGeVSq * 4. * sq(alpha) * k.Mag2() * sq(cos(k.Theta()/2.)) / sq(QSq);
 
   double phi = q.Cross(k).Angle( q.Cross(p) );
   return sigmaMott * ( sq(QSq)/q.Mag2() * wC +
@@ -147,7 +147,7 @@ double eNCrossSection::sigma_onShell_by_Etheta(double Ebeam, TVector3 k, bool is
   double GM = isProton ? GMp(QSq) : GMn(QSq);
   double epsilon = epsilon = 1./(1.+2.*(1.+tau)*sq(tan(theta/2.)));
 
-  double sigmaMott = cmSqGeVSq * sq(2.*alpha*E3 * cos(theta/2.)/QSq) * (E3/Ebeam);
+  double sigmaMott = nbGeVSq * sq(2.*alpha*E3 * cos(theta/2.)/QSq) * (E3/Ebeam);
 
   double sigmaRosenbluth = sigmaMott * (sq(GE) + tau/epsilon * sq(GM))/(1. + tau);
   return sigmaRosenbluth * Ebeam / (E3 * (2.*tau + 1.));

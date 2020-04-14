@@ -6,6 +6,7 @@ const double mU = 0.931;
 const double GeVfm  =0.1973;
 const double alpha = 0.0072973525664;
 const double cmSqGeVSq = GeVfm*GeVfm*1.E-26;
+const double nbGevSq = cmSqGeVSq*1.E33;
 
 // particle masses
 const double me = 0.000511;
