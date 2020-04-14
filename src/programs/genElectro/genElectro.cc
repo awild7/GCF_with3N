@@ -36,7 +36,7 @@ Int_t meson_type, baryon_type, rec_type;
 
 void Usage()
 {
-  cerr << "Usage: ./genPhoto <Z> <N> <Beam energy (GeV)> <path/to/output.root> <# of events>\n\n"
+  cerr << "Usage: ./genElectro <Z> <N> <Beam energy (GeV)> <path/to/output.root> <# of events>\n\n"
        << "Optional flags:\n"
        << "-v: Verbose\n"
        << "-P: Use text file to specify phase space\n"
