@@ -93,6 +93,12 @@ void gcfGenerator::set_nu_range(double low, double high)
   numax = high;
 }
 
+void gcfGenerator::set_x_range(double low, double high)
+{
+  xmin = low;
+  xmax = high;
+}
+
 void gcfGenerator::set_QSq_range(double low, double high)
 {
   QSqmin = low;
@@ -139,6 +145,18 @@ bool gcfGenerator::parse_phase_space_file(char* phase_space)
 	{
 	  set_pRel_range(low,high);
 	}
+      else if (param == "nu" || param == "omega")
+	{
+	  set_nu_range(low,high);
+	}
+      else if (param == "x" || param == "xB")
+	{
+	  set_x_range(low,high);
+	}
+      else if (param == "QSq" || param == "Qsq")
+	{
+	  set_QSq_range(low,high);
+	}
       else if (param == "phik" || param == "phie")
 	{
 	  set_phik_range(low,high);
@@ -146,14 +164,6 @@ bool gcfGenerator::parse_phase_space_file(char* phase_space)
       else if (param == "phik_deg" || param == "phie_deg")
 	{
 	  set_phik_range_deg(low,high);
-	}
-      else if (param == "nu" || param == "omega")
-	{
-	  set_nu_range(low,high);
-	}
-      else if (param == "QSq" || param == "Qsq")
-	{
-	  set_QSq_range(low,high);
 	}
       else
 	{
