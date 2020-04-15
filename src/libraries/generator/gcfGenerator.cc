@@ -93,10 +93,10 @@ void gcfGenerator::set_nu_range(double low, double high)
   numax = high;
 }
 
-void gcfGenerator::set_x_range(double low, double high)
+void gcfGenerator::set_xB_range(double low, double high)
 {
-  xmin = low;
-  xmax = high;
+  xBmin = low;
+  xBmax = high;
 }
 
 void gcfGenerator::set_QSq_range(double low, double high)
@@ -151,7 +151,7 @@ bool gcfGenerator::parse_phase_space_file(char* phase_space)
 	}
       else if (param == "x" || param == "xB")
 	{
-	  set_x_range(low,high);
+	  set_xB_range(low,high);
 	}
       else if (param == "QSq" || param == "Qsq")
 	{
