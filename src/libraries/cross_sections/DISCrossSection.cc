@@ -46,7 +46,7 @@ double DISCrossSection::F2p(double x, double QSq)
 
   double Q = sqrt(QSq);
   
-  return x*(sq(2./3.)*(myCTEQ.parton(1,x,Q) + myCTEQ.parton(-1,x,Q) + myCTEQ.parton(4,x,Q) + myCTEQ.parton(-4,x,Q) + myCTEQ.parton(6,x,Q) + myCTEQ.parton(-6,x,Q)) +
+  return x*(sq(2./3.)*(myCTEQ.parton(1,x,Q) + myCTEQ.parton(-1,x,Q) + myCTEQ.parton(4,x,Q) + myCTEQ.parton(-4,x,Q)) +
 	    sq(1./3.)*(myCTEQ.parton(2,x,Q) + myCTEQ.parton(-2,x,Q) + myCTEQ.parton(3,x,Q) + myCTEQ.parton(-3,x,Q) + myCTEQ.parton(5,x,Q) + myCTEQ.parton(-5,x,Q)));
 
 }
@@ -56,7 +56,7 @@ double DISCrossSection::F2n(double x, double QSq)
   
   double Q = sqrt(QSq);
   
-  return x*(sq(2./3.)*(myCTEQ.parton(2,x,Q) + myCTEQ.parton(-2,x,Q) + myCTEQ.parton(4,x,Q) + myCTEQ.parton(-4,x,Q) + myCTEQ.parton(6,x,Q) + myCTEQ.parton(-6,x,Q)) +
+  return x*(sq(2./3.)*(myCTEQ.parton(2,x,Q) + myCTEQ.parton(-2,x,Q) + myCTEQ.parton(4,x,Q) + myCTEQ.parton(-4,x,Q)) +
 	    sq(1./3.)*(myCTEQ.parton(1,x,Q) + myCTEQ.parton(-1,x,Q) + myCTEQ.parton(3,x,Q) + myCTEQ.parton(-3,x,Q) + myCTEQ.parton(5,x,Q) + myCTEQ.parton(-5,x,Q)));
 
 }
