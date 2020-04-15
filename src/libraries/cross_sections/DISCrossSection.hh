@@ -9,6 +9,7 @@ class DISCrossSection
   DISCrossSection(string pdsFile);
   ~DISCrossSection();
   double sigma_xQSq_DIS(double x, double y, double QSq, int nucleon_type);
+  int getParton(double x, double QSq, int nucleon_type, double r);
 
  private:
   cteqpdf myCTEQ;
@@ -27,6 +28,8 @@ class DISCrossSection
   double sbar(double x, double QSq);
   double cbar(double x, double QSq);
   double bbar(double x, double QSq);
+  int getPartonp(double x, double QSq, double r);
+  int getPartonn(double x, double QSq, double r);
   
 };
 
