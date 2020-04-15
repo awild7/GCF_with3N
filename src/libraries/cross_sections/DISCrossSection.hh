@@ -16,6 +16,17 @@ class DISCrossSection
   double F2(double x, double QSq, int nucleon_type);
   double F2p(double x, double QSq);
   double F2n(double x, double QSq);
+
+  double u(double x, double QSq);
+  double d(double x, double QSq);
+  double s(double x, double QSq);
+  double c(double x, double QSq);
+  double b(double x, double QSq);
+  double ubar(double x, double QSq);
+  double dbar(double x, double QSq);
+  double sbar(double x, double QSq);
+  double cbar(double x, double QSq);
+  double bbar(double x, double QSq);
   
 };
 

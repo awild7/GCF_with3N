@@ -43,20 +43,67 @@ double DISCrossSection::F2(double x, double QSq, int nucleon_type)
 
 double DISCrossSection::F2p(double x, double QSq)
 {
-
-  double Q = sqrt(QSq);
   
-  return x*(sq(2./3.)*(myCTEQ.parton(1,x,Q) + myCTEQ.parton(-1,x,Q) + myCTEQ.parton(4,x,Q) + myCTEQ.parton(-4,x,Q)) +
-	    sq(1./3.)*(myCTEQ.parton(2,x,Q) + myCTEQ.parton(-2,x,Q) + myCTEQ.parton(3,x,Q) + myCTEQ.parton(-3,x,Q) + myCTEQ.parton(5,x,Q) + myCTEQ.parton(-5,x,Q)));
+  return x*(sq(2./3.)*(u(x,QSq) + ubar(x,QSq) + c(x,QSq) + cbar(x,QSq)) +
+	    sq(1./3.)*(d(x,QSq) + dbar(x,QSq) + s(x,QSq) + sbar(x,QSq) + b(x,QSq) + bbar(x,QSq)));
 
 }
 
 double DISCrossSection::F2n(double x, double QSq)
 {
   
-  double Q = sqrt(QSq);
-  
-  return x*(sq(2./3.)*(myCTEQ.parton(2,x,Q) + myCTEQ.parton(-2,x,Q) + myCTEQ.parton(4,x,Q) + myCTEQ.parton(-4,x,Q)) +
-	    sq(1./3.)*(myCTEQ.parton(1,x,Q) + myCTEQ.parton(-1,x,Q) + myCTEQ.parton(3,x,Q) + myCTEQ.parton(-3,x,Q) + myCTEQ.parton(5,x,Q) + myCTEQ.parton(-5,x,Q)));
+  return x*(sq(2./3.)*(d(x,QSq) + dbar(x,QSq) + c(x,QSq) + cbar(x,QSq)) + 
+	    sq(1./3.)*(u(x,QSq) + ubar(x,QSq) + s(x,QSq) + sbar(x,QSq) + b(x,QSq) + bbar(x,QSq)));
 
+
+}
+
+double DISCrossSection::u(double x, double QSq)
+{
+  return myCTEQ.parton(1,x,sqrt(QSq));
+}
+
+double DISCrossSection::d(double x, double QSq)
+{
+  return myCTEQ.parton(2,x,sqrt(QSq));
+}
+
+double DISCrossSection::s(double x, double QSq)
+{
+  return myCTEQ.parton(3,x,sqrt(QSq));
+}
+
+double DISCrossSection::c(double x, double QSq)
+{
+  return myCTEQ.parton(4,x,sqrt(QSq));
+}
+
+double DISCrossSection::b(double x, double QSq)
+{
+  return myCTEQ.parton(5,x,sqrt(QSq));
+}
+
+double DISCrossSection::ubar(double x, double QSq)
+{
+  return myCTEQ.parton(-1,x,sqrt(QSq));
+}
+
+double DISCrossSection::dbar(double x, double QSq)
+{
+  return myCTEQ.parton(-2,x,sqrt(QSq));
+}
+
+double DISCrossSection::sbar(double x, double QSq)
+{
+  return myCTEQ.parton(-3,x,sqrt(QSq));
+}
+
+double DISCrossSection::cbar(double x, double QSq)
+{
+  return myCTEQ.parton(-4,x,sqrt(QSq));
+}
+
+double DISCrossSection::bbar(double x, double QSq)
+{
+  return myCTEQ.parton(-5,x,sqrt(QSq));
 }
