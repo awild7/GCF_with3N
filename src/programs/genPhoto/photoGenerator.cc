@@ -74,37 +74,33 @@ void photoGenerator::generate_event(double &weight, int &meson_type, int &baryon
 
   decay_function(weight, lead_type, rec_type, v1, vRec);
   
-  if (weight > 0.)
-    {
+  if (weight <= 0.)
+    return;
       
-      TVector3 vAm2 = - v1 - vRec;
-      double EAm2 = sqrt(vAm2.Mag2() + sq(mAm2));
-      vAm2_target.SetVect(vAm2);
-      vAm2_target.SetT(EAm2);
-      
-      double Erec = sqrt(sq(mN) + vRec.Mag2());
-      vRec_target.SetVect(vRec);
-      vRec_target.SetT(Erec);
-      
-      double E1 = mA - EAm2 - Erec;
-      TLorentzVector v1_target(v1,E1);
-
-      t_scatter(weight, mMeson, mBaryon, vbeam_target, v1_target, vMeson_target, vBaryon_target);
-
-      if (weight > 0.)
-	{
-
-	  double s = sq(mMeson) + sq(mBaryon) + 2.*vMeson_target.Dot(vBaryon_target);
-	  double t = sq(mMeson) - 2.*vbeam_target.Dot(vMeson_target);
-	  
-	  // Calculate the flux factor on the cross section
-	  double vgamma1 = vbeam_target.Dot(v1_target)/(Ebeam*E1);
-	  
-	  // Calculate the weight
-	  weight *= vgamma1*myCS->sigma_pip_n(s,t); // Photoproduction cross section
-	    
-	}
+  TVector3 vAm2 = - v1 - vRec;
+  double EAm2 = sqrt(vAm2.Mag2() + sq(mAm2));
+  vAm2_target.SetVect(vAm2);
+  vAm2_target.SetT(EAm2);
   
-    }
+  double Erec = sqrt(sq(mN) + vRec.Mag2());
+  vRec_target.SetVect(vRec);
+  vRec_target.SetT(Erec);
+  
+  double E1 = mA - EAm2 - Erec;
+  TLorentzVector v1_target(v1,E1);
+  
+  t_scatter(weight, mMeson, mBaryon, vbeam_target, v1_target, vMeson_target, vBaryon_target);
+  
+  if (weight <= 0.)
+    return;
+  
+  double s = sq(mMeson) + sq(mBaryon) + 2.*vMeson_target.Dot(vBaryon_target);
+  double t = sq(mMeson) - 2.*vbeam_target.Dot(vMeson_target);
+  
+  // Calculate the flux factor on the cross section
+  double vgamma1 = vbeam_target.Dot(v1_target)/(Ebeam*E1);
+  
+  // Calculate the weight
+  weight *= vgamma1*myCS->sigma_pip_n(s,t); // Photoproduction cross section
   
 }

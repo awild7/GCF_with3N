@@ -80,69 +80,64 @@ void electroGenerator::generate_event(double &weight, int &meson_type, int &bary
   double nu = numin + (numax - numin)*myRand->Rndm();
   double Ek = Ebeam - nu;
   double QSqmax_kine = 4*Ebeam*Ek;
+  
   if (QSqmax_kine < QSqmin)
     {
       weight=0.;
+      return;
     }
-  else
-    {
-      double QSq = QSqmin + (min(QSqmax,QSqmax_kine) - QSqmin)*myRand->Rndm();
-      double phik = phikmin + (phikmax - phikmin)*myRand->Rndm();
-      weight *= (numax - numin) * (min(QSqmax,QSqmax_kine) - QSqmin) * (phikmax - phikmin);
-      
-      // Determine scattered electron kinematics
-      double qSq = QSq + sq(nu);
-      double costhetak = 1. - QSq/(2.*Ebeam*Ek);
-      double thetak = acos(costhetak);
-      double epsilon = 1./(1. + 2.*qSq/QSq*sq(tan(thetak/2.)));
-      TVector3 vk;
-      vk.SetMagThetaPhi(Ek,thetak,phik);
-      vk_target.SetVect(vk);
-      vk_target.SetT(vk.Mag());
-      
-      TLorentzVector vq_target = vbeam_target - vk_target;
-      r = (epsilon*myCS->R_psi_p(QSq))/(1. + epsilon*myCS->R_psi_p(QSq));
-      
-      // Factor in photon flux
-      weight *= 1/(2.*M_PI) * photon_flux(nu,QSq) * (1. + epsilon*myCS->R_psi_p(QSq));
-      
-      TVector3 v1, vRec;
-      decay_function(weight, lead_type, rec_type, v1, vRec);
-      
-      if (weight > 0.)
-	{
-	  
-	  TVector3 vAm2 = - v1 - vRec;
-	  double EAm2 = sqrt(vAm2.Mag2() + sq(mAm2));
-	  vAm2_target.SetVect(vAm2);
-	  vAm2_target.SetT(EAm2);
-	  
-	  double Erec = sqrt(sq(mN) + vRec.Mag2());  
-	  vRec_target.SetVect(vRec);
-	  vRec_target.SetT(Erec);
-      
-	  double E1 = mA - EAm2 - Erec;
-	  TLorentzVector v1_target(v1,E1);
-
-	  t_scatter(weight, mMeson, mBaryon, vq_target, v1_target, vMeson_target, vBaryon_target);
-
-	  if (weight > 0.)
-	    {
-	      
-	      double s = sq(mMeson) + sq(mBaryon) + 2.*vMeson_target.Dot(vBaryon_target);
-	      double t = sq(mMeson) - QSq - 2.*vq_target.Dot(vMeson_target);
-	      
-	      // Calculate the flux factor on the cross section
-	      double vgamma1 = vq_target.Dot(v1_target)/(nu*E1);
-	      
-	      // Calculate the weight
-	      weight *= vgamma1*myCS->sigma_psi_p(s,t,QSq); // Photoproduction cross section
-	      
-	    }
-
-	}
   
-    }
+  double QSq = QSqmin + (min(QSqmax,QSqmax_kine) - QSqmin)*myRand->Rndm();
+  double phik = phikmin + (phikmax - phikmin)*myRand->Rndm();
+  weight *= (numax - numin) * (min(QSqmax,QSqmax_kine) - QSqmin) * (phikmax - phikmin);
+  
+  // Determine scattered electron kinematics
+  double qSq = QSq + sq(nu);
+  double costhetak = 1. - QSq/(2.*Ebeam*Ek);
+  double thetak = acos(costhetak);
+  double epsilon = 1./(1. + 2.*qSq/QSq*sq(tan(thetak/2.)));
+  TVector3 vk;
+  vk.SetMagThetaPhi(Ek,thetak,phik);
+  vk_target.SetVect(vk);
+  vk_target.SetT(vk.Mag());
+  
+  TLorentzVector vq_target = vbeam_target - vk_target;
+  r = (epsilon*myCS->R_psi_p(QSq))/(1. + epsilon*myCS->R_psi_p(QSq));
+  
+  // Factor in photon flux
+  weight *= 1/(2.*M_PI) * photon_flux(nu,QSq) * (1. + epsilon*myCS->R_psi_p(QSq));
+  
+  TVector3 v1, vRec;
+  decay_function(weight, lead_type, rec_type, v1, vRec);
+  
+  if (weight <= 0.)
+    return;
+  
+  TVector3 vAm2 = - v1 - vRec;
+  double EAm2 = sqrt(vAm2.Mag2() + sq(mAm2));
+  vAm2_target.SetVect(vAm2);
+  vAm2_target.SetT(EAm2);
+  
+  double Erec = sqrt(sq(mN) + vRec.Mag2());  
+  vRec_target.SetVect(vRec);
+  vRec_target.SetT(Erec);
+  
+  double E1 = mA - EAm2 - Erec;
+  TLorentzVector v1_target(v1,E1);
+  
+  t_scatter(weight, mMeson, mBaryon, vq_target, v1_target, vMeson_target, vBaryon_target);
+  
+  if (weight <= 0.)
+    return;
+  
+  double s = sq(mMeson) + sq(mBaryon) + 2.*vMeson_target.Dot(vBaryon_target);
+  double t = sq(mMeson) - QSq - 2.*vq_target.Dot(vMeson_target);
+  
+  // Calculate the flux factor on the cross section
+  double vgamma1 = vq_target.Dot(v1_target)/(nu*E1);
+  
+  // Calculate the weight
+  weight *= vgamma1*myCS->sigma_psi_p(s,t,QSq); // Photoproduction cross section
   
 }
 
