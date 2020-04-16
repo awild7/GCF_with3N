@@ -130,7 +130,7 @@ void DISGenerator::generate_event(double &weight, int &lead_type, int &rec_type,
 
 	  vHadron_target = v1_target + vq_target;
 	  
-	  double y = v1_target.Dot(vq_target)/v1_target.Dot(vbeam_target);
+	  double y = (Ebeam - pe_Mag)/Ebeam;
 	  
 	  // Calculate the weight
 	  weight *= myCS->sigma_xQSq_DIS(xB/alpha1,y,QSq,lead_type)/(2.*M_PI); // DIS cross section
