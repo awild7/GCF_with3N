@@ -16,7 +16,7 @@ DISCrossSection::~DISCrossSection(){}
 double DISCrossSection::sigma_xQSq_DIS(double x, double y, double QSq, int nucleon_type)
 {
   
-  return nbGeVSq*(4*M_PI*sq(alpha))/(sq(QSq))*((1.-y-sq(mN*y)/QSq)*F2(x,QSq,nucleon_type)/x + sq(y)*F1(x,QSq,nucleon_type));
+  return nbGeVSq*(4*M_PI*sq(alpha))/(sq(QSq))*((1.-y-sq(x*y*mN)/QSq)*F2(x,QSq,nucleon_type)/x + sq(y)*F1(x,QSq,nucleon_type));
 
 }
 
