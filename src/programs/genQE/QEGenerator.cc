@@ -40,6 +40,12 @@ QEGenerator::~QEGenerator()
 
 void QEGenerator::generate_event(double &weight, int &lead_type, int &rec_type, TLorentzVector& vk_target, TLorentzVector &vLead_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target)
 {
+  double Estar;
+  generate_event(weight,lead_type,rec_type,vk_target,vLead_target,vRec_target,vAm2_target,Estar);
+}
+
+void QEGenerator::generate_event(double &weight, int &lead_type, int &rec_type, TLorentzVector& vk_target, TLorentzVector &vLead_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target, double &Estar)
+{
   // Start with weight 1. Only multiply terms to weight. If trouble, set weight=0.
   weight = 1.;
 
@@ -49,7 +55,7 @@ void QEGenerator::generate_event(double &weight, int &lead_type, int &rec_type, 
   weight *= 4.;
 
   // Determine mass of A-2 system
-  double mAm2 = get_mAm2(lead_type, rec_type);
+  double mAm2 = get_mAm2(lead_type, rec_type, Estar);
 
   // Sample decay function
   TVector3 v1, vRec;
