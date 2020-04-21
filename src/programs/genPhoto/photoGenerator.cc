@@ -62,13 +62,7 @@ void photoGenerator::generate_event(double &weight, int &meson_type, int &baryon
   weight *= 1;
   
   // Determine mass of A-2 system
-  double mAm2;
-  if (lead_type == pCode and rec_type == pCode)
-    mAm2 = mAmpp;
-  else if (lead_type == nCode and rec_type == nCode)
-    mAm2 = mAmnn;
-  else
-    mAm2 = mAmpn;
+  double mAm2 = get_mAm2(lead_type, rec_type);
 
   TVector3 v1, vRec;
 

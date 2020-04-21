@@ -29,6 +29,7 @@ class gcfGenerator
   protected:
   void decay_function(double &weight, int lead_type, int rec_type, TVector3 &vi, TVector3 &vRec);
   void decay_function_lc(double &weight, int lead_type, int rec_type, double &alphai, TVector2 &vi_perp, double &alphaRec, TVector2 &vRec_perp);
+  double get_mAm2(int lead_type, int rec_type);
 
   void t_scatter(double &weight, double m3, double m4, TLorentzVector v1, TLorentzVector v2, TLorentzVector &v3, TLorentzVector &v4);
   
