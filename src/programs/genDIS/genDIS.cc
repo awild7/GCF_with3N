@@ -29,7 +29,6 @@ TRandom3 * myRand;
 DISCrossSection * myCS;
 DISGenerator * myGen;
 TTree * outtree;
-double Estar = 0.;
 
 // Tree variables
 Double_t pe[3], q[3], p1_onshell[3], pHadron[3], pRec[3], pAm2[3];
@@ -66,10 +65,13 @@ bool init(int argc, char ** argv)
   // Optional flags
   bool custom_ps = false;
   char * phase_space;
+  double Estar = 0.;
   bool do_Estar = false;
+  double sigmaE = 0.;
+  bool do_sigmaE = false;
   
   int c;
-  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:E:h")) != -1)
+  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:E:Mh")) != -1)
     switch(c)
       {
 	
@@ -83,6 +85,12 @@ bool init(int argc, char ** argv)
       case 'E':
         do_Estar = true;
 	Estar = atof(optarg);
+	break;
+      case 'M':
+        do_Estar = true;
+	Estar = 0.01732;
+        do_sigmaE = true;
+	sigmaE = 0.009571;
 	break;
       case 'h':
 	Usage();
@@ -99,6 +107,8 @@ bool init(int argc, char ** argv)
 
   if (do_Estar)
     myInfo->set_Estar(Estar);
+  if (do_sigmaE)
+    myInfo->set_sigmaE(sigmaE);
   
   // Initialize generator
   myGen = new DISGenerator(Ebeam, myInfo, myCS, myRand);
@@ -122,7 +132,6 @@ bool init(int argc, char ** argv)
   outtree->Branch("ERec",&ERec,"ERec/D");
   outtree->Branch("pAm2",pAm2,"pAm2[3]/D");
   outtree->Branch("EAm2",&EAm2,"EAm2/D");
-  outtree->Branch("Estar",&Estar,"Estar/D");
   outtree->Branch("weight",&weight,"weight/D");
   
   return true;

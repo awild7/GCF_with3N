@@ -66,9 +66,13 @@ bool init(int argc, char ** argv)
   // Optional flags
   bool custom_ps = false;
   char * phase_space;
+  double Estar = 0.;
+  bool do_Estar = false;
+  double sigmaE = 0.;
+  bool do_sigmaE = false;
   
   int c;
-  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:h")) != -1)
+  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:Mh")) != -1)
     switch(c)
       {
 	
@@ -78,6 +82,12 @@ bool init(int argc, char ** argv)
       case 'P':
 	custom_ps = true;
 	phase_space = optarg;
+	break;
+      case 'M':
+        do_Estar = true;
+	Estar = 0.01732;
+        do_sigmaE = true;
+	sigmaE = 0.009571;
 	break;
       case 'h':
 	Usage();
@@ -91,6 +101,11 @@ bool init(int argc, char ** argv)
   myInfo = new gcfNucleus(Z,N,AV18);
   myRand = new TRandom3(0);
   myCS = new eNCrossSection(csMeth,ffMod);
+  
+  if (do_Estar)
+    myInfo->set_Estar(Estar);
+  if (do_sigmaE)
+    myInfo->set_sigmaE(sigmaE);
   
   // Initialize generator
   myGen = new QEGenerator(Ebeam, myInfo, myCS, myRand);
