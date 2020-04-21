@@ -31,6 +31,7 @@ gcfGenerator::gcfGenerator(gcfNucleus * thisInfo, TRandom3 * thisRand)
   mAmnn = myInfo->get_mAmnn();
   sigCM = myInfo->get_sigmaCM();
   random_Estar = myInfo->get_Estar_randomization();
+  doRad = false;
 
   pRelmin = 0.2;
   pRelmax = 1.05;
@@ -47,6 +48,11 @@ gcfGenerator::gcfGenerator(gcfNucleus * thisInfo, TRandom3 * thisRand)
 
 gcfGenerator::~gcfGenerator()
 {
+}
+
+void gcfGenerator::set_doRad(bool rad)
+{
+  doRad = rad;
 }
 
 void gcfGenerator::set_phiRel_range(double low, double high)

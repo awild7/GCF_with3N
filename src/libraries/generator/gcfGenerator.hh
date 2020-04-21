@@ -12,6 +12,7 @@ class gcfGenerator
  public:
   gcfGenerator(gcfNucleus * thisInfo, TRandom3 * thisRand);
   ~gcfGenerator();
+  void set_doRad(bool rad);
   void set_phiRel_range(double low, double high);
   void set_phiRel_range_deg(double low, double high);
   void set_thetaRel_range(double low, double high);
@@ -48,6 +49,7 @@ class gcfGenerator
   double mAmnn;
   double sigCM;
   bool random_Estar;
+  bool doRad;
 
   double pRel_cut = 0.25;
   
