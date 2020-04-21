@@ -71,8 +71,13 @@ void QEGenerator::generate_event(double &weight, int &lead_type, int &rec_type, 
   TLorentzVector v1_target(v1,E1);
   double p1_minus = E1 - v1.Z();
 
+  // Initial radiation
+  TVector3 vbeam_int = (doRad ? radiateElectron(vbeam) : vbeam);
+  double Ebeam_int = vbeam_int.Mag();
+  TLorentzVector vbeam_int_target(vbeam_int,Ebeam_int);
+
   // Pick random electron scattering
-  double QSqmax_kine = 2*Ebeam*p1_minus;
+  double QSqmax_kine = 2*Ebeam_int*p1_minus;
   if (QSqmax_kine < QSqmin)
     {
       weight=0.;
@@ -84,7 +89,7 @@ void QEGenerator::generate_event(double &weight, int &lead_type, int &rec_type, 
   weight *= (min(QSqmax,QSqmax_kine) - QSqmin) * (phikmax - phikmin);
   
   // Calculate outgoing electron kinematics
-  double k_minus = QSq/(2*Ebeam);
+  double k_minus = QSq/(2*Ebeam_int);
   double plead_minus = p1_minus - k_minus;
   if (plead_minus < 0.)
     {
@@ -96,7 +101,7 @@ void QEGenerator::generate_event(double &weight, int &lead_type, int &rec_type, 
   double virt = v1_target.Mag2() - sq(mN);
   
   double A = k_minus/p1_minus;
-  double c = A*(p1_plus*k_minus - 2*Ebeam*plead_minus - virt);
+  double c = A*(p1_plus*k_minus - 2*Ebeam_int*plead_minus - virt);
   
   double delta_phi = phik - v1.Phi();
   double p1_perp = v1.Perp();
@@ -121,20 +126,31 @@ void QEGenerator::generate_event(double &weight, int &lead_type, int &rec_type, 
 
   double k_plus = sq(k_perp)/k_minus;
   double kz = (k_plus - k_minus)/2.;
-  TVector3 vk(k_perp*cos(phik),k_perp*sin(phik),kz);
+  TVector3 vk_int(k_perp*cos(phik),k_perp*sin(phik),kz);
+  double Ek_int = vk_int.Mag();
+  TLorentzVector vk_int_target;
+  vk_int_target.SetVect(vk_int);
+  vk_int_target.SetT(Ek_int);
+
+  vLead_target = v1_target + vbeam_int_target - vk_int_target;
+  TVector3 vLead = vLead_target.Vect();
+  double Elead = vLead_target.T();
+
+  // Final Radiation
+  TVector3 vk = (doRad ? radiateElectron(vk_int) : vk_int);
   double Ek = vk.Mag();
   vk_target.SetVect(vk);
   vk_target.SetT(Ek);
-
-  vLead_target = v1_target + vbeam_target - vk_target;
-  TVector3 vLead = vLead_target.Vect();
-  double Elead = vLead_target.T();
   
   // Jacobian for delta function
-  double J = 2.*Ebeam*Ek*fabs(1. - (v1.Z() + y * tan(vk.Theta()/2.) + Ebeam - Ek)/Elead);
+  double J = 2.*Ebeam_int*Ek_int*fabs(1. - (v1.Z() + y * tan(vk.Theta()/2.) + Ebeam_int - Ek_int)/Elead);
   weight *= 1./J;
 
   // Calculate the weight
-  weight *= myCS->sigma_eN(Ebeam, vk, vLead, (lead_type==pCode)); // eN cross section
+  weight *= myCS->sigma_eN(Ebeam_int, vk_int, vLead, (lead_type==pCode)); // eN cross section
+
+  // Radiation factors
+  if (doRad)
+    weight *= radiationFactor(Ebeam, Ek_int, QSq);
   
 }

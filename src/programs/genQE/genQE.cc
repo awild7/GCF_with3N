@@ -40,6 +40,8 @@ void Usage()
        << "Optional flags:\n"
        << "-v: Verbose\n"
        << "-P: Use text file to specify phase space\n"
+       << "-M: Use randomized E* according to Barack's values\n"
+       << "-O: Turn on peaking radiation\n"
        << "-h: Print this message and exit\n\n\n";
 }
 
@@ -70,9 +72,10 @@ bool init(int argc, char ** argv)
   bool do_Estar = false;
   double sigmaE = 0.;
   bool do_sigmaE = false;
+  bool doRad = false;
   
   int c;
-  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:Mh")) != -1)
+  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:MOh")) != -1)
     switch(c)
       {
 	
@@ -88,6 +91,9 @@ bool init(int argc, char ** argv)
 	Estar = 0.01732;
         do_sigmaE = true;
 	sigmaE = 0.009571;
+	break;
+      case 'O':
+	doRad = true;
 	break;
       case 'h':
 	Usage();
@@ -111,6 +117,8 @@ bool init(int argc, char ** argv)
   myGen = new QEGenerator(Ebeam, myInfo, myCS, myRand);
   if (custom_ps)
     myGen->parse_phase_space_file(phase_space);
+  if (doRad)
+    myGen->set_doRad(true);
 
   // Set up the tree
   outfile->cd();
