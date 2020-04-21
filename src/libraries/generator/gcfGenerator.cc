@@ -245,14 +245,20 @@ void gcfGenerator::decay_function_lc(double &weight, int lead_type, int rec_type
 
 double gcfGenerator::get_mAm2(int lead_type, int rec_type)
 {
+  double Estar;
+  return get_mAm2(lead_type,rec_type,Estar);
+}
+
+double gcfGenerator::get_mAm2(int lead_type, int rec_type, double &Estar)
+{
   if (random_Estar)
     {
       if (lead_type == pCode and rec_type == pCode)
-	return myInfo->get_mAmpp_random(myRand);
+	return myInfo->get_mAmpp_random(Estar,myRand);
       else if (lead_type == nCode and rec_type == nCode)
-	return myInfo->get_mAmnn_random(myRand);
+	return myInfo->get_mAmnn_random(Estar,myRand);
       else
-	return myInfo->get_mAmpn_random(myRand);
+	return myInfo->get_mAmpn_random(Estar,myRand);
     }
   else
     {

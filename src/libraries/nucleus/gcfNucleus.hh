@@ -26,9 +26,9 @@ class gcfNucleus
   double get_mAmpp();
   double get_mAmpn();
   double get_mAmnn();
-  double get_mAmpp_random(TRandom3* myRand);
-  double get_mAmpn_random(TRandom3* myRand);
-  double get_mAmnn_random(TRandom3* myRand);
+  double get_mAmpp_random(double &Estar, TRandom3* myRand);
+  double get_mAmpn_random(double &Estar, TRandom3* myRand);
+  double get_mAmnn_random(double &Estar, TRandom3* myRand);
   double get_sigmaCM();
   double get_Estar();
   double get_sigmaE();

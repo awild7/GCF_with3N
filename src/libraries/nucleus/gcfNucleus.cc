@@ -330,19 +330,22 @@ double gcfNucleus::get_mAmnn()
   return mAmnn + Estar;
 }
 
-double gcfNucleus::get_mAmpp_random(TRandom3* myRand)
+double gcfNucleus::get_mAmpp_random(double &Estar, TRandom3* myRand)
 {
-  return mAmpp + get_Estar_random(myRand);
+  Estar = get_Estar_random(myRand);
+  return mAmpp + Estar;
 }
 
-double gcfNucleus::get_mAmpn_random(TRandom3* myRand)
+double gcfNucleus::get_mAmpn_random(double &Estar, TRandom3* myRand)
 {
-  return mAmpn + get_Estar_random(myRand);
+  Estar = get_Estar_random(myRand);
+  return mAmpn + Estar;
 }
 
-double gcfNucleus::get_mAmnn_random(TRandom3* myRand)
+double gcfNucleus::get_mAmnn_random(double &Estar, TRandom3* myRand)
 {
-  return mAmnn + get_Estar_random(myRand);
+  Estar = get_Estar_random(myRand);
+  return mAmnn + Estar;
 }
 double gcfNucleus::get_sigmaCM()
 {
