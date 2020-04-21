@@ -315,3 +315,26 @@ void gcfGenerator::t_scatter(double &weight, double m3, double m4, TLorentzVecto
     
 }
 
+TVector3 gcfGenerator::radiateElectron(TVector3 ve)
+{
+  double Ee = ve.Mag();
+  double lambda_e = alpha/M_PI*(log(4*sq(Ee)/sq(me)) -1);
+  double DeltaE = pow(myRand->Rndm(),1./lambda_e)*Ee;
+  double Ee_rad = Ee - DeltaE;
+  TVector3 ve_rad = ve;
+  ve_rad.SetMag(Ee_rad);
+  return ve_rad;
+}
+
+double gcfGenerator::deltaHard(double QSq)
+{
+  return 2.*alpha/M_PI * ( -13./12.*log(QSq/sq(me)) + 8./3.);
+}
+
+double gcfGenerator::radiationFactor(double Ebeam, double Ek, double QSq)
+{
+  double lambda_ei = alpha/M_PI*(log(4*sq(Ebeam)/sq(me)) -1);
+  double lambda_ef = alpha/M_PI*(log(4*sq(Ek)/sq(me)) -1);
+
+  return (1 - deltaHard(QSq)) * pow(Ebeam/sqrt(Ebeam*Ek),lambda_ei) * pow(Ek/sqrt(Ebeam*Ek),lambda_ef);
+}
