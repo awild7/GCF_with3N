@@ -30,6 +30,7 @@ gcfGenerator::gcfGenerator(gcfNucleus * thisInfo, TRandom3 * thisRand)
   mAmpn = myInfo->get_mAmpn();
   mAmnn = myInfo->get_mAmnn();
   sigCM = myInfo->get_sigmaCM();
+  random_Estar = myInfo->get_Estar_randomization();
 
   pRelmin = 0.2;
   pRelmax = 1.05;
@@ -238,12 +239,24 @@ void gcfGenerator::decay_function_lc(double &weight, int lead_type, int rec_type
 
 double gcfGenerator::get_mAm2(int lead_type, int rec_type)
 {
-  if (lead_type == pCode and rec_type == pCode)
-    return mAmpp;
-  else if (lead_type == nCode and rec_type == nCode)
-    return mAmnn;
+  if (random_Estar)
+    {
+      if (lead_type == pCode and rec_type == pCode)
+	return myInfo->get_mAmpp_random(myRand);
+      else if (lead_type == nCode and rec_type == nCode)
+	return myInfo->get_mAmnn_random(myRand);
+      else
+	return myInfo->get_mAmpn_random(myRand);
+    }
   else
-    return mAmpn;
+    {
+      if (lead_type == pCode and rec_type == pCode)
+	return mAmpp;
+      else if (lead_type == nCode and rec_type == nCode)
+	return mAmnn;
+      else
+	return mAmpn;
+    }
 }
 
 void gcfGenerator::t_scatter(double &weight, double m3, double m4, TLorentzVector v1, TLorentzVector v2, TLorentzVector &v3, TLorentzVector &v4)

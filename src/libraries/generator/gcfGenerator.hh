@@ -43,6 +43,7 @@ class gcfGenerator
   double mAmpn;
   double mAmnn;
   double sigCM;
+  bool random_Estar;
 
   double pRel_cut = 0.25;
   
