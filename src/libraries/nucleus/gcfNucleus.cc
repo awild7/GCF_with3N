@@ -17,6 +17,7 @@ gcfNucleus::gcfNucleus(int thisZ, int thisN, char* uType)
 {
   Estar = 0;
   sigmaE = 0;
+  random_Estar = false;
   set_Interaction(uType);
   set_Nucleus(thisZ, thisN);
 }  
@@ -25,6 +26,7 @@ gcfNucleus::gcfNucleus(int thisZ, int thisN, NNModel uType)
 {
   Estar = 0;
   sigmaE = 0;
+  random_Estar = false;
   set_Interaction(uType);
   set_Nucleus(thisZ, thisN);
 }  
@@ -146,15 +148,14 @@ void gcfNucleus::set_Nucleus(int thisZ, int thisN){
   
 }
 
-void gcfNucleus::randomize()
+void gcfNucleus::randomize(TRandom3* myRand)
 {
-  TRandom3 myRand(0);
-  sigmaCM += myRand.Gaus(0.,d_sigmaCM);
-  Cpp0 += myRand.Gaus(0.,d_Cpp0);
-  Cpn0 += myRand.Gaus(0.,d_Cpn0);
-  Cnn0 += myRand.Gaus(0.,d_Cnn0);
-  Cpn1 += myRand.Gaus(0.,d_Cpn1);
-  Estar = myRand.Uniform()*Estar_max;
+  sigmaCM += myRand->Gaus(0.,d_sigmaCM);
+  Cpp0 += myRand->Gaus(0.,d_Cpp0);
+  Cpn0 += myRand->Gaus(0.,d_Cpn0);
+  Cnn0 += myRand->Gaus(0.,d_Cnn0);
+  Cpn1 += myRand->Gaus(0.,d_Cpn1);
+  Estar = myRand->Uniform()*Estar_max;
 }
 
 void gcfNucleus::setCustomValues(double newSigma, double newEstar, double newCpp0 ,double newCnn0 ,double newCpn0, double newCpn1){
@@ -255,6 +256,7 @@ void gcfNucleus::set_Cpn1(double newCpn1){
 void gcfNucleus::set_sigmaE(double newSigE){
 
   sigmaE = newSigE;
+  random_Estar = true;
   
 }
 
@@ -328,9 +330,28 @@ double gcfNucleus::get_mAmnn()
   return mAmnn + Estar;
 }
 
+double gcfNucleus::get_mAmpp_random(TRandom3* myRand)
+{
+  return mAmpp + get_Estar_random(myRand);
+}
+
+double gcfNucleus::get_mAmpn_random(TRandom3* myRand)
+{
+  return mAmpn + get_Estar_random(myRand);
+}
+
+double gcfNucleus::get_mAmnn_random(TRandom3* myRand)
+{
+  return mAmnn + get_Estar_random(myRand);
+}
 double gcfNucleus::get_sigmaCM()
 {
   return sigmaCM;
+}
+
+double gcfNucleus::get_Estar()
+{
+  return Estar;
 }
 
 double gcfNucleus::get_sigmaE()
@@ -338,9 +359,19 @@ double gcfNucleus::get_sigmaE()
   return sigmaE;
 }
 
-double gcfNucleus::get_Estar()
+double gcfNucleus::get_Estar_random(TRandom3* myRand)
 {
-  return Estar;
+  while(true)
+    {
+      double Estar_rand = myRand->Gaus(Estar,sigmaE);
+      if (Estar_rand > 0.)
+	return Estar_rand;
+    }
+}
+
+bool gcfNucleus::get_Estar_randomization()
+{
+  return random_Estar;
 }
 
 double gcfNucleus::get_S(double k_rel, int l_type, int r_type){

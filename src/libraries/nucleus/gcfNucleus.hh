@@ -1,6 +1,8 @@
 #ifndef __GCF_NUCLEUS_H__
 #define __GCF_NUCLEUS_H__
 
+class TRandom3;
+
 enum NNModel {AV18, AV4Pc, N2LO_10, N2LO_12, N3LO_600, NV2_1a};
 
 class gcfNucleus
@@ -24,14 +26,19 @@ class gcfNucleus
   double get_mAmpp();
   double get_mAmpn();
   double get_mAmnn();
+  double get_mAmpp_random(TRandom3* myRand);
+  double get_mAmpn_random(TRandom3* myRand);
+  double get_mAmnn_random(TRandom3* myRand);
   double get_sigmaCM();
-  double get_sigmaE();
   double get_Estar();
+  double get_sigmaE();
+  double get_Estar_random(TRandom3* myRand);
+  bool get_Estar_randomization();
   double get_Cnn0();
   double get_Cpp0();
   double get_Cpn0();
   double get_Cpn1();
-  void randomize();
+  void randomize(TRandom3* myRand);
   
   void set_Nucleus(int thisZ, int thisN);
   void setCustomValues(double newSigma, double newEstar, double newCpp0, double Cnn0, double newCpn0, double newCpn1);
@@ -71,6 +78,7 @@ class gcfNucleus
   double Estar;
   double Estar_max;
   double sigmaE;
+  bool random_Estar;
   
   double get_phiSq(double *phiPtr, double k_rel);
 
