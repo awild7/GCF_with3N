@@ -79,7 +79,7 @@ void ionGenerator::generate_event(double &weight, int &lead_type, int &rec_type,
   double u = 2.*sq(mN) - 2.*v1_target.Dot(v4_target);
   
   // Calculate the flux factor on the cross section
-  double v12 = sqrt(sq(v1_target.Dot(v2_target)) - sq(mN*mN))/(E1*E2);
+  double v12 = sqrt(sq(v1_target.Dot(v2_target)) - sq(mN)*v1_target.Mag2())/(E1*E2);
   double v1A = p1/E1;
   
   // Calculate the weight
