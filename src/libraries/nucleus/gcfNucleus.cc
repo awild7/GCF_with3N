@@ -150,11 +150,26 @@ void gcfNucleus::set_Nucleus(int thisZ, int thisN){
 
 void gcfNucleus::randomize(TRandom3* myRand)
 {
+  randomize_sigmaCM(myRand);
+  randomize_Contacts(myRand);
+  randomize_Estar(myRand);
+}
+
+void gcfNucleus::randomize_sigmaCM(TRandom3* myRand)
+{
   sigmaCM += myRand->Gaus(0.,d_sigmaCM);
+}
+
+void gcfNucleus::randomize_Contacts(TRandom3* myRand)
+{
   Cpp0 += myRand->Gaus(0.,d_Cpp0);
   Cpn0 += myRand->Gaus(0.,d_Cpn0);
   Cnn0 += myRand->Gaus(0.,d_Cnn0);
   Cpn1 += myRand->Gaus(0.,d_Cpn1);
+}
+
+void gcfNucleus::randomize_Estar(TRandom3* myRand)
+{
   Estar = myRand->Uniform()*Estar_max;
 }
 

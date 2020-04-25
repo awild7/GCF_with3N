@@ -39,6 +39,9 @@ class gcfNucleus
   double get_Cpn0();
   double get_Cpn1();
   void randomize(TRandom3* myRand);
+  void randomize_sigmaCM(TRandom3* myRand);
+  void randomize_Contacts(TRandom3* myRand);
+  void randomize_Estar(TRandom3* myRand);
   
   void set_Nucleus(int thisZ, int thisN);
   void setCustomValues(double newSigma, double newEstar, double newCpp0, double Cnn0, double newCpn0, double newCpn1);
