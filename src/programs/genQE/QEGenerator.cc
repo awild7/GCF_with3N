@@ -211,7 +211,7 @@ void QEGenerator::generate_event_lightcone(double &weight, int &lead_type, int &
   double pAm2_plus = (sq(mAm2) + vAm2_perp.Mod2())/pAm2_minus;
   double p1_plus = mA - pRec_plus - pAm2_plus;
   double virt = p1_plus*p1_minus- v1_perp.Mod2() - sq(mN);
-
+  
   // Sovling for energy transfer
   double E1 = 0.5*(p1_plus + p1_minus);
   double p1_z = 0.5*(p1_plus - p1_minus);
@@ -297,9 +297,7 @@ void QEGenerator::generate_event_lightcone(double &weight, int &lead_type, int &
   vLead_target = v1_target + vbeam_int_target - vk_int_target;
   TVector3 vLead = vLead_target.Vect();
   double Elead = vLead_target.T();
-
-  TLorentzVector vq_target = vbeam_int_target - vk_int_target;
-  
+    
   // Final Radiation
   TVector3 vk = (doRad ? radiateElectron(vk_int) : vk_int);
   double Ek = vk.Mag();
