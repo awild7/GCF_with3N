@@ -32,7 +32,7 @@ TTree * outtree;
 
 // Tree variables
 Double_t pe[3], q[3], p1_onshell[3], pHadron[3], pRec[3], pAm2[3];
-Double_t nu, E1_onshell, EHadron, ERec, EAm2, weight;
+Double_t nu, E1_onshell, EHadron, ERec, EAm2, estar, weight;
 Int_t lead_type, rec_type, ipart;
 
 void Usage()
@@ -41,6 +41,8 @@ void Usage()
        << "Optional flags:\n"
        << "-v: Verbose\n"
        << "-P: Use text file to specify phase space\n"
+       << "-M: Use randomized E* according to Barack's values\n"
+       << "-O: Turn on peaking radiation\n"
        << "-h: Print this message and exit\n\n\n";
 }
 
@@ -69,9 +71,10 @@ bool init(int argc, char ** argv)
   bool do_Estar = false;
   double sigmaE = 0.;
   bool do_sigmaE = false;
+  bool do_Rad = false;
   
   int c;
-  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:E:Mh")) != -1)
+  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:E:MOh")) != -1)
     switch(c)
       {
 	
@@ -91,6 +94,9 @@ bool init(int argc, char ** argv)
 	Estar = 0.01732;
         do_sigmaE = true;
 	sigmaE = 0.009571;
+	break;
+      case 'O':
+	do_Rad = true;
 	break;
       case 'h':
 	Usage();
@@ -114,6 +120,8 @@ bool init(int argc, char ** argv)
   myGen = new DISGenerator(Ebeam, myInfo, myCS, myRand);
   if (custom_ps)
     myGen->parse_phase_space_file(phase_space);
+  if (do_Rad)
+    myGen->set_doRad(true);
   
   // Set up the tree
   outfile->cd();
@@ -132,6 +140,7 @@ bool init(int argc, char ** argv)
   outtree->Branch("ERec",&ERec,"ERec/D");
   outtree->Branch("pAm2",pAm2,"pAm2[3]/D");
   outtree->Branch("EAm2",&EAm2,"EAm2/D");
+  outtree->Branch("Estar",&estar,"Estar/D");
   outtree->Branch("weight",&weight,"weight/D");
   
   return true;
@@ -148,7 +157,7 @@ void evnt(int event)
   TLorentzVector vRec;
   TLorentzVector vAm2;
 
-  myGen->generate_event(weight, lead_type, rec_type, ipart, vk, vq, v1_onshell, vHadron, vRec, vAm2);
+  myGen->generate_event(weight, lead_type, rec_type, ipart, vk, vq, v1_onshell, vHadron, vRec, vAm2, estar);
 
   pe[0] = vk.X();
   pe[1] = vk.Y();

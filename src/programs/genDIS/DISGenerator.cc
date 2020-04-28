@@ -41,7 +41,7 @@ DISGenerator::~DISGenerator()
 {
 }
 
-void DISGenerator::generate_event(double &weight, int &lead_type, int &rec_type, int &ipart, TLorentzVector& vk_target, TLorentzVector &vq_target, TLorentzVector &v1_target_onshell, TLorentzVector &vHadron_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target)
+void DISGenerator::generate_event(double &weight, int &lead_type, int &rec_type, int &ipart, TLorentzVector& vk_target, TLorentzVector &vq_target, TLorentzVector &v1_target_onshell, TLorentzVector &vHadron_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target, double &Estar)
 {
   // Start with weight 1. Only multiply terms to weight. If trouble, set weight=0.
   weight = 1.;
@@ -52,7 +52,7 @@ void DISGenerator::generate_event(double &weight, int &lead_type, int &rec_type,
   weight *= 4.;
 
   // Determine mass of A-2 system
-  double mAm2 = get_mAm2(lead_type, rec_type);
+  double mAm2 = get_mAm2(lead_type, rec_type, Estar);
 
   double alpha1, alphaRec;
   TVector2 v1_perp, vRec_perp;
