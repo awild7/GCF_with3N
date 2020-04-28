@@ -10,6 +10,7 @@
 #include "TRandom3.h"
 #include "TVector3.h"
 #include "TLorentzVector.h"
+#include "TH1D.h"
 
 #include "constants.hh"
 #include "helpers.hh"
@@ -28,6 +29,7 @@ TRandom3 * myRand;
 eNCrossSection * myCS;
 QEGenerator * myGen;
 TTree * outtree;
+bool doLC;
 
 // Tree variables
 Double_t pe[3], pLead[3], pRec[3], pAm2[3];
@@ -73,9 +75,10 @@ bool init(int argc, char ** argv)
   double sigmaE = 0.;
   bool do_sigmaE = false;
   bool doRad = false;
+  doLC = false;
   
   int c;
-  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:MOh")) != -1)
+  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:MOlh")) != -1)
     switch(c)
       {
 	
@@ -94,6 +97,9 @@ bool init(int argc, char ** argv)
 	break;
       case 'O':
 	doRad = true;
+	break;
+      case 'l':
+	doLC = true;
 	break;
       case 'h':
 	Usage();
@@ -119,7 +125,7 @@ bool init(int argc, char ** argv)
     myGen->parse_phase_space_file(phase_space);
   if (doRad)
     myGen->set_doRad(true);
-
+  
   // Set up the tree
   outfile->cd();
   outtree = new TTree("genTbuffer","Generator Tree");
@@ -143,8 +149,11 @@ void evnt(int event)
   TLorentzVector vRec;
   TLorentzVector vAm2;
 
-  myGen->generate_event(weight, lead_type, rec_type, vk, vLead, vRec, vAm2);
-
+  if (doLC)
+    myGen->generate_event_lightcone(weight, lead_type, rec_type, vk, vLead, vRec, vAm2);
+  else
+    myGen->generate_event(weight, lead_type, rec_type, vk, vLead, vRec, vAm2);
+  
   pe[0] = vk.X();
   pe[1] = vk.Y();
   pe[2] = vk.Z();
@@ -157,7 +166,7 @@ void evnt(int event)
   pAm2[0] = vAm2.X();
   pAm2[1] = vAm2.Y();
   pAm2[2] = vAm2.Z();
-  
+
   if (weight > 0.)
     outtree->Fill();
   
