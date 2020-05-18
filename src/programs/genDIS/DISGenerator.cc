@@ -94,8 +94,8 @@ void DISGenerator::generate_event(double &weight, int &lead_type, int &rec_type,
   vk_target.SetT(pe_Mag);
   
   vq_target = vbeam_target - vk_target;
-  double rot_phi = vq_target.Vect().Phi();
-  double rot_theta = vq_target.Vect().Theta();
+  double rot_phi = vq_target.Vect().Phi() + M_PI;
+  double rot_theta = M_PI - vq_target.Vect().Theta();
   
   // Constructing 4-momenta
   double pAm2_plus = mbar*alphaAm2;
