@@ -19,6 +19,8 @@ class DISGenerator: public gcfGenerator
   
  private:
   DISCrossSection * myCS;
+
+  double Wcut = 2.;
     
   double Ebeam;
   TVector3 vbeam;

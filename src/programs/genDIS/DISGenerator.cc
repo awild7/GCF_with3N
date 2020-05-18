@@ -130,6 +130,13 @@ void DISGenerator::generate_event(double &weight, int &lead_type, int &rec_type,
   v1_target.RotateZ(rot_phi);
   
   vHadron_target = v1_target + vq_target;
+
+  double WSq = vHadron_target.Mag2();
+  if (WSq < sq(Wcut))
+    {
+      weight=0.;
+      return;
+    }
   
   double y = (Ebeam - pe_Mag)/Ebeam;
   
