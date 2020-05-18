@@ -44,6 +44,7 @@ void Usage()
        << "-P: Use text file to specify phase space\n"
        << "-M: Use randomized E* according to Barack's values\n"
        << "-O: Turn on peaking radiation\n"
+       << "-l: Use Lightcone cross section\n"
        << "-h: Print this message and exit\n\n\n";
 }
 
