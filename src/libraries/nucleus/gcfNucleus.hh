@@ -1,23 +1,18 @@
 #ifndef __GCF_NUCLEUS_H__
 #define __GCF_NUCLEUS_H__
 
-class TRandom3;
+#include "gcfSRC.hh"
 
-enum NNModel {AV18, AV4Pc, N2LO_10, N2LO_12, N3LO_600, NV2_1a};
+class TRandom3;
 
 class gcfNucleus
 {
  public:
   gcfNucleus(int thisZ, int thisN, char* uType);
   gcfNucleus(int thisZ, int thisN, NNModel uType);
+  gcfNucleus(int thisZ, int thisN, gcfSRC * thisSRC);
   ~gcfNucleus();
   double get_S(double krel, int l_type, int r_type);
-  double get_pp(double k_rel);
-  double get_nn(double k_rel);
-  double get_pn(double k_rel);
-  double get_pn0(double k_rel);
-  double get_pn1(double k_rel);
-  NNModel get_InteractionType();
   int get_Z();
   int get_N();
   int get_A();
@@ -33,14 +28,10 @@ class gcfNucleus
   double get_Estar();
   double get_sigmaE();
   double get_Estar_random(TRandom3* myRand);
+  gcfSRC * get_SRC();
   bool get_Estar_randomization();
-  double get_Cnn0();
-  double get_Cpp0();
-  double get_Cpn0();
-  double get_Cpn1();
   void randomize(TRandom3* myRand);
   void randomize_sigmaCM(TRandom3* myRand);
-  void randomize_Contacts(TRandom3* myRand);
   void randomize_Estar(TRandom3* myRand);
   
   void set_Nucleus(int thisZ, int thisN);
@@ -49,53 +40,24 @@ class gcfNucleus
   void set_Interaction(char* thisNNType);
   void set_sigmaCM(double newSigma);
   void set_Estar(double newEstar);
-  void set_Cpp0(double newCpp0);
-  void set_Cnn0(double newCnn0);
-  void set_Cpn0(double newCpn0);
-  void set_Cpn1(double newCpn1);
   void set_sigmaE(double newSigE);
   
  private:
   int Z;
   int N;
   int A;
-  NNModel u;
   double mA;
   double mAmpp;
   double mAmpn;
   double mAmnn;
   double sigmaCM;
   double d_sigmaCM;
-  double phiSq_pp0[6][100];
-  double phiSq_nn0[6][100];
-  double phiSq_pn0[6][100];
-  double phiSq_pn1[6][100];
-  double Cpp0;
-  double d_Cpp0;
-  double Cnn0;
-  double d_Cnn0;
-  double Cpn0;
-  double d_Cpn0;
-  double Cpn1;
-  double d_Cpn1;
   double Estar;
   double Estar_max;
   double sigmaE;
   bool random_Estar;
-  
-  double get_phiSq(double *phiPtr, double k_rel);
 
-  bool set_Contacts_SS_r();
-  bool set_Contacts_SS_k();
-  bool set_Contacts_EG2();
-
-  void fill_arrays();
-  void fill_arrays_AV18();
-  void fill_arrays_n2lo_local();
-  void fill_arrays_n3lo_nonlocal();
-  void fill_arrays_n2lo_12_local();
-  void fill_arrays_AV4Pc();
-  void fill_arrays_NV2_1a();
+  gcfSRC * mySRC;
   
 };
 
