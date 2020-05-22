@@ -237,9 +237,9 @@ void gcfGenerator::decay_function_lc(double &weight, int lead_type, int rec_type
 
   // Determine initial nucleon momenta
   alphai = alphaRel*alphaCM/2.;
-  vi_perp = 0.5*vCM_perp + vRel_perp;
+  vi_perp = alphai/alphaCM*vCM_perp + vRel_perp;
   alphaRec = alphaCM - alphai;
-  vRec_perp = 0.5*vCM_perp - vRel_perp;
+  vRec_perp = alphaRec/alphaCM*vCM_perp - vRel_perp;
 
 }
 
