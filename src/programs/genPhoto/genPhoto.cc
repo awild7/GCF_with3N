@@ -40,7 +40,6 @@ void Usage()
        << "Optional flags:\n"
        << "-v: Verbose\n"
        << "-P: Use text file to specify phase space\n"
-       << "-T: Boost to inverse kinematics. In this case, the given beam energy is the kinetic energy per nucleon"
        << "-h: Print this message and exit\n\n\n";
 }
 
