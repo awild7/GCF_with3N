@@ -11,3 +11,9 @@ Navigate to a build directory of your choice and execute the following:
 ccmake [path/to]/GCF_Generator_Suite/src
 make
 ```
+
+## Meta
+
+This repository is maintained by Jackson Pybus (jrpybus@mit.edu).
+
+[https://github.com/JacksonPybus](https://github.com/JacksonPybus)
