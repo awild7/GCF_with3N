@@ -5,8 +5,9 @@ This repository will contain the code and necessary libraries for generating eve
 
 ## Compile
 
-Navigate to a build directory of your choice.
+Navigate to a build directory of your choice and execute the following:
 
-```ccmake [path/to]/GCF_Generator_Suite/src
+```
+ccmake [path/to]/GCF_Generator_Suite/src
 make
 ```
