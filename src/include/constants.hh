@@ -2,14 +2,16 @@
 #define __CONSTANTS_H__
 
 // constants
-const double mU = 0.931;
+const double mU = 0.9314941024;
 const double GeVfm  =0.1973;
 const double alpha = 0.0072973525664;
 const double cmSqGeVSq = GeVfm*GeVfm*1.E-26;
 const double nbGeVSq = cmSqGeVSq*1.E33;
+const double Vud = 0.97417;
 
 // particle masses
 const double me = 0.000511;
+const double mmu = 0.10566;
 
 const double mN = 0.93892;
 const double mDelta = 1.232;
@@ -27,6 +29,8 @@ const double mK0 = 0.497648;
 const double momega = 0.78265;
 const double mphi = 1.019461;
 const double mpsi = 3.096916;
+
+const double mW = 80.379;
 
 // nuclear masses
 const double m_1H = mN;
@@ -54,10 +58,10 @@ const double m_54Mn = 53.9403589 * mU - 25*me;
 const double m_54Fe = 53.9396090 * mU - 26*me;
 const double m_56Fe = 55.9349363 * mU - 26*me;
 
-const double m_206Hg = 205.977514 * mU - 80*me;
-const double m_206Tl = 205.9761103 * mU - 81*me;
-const double m_206Pb = 205.9744653 * mU - 82*me;
-const double m_208Pb = 207.9766521 * mU - 82*me;
+const double m_206Hg = 205.977514 * mU - 80*me + 0.5682;
+const double m_206Tl = 205.9761103 * mU - 81*me + 0.5682;
+const double m_206Pb = 205.9744653 * mU - 82*me + 0.5682;
+const double m_208Pb = 207.9766521 * mU - 82*me + 0.5682;
 
 // nucleon codes
 const int pCode = 2212;
