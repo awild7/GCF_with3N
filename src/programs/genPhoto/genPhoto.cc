@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include "TFile.h"
 #include "TTree.h"
+#include "TVector3.h"
 #include "photoGenerator.hh"
 #include "constants.hh"
 #include "helpers.hh"
@@ -20,12 +21,12 @@ TTree * outtree;
 
 // Tree variables
 Double_t pMeson[3], pBaryon[3], pRec[3], pAm2[3];
-Double_t weight;
+Double_t weight, Ephoton;
 Int_t meson_type, baryon_type, rec_type;
 
 void Usage()
 {
-  cerr << "Usage: ./genPhoto <Z> <N> <Beam energy (GeV)> <path/to/output.root> <# of events>\n\n"
+  cerr << "Usage: ./genPhoto <Z> <N> <path/to/output.root> <# of events>\n\n"
        << "Optional flags:\n"
        << "-v: Verbose\n"
        << "-P: Use text file to specify phase space\n"
@@ -34,7 +35,7 @@ void Usage()
 
 bool init(int argc, char ** argv)
 {
-  int numargs = 6;
+  int numargs = 5;
  
   if (argc < numargs)
     {
@@ -45,9 +46,8 @@ bool init(int argc, char ** argv)
   // Read in the arguments
   int Z = atoi(argv[1]);
   int N = atoi(argv[2]);
-  double Ebeam = atof(argv[3]);
-  outfile = new TFile(argv[4],"RECREATE");
-  nEvents = atoi(argv[5]);
+  outfile = new TFile(argv[3],"RECREATE");
+  nEvents = atoi(argv[4]);
 
   // Optional flags
   bool custom_ps = false;
@@ -79,13 +79,14 @@ bool init(int argc, char ** argv)
   myCS = new photoCrossSection();
   
   // Initialize generator
-  myGen = new photoGenerator(Ebeam, myInfo, myCS, myRand);
+  myGen = new photoGenerator(myInfo, myCS, myRand);
   if (custom_ps)
     myGen->parse_phase_space_file(phase_space);
 
   // Set up the tree
   outfile->cd();
   outtree = new TTree("genTbuffer","Generator Tree");
+  outtree->Branch("Ephoton",&Ephoton,"Ephoton/D");
   outtree->Branch("meson_type",&meson_type,"meson_type/I");
   outtree->Branch("baryon_type",&baryon_type,"baryon_type/I");
   outtree->Branch("rec_type",&rec_type,"rec_type/I");
@@ -107,7 +108,7 @@ void evnt(int event)
   TLorentzVector vRec;
   TLorentzVector vAm2;
 
-  myGen->generate_event(weight, meson_type, baryon_type, rec_type, vMeson, vBaryon, vRec, vAm2);
+  myGen->generate_event(weight, Ephoton, meson_type, baryon_type, rec_type, vMeson, vBaryon, vRec, vAm2);
 
   pMeson[0] = vMeson.X();
   pMeson[1] = vMeson.Y();

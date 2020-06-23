@@ -1,17 +1,20 @@
+#include "TVector3.h"
 #include "photoGenerator.hh"
+#include "spectra/defaultSpectrum.hh"
 #include "constants.hh"
 #include "helpers.hh"
 
 using namespace std;
 
-photoGenerator::photoGenerator(double E, gcfNucleus * thisInfo, photoCrossSection * thisCS, TRandom3 * thisRand) : gcfGenerator(thisInfo, thisRand)
+photoGenerator::photoGenerator(gcfNucleus * thisInfo, photoCrossSection * thisCS, TRandom3 * thisRand) : gcfGenerator(thisInfo, thisRand)
 {
-
-  myCS = thisCS;
   
-  Ebeam = E;
-  vbeam.SetXYZ(0.,0.,Ebeam);
-  vbeam_target.SetXYZT(0.,0.,Ebeam,Ebeam);
+  myCS = thisCS;
+
+  photonSpectrum = new TH1D("photonEnergy","photonEnergy",280,5.,12.);
+  for (int i = 0; i < 280; i++) {
+    photonSpectrum->SetBinContent(i+1,defaultSpectrum[i]);
+  }
 
 }
 
@@ -19,8 +22,12 @@ photoGenerator::~photoGenerator()
 {
 }
 
-void photoGenerator::generate_event(double &weight, int &meson_type, int &baryon_type, int &rec_type, TLorentzVector &vMeson_target, TLorentzVector &vBaryon_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target)
+void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_type, int &baryon_type, int &rec_type, TLorentzVector &vMeson_target, TLorentzVector &vBaryon_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target)
 {
+
+  Ephoton = photonSpectrum->GetRandom();
+  
+  TLorentzVector vphoton_target(0.,0.,Ephoton,Ephoton);
   
   // Start with weight 1. Only multiply terms to weight. If trouble, set weight=0.
   weight = 1.;
@@ -69,16 +76,16 @@ void photoGenerator::generate_event(double &weight, int &meson_type, int &baryon
   double E1 = mA - EAm2 - Erec;
   TLorentzVector v1_target(v1,E1);
   
-  t_scatter(weight, mMeson, mBaryon, vbeam_target, v1_target, vMeson_target, vBaryon_target);
+  t_scatter(weight, mMeson, mBaryon, vphoton_target, v1_target, vMeson_target, vBaryon_target);
   
   if (weight <= 0.)
     return;
   
   double s = sq(mMeson) + sq(mBaryon) + 2.*vMeson_target.Dot(vBaryon_target);
-  double t = sq(mMeson) - 2.*vbeam_target.Dot(vMeson_target);
+  double t = sq(mMeson) - 2.*vphoton_target.Dot(vMeson_target);
   
   // Calculate the flux factor on the cross section
-  double vgamma1 = vbeam_target.Dot(v1_target)/(Ebeam*E1);
+  double vgamma1 = vphoton_target.Dot(v1_target)/(Ephoton*E1);
   
   // Calculate the weight
   weight *= vgamma1*myCS->sigma_pip_n(s,t); // Photoproduction cross section
