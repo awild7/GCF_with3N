@@ -1,4 +1,5 @@
 #include <iostream>
+#include <math.h>
 #include "eNCrossSection.hh"
 #include "helpers.hh"
 #include "constants.hh"
