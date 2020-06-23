@@ -1,14 +1,12 @@
 #ifndef __DIS_GENERATOR_H__
 #define __DIS_GENERATOR_H__
 
-#include "TVector3.h"
+#include "TRandom3.h"
 #include "TLorentzVector.h"
-
+#include "TVector3.h"
 #include "generator/gcfGenerator.hh"
-
-class gcfNucleus;
-class DISCrossSection;
-class TRandom3;
+#include "nucleus/gcfNucleus.hh"
+#include "cross_sections/DISCrossSection.hh"
 
 class DISGenerator: public gcfGenerator
 {

@@ -1,14 +1,12 @@
 #ifndef __ION_GENERATOR_H__
 #define __ION_GENERATOR_H__
 
-#include "TVector3.h"
+#include "TRandom3.h"
 #include "TLorentzVector.h"
-
+#include "TVector3.h"
 #include "generator/gcfGenerator.hh"
-
-class gcfNucleus;
-class NNCrossSection;
-class TRandom3;
+#include "nucleus/gcfNucleus.hh"
+#include "cross_sections/NNCrossSection.hh"
 
 class ionGenerator: public gcfGenerator
 {

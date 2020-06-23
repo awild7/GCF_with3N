@@ -1,21 +1,6 @@
-#include <iostream>
-#include <fstream>
-#include <cmath>
-#include <cstdlib>
-#include <unistd.h>
-#include <ctype.h>
-
 #include "QEGenerator.hh"
-
-#include "TVector3.h"
-#include "TVector2.h"
-#include "TLorentzVector.h"
-#include "TRandom3.h"
-
 #include "constants.hh"
 #include "helpers.hh"
-#include "cross_sections/eNCrossSection.hh"
-#include "nucleus/gcfNucleus.hh"
 
 using namespace std;
 

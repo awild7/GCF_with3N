@@ -1,21 +1,10 @@
 #include <iostream>
-#include <fstream>
-#include <cmath>
-#include <cstdlib>
 #include <unistd.h>
-#include <ctype.h>
-
 #include "TFile.h"
 #include "TTree.h"
-#include "TRandom3.h"
-#include "TVector3.h"
-#include "TLorentzVector.h"
-
+#include "photoGenerator.hh"
 #include "constants.hh"
 #include "helpers.hh"
-#include "cross_sections/photoCrossSection.hh"
-#include "nucleus/gcfNucleus.hh"
-#include "photoGenerator.hh"
 
 using namespace std;
 

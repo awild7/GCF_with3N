@@ -1,20 +1,6 @@
-#include <iostream>
-#include <fstream>
-#include <cmath>
-#include <cstdlib>
-#include <unistd.h>
-#include <ctype.h>
-
 #include "ionGenerator.hh"
-
-#include "TVector3.h"
-#include "TLorentzVector.h"
-#include "TRandom3.h"
-
 #include "constants.hh"
 #include "helpers.hh"
-#include "cross_sections/NNCrossSection.hh"
-#include "nucleus/gcfNucleus.hh"
 
 using namespace std;
 

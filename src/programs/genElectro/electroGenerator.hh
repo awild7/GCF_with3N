@@ -1,14 +1,12 @@
 #ifndef __ELECTRO_GENERATOR_H__
 #define __ELECTRO_GENERATOR_H__
 
-#include "TVector3.h"
+#include "TRandom3.h"
 #include "TLorentzVector.h"
-
+#include "TVector3.h"
 #include "generator/gcfGenerator.hh"
-
-class gcfNucleus;
-class photoCrossSection;
-class TRandom3;
+#include "nucleus/gcfNucleus.hh"
+#include "cross_sections/photoCrossSection.hh"
 
 class electroGenerator: public gcfGenerator
 {
