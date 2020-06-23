@@ -8,6 +8,8 @@ const double alpha = 0.0072973525664;
 const double cmSqGeVSq = GeVfm*GeVfm*1.E-26;
 const double nbGeVSq = cmSqGeVSq*1.E33;
 const double Vud = 0.97417;
+const double mu_p=2.79;
+const double mu_n=-1.91;
 
 // particle masses
 const double me = 0.000511;

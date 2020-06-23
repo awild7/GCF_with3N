@@ -1,12 +1,7 @@
 #include <iostream>
-#include <cmath>
-#include <cstdlib>
-
 #include "eNCrossSection.hh"
 #include "helpers.hh"
 #include "constants.hh"
-
-#include "TVector3.h"
 
 eNCrossSection::eNCrossSection()
 {

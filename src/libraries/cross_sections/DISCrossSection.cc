@@ -1,7 +1,5 @@
 #include <iostream>
 #include <cmath>
-#include <cstdlib>
-
 #include "DISCrossSection.hh"
 #include "helpers.hh"
 #include "constants.hh"

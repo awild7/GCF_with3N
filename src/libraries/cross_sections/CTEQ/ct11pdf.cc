@@ -1,5 +1,9 @@
+#include <string>
+#include <fstream>
+#include <math.h>
+#include <iostream>
+
 #include "ct11pdf.h"
-#include <cstdlib>
 
 //------------------------------------------------------------------------------------
 void cteqpdf::setct11(string fname)

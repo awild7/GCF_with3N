@@ -29,13 +29,8 @@
 // More information could be found in the demo file.
 //-------------------------------------------------------------
 
-
 #include <vector>
-#include <string>
-#include <iomanip>
-#include <iostream>
-#include <fstream>
-#include <math.h>
+
 //--------------------------------------------
 
 using namespace std;
