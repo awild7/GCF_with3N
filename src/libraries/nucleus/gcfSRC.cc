@@ -1,3 +1,4 @@
+#include <iostream>
 #include "gcfSRC.hh"
 #include "universal_functions/AV18.hh"
 #include "universal_functions/N2LO.hh"
@@ -5,11 +6,7 @@
 #include "universal_functions/N2LO_12.hh"
 #include "universal_functions/AV4Pc.hh"
 #include "universal_functions/NV2_1a.hh"
-
 #include "constants.hh"
-
-#include <iostream>
-#include "TRandom3.h"
 
 gcfSRC::gcfSRC(int thisZ, int thisN, char* uType)
 {

@@ -1,19 +1,9 @@
 #include <iostream>
 #include <fstream>
-#include <cmath>
-#include <cstdlib>
-#include <unistd.h>
-#include <ctype.h>
-
-#include "gcfGenerator.hh"
-
-#include "TVector3.h"
 #include "TVector2.h"
-#include "TRandom3.h"
-
+#include "gcfGenerator.hh"
 #include "constants.hh"
 #include "helpers.hh"
-#include "nucleus/gcfNucleus.hh"
 
 using namespace std;
 

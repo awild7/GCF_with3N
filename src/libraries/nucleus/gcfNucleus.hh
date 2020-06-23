@@ -1,6 +1,7 @@
 #ifndef __GCF_NUCLEUS_H__
 #define __GCF_NUCLEUS_H__
 
+#include "TRandom3.h"
 #include "gcfSRC.hh"
 
 class TRandom3;

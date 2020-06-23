@@ -1,12 +1,6 @@
-#include "gcfNucleus.hh"
-#include "gcfSRC.hh"
-
-#include "constants.hh"
-
-#include <string.h>
 #include <iostream>
-#include <cstdlib>
-#include "TRandom3.h"
+#include "gcfNucleus.hh"
+#include "constants.hh"
 
 gcfNucleus::gcfNucleus(int thisZ, int thisN, char* uType)
 {

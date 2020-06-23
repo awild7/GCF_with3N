@@ -1,11 +1,10 @@
 #ifndef __GCF_GENERATOR_H__
 #define __GCF_GENERATOR_H__
 
-#include "TVector3.h"
+#include "TRandom3.h"
 #include "TLorentzVector.h"
-
-class gcfNucleus;
-class TRandom3;
+#include "TVector3.h"
+#include "nucleus/gcfNucleus.hh"
 
 class gcfGenerator
 {

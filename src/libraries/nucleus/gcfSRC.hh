@@ -1,7 +1,7 @@
 #ifndef __GCF_SRC_H__
 #define __GCF_SRC_H__
 
-class TRandom3;
+#include "TRandom3.h"
 
 enum NNModel {AV18, AV4Pc, N2LO_10, N2LO_12, N3LO_600, NV2_1a};
 
