@@ -567,7 +567,7 @@ bool gcfSRC::set_Contacts_SS_r()
 	  return true;
 	}
     }
-  else if ((Z==20) && (N==20))
+  else if (((Z==20) && (N==20)) || ((Z==18) && (N==22)))
     {
       if (u==AV4Pc)
 	{
