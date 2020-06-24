@@ -2,14 +2,9 @@
 #include <unistd.h>
 #include "TFile.h"
 #include "TTree.h"
-//#include "TRandom3.h"
-//#include "TVector3.h"
-//#include "TLorentzVector.h"
 #include "ionGenerator.hh"
 #include "constants.hh"
 #include "helpers.hh"
-//#include "cross_sections/NNCrossSection.hh"
-//#include "nucleus/gcfNucleus.hh"
 
 using namespace std;
 

@@ -2,7 +2,6 @@
 #include <unistd.h>
 #include "TFile.h"
 #include "TTree.h"
-#include "TVector3.h"
 #include "photoGenerator.hh"
 #include "constants.hh"
 #include "helpers.hh"
@@ -12,7 +11,6 @@ using namespace std;
 int nEvents;
 TFile * outfile;
 bool verbose = false;
-TVector3 boost_vector;
 gcfNucleus * myInfo;
 TRandom3 * myRand;
 photoCrossSection * myCS;
