@@ -98,6 +98,26 @@ void gcfNucleus::set_Nucleus(int thisZ, int thisN){
       mAmnn=m_25Al;
       Estar_max = 0.040;
     }
+  else if ((Z==18) && (N==22))
+    {
+      sigmaCM=0.15;
+      d_sigmaCM=0.02;
+      mA=m_40Ar;
+      mAmpp=m_38S;
+      mAmpn=m_38Cl;
+      mAmnn=m_38Ar;
+      Estar_max = 0.050;
+    }
+  else if ((Z==20) && (N==20))
+    {
+      sigmaCM=0.15;
+      d_sigmaCM=0.02;
+      mA=m_40Ca;
+      mAmpp=m_38Ar;
+      mAmpn=m_38K;
+      mAmnn=m_38Ca;
+      Estar_max = 0.050;
+    }
   else if ((Z==26) && (N==30))
     {
       sigmaCM=0.15;
