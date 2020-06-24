@@ -55,6 +55,14 @@ const double m_25Mg = 24.98583696 * mU - 12*me;
 const double m_25Al = 24.99042831 * mU - 13*me;
 const double m_27Al = 26.98153841 * mU - 13*me;
 
+const double m_38S = 37.971163 * mU - 16*me;
+const double m_38Cl = 37.96801042 * mU - 17*me;
+const double m_38Ar = 37.96273210 * mU - 18*me;
+const double m_38K = 37.96908112 * mU - 19*me;
+const double m_38Ca = 37.97631923 * mU - 20*me;
+const double m_40Ar = 39.9623831238 * mU - 18*me;
+const double m_40Ca = 39.962590866 * mU - 20*me;
+
 const double m_54Cr = 53.9388804 * mU - 24*me;
 const double m_54Mn = 53.9403589 * mU - 25*me;
 const double m_54Fe = 53.9396090 * mU - 26*me;
