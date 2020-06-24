@@ -12,10 +12,11 @@ class eNCrossSection
   eNCrossSection();
   eNCrossSection(csMethod thisMeth, ffModel thisMod);
   ~eNCrossSection();
+  double sigma_CC(double Ebeam, TVector3 k, TVector3 p, bool isProton);
   double sigma_eN(double Ebeam, TVector3 k, TVector3 p, bool isProton);
-  double sigmaCCn(double Ebeam, TVector3 k, TVector3 p, bool isProton, int n);
-  double sigmaCC1(double Ebeam, TVector3 k, TVector3 p, bool isProton);
-  double sigmaCC2(double Ebeam, TVector3 k, TVector3 p, bool isProton);
+  double sigmaccn(double Ebeam, TVector3 k, TVector3 p, bool isProton, int n);
+  double sigmacc1(double Ebeam, TVector3 k, TVector3 p, bool isProton);
+  double sigmacc2(double Ebeam, TVector3 k, TVector3 p, bool isProton);
   double sigma_onShell_by_Etheta(double Ebeam, TVector3 k, bool isProton);
   double GEp(double QSq);
   double GEn(double QSq);

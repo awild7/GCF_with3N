@@ -27,9 +27,9 @@ double eNCrossSection::sigma_eN(double Ebeam,TVector3 k, TVector3 p, bool isProt
     case onshell:
       return sigma_onShell_by_Etheta(Ebeam,k,isProton);
     case cc1:
-      return sigmaCC1(Ebeam,k,p,isProton);
+      return sigmacc1(Ebeam,k,p,isProton);
     case cc2:
-      return sigmaCC2(Ebeam,k,p,isProton);
+      return sigmacc2(Ebeam,k,p,isProton);
     default:
       {
 	std::cerr << "Invalid cross section method! Double check and fix!\n";
@@ -39,13 +39,23 @@ double eNCrossSection::sigma_eN(double Ebeam,TVector3 k, TVector3 p, bool isProt
   return 0;
 }
 
+double eNCrossSection::sigma_CC(double Ebeam,TVector3 k, TVector3 p, bool isProton)
+{
+  TVector3 q = TVector3(0.,0.,Ebeam) - k;
+  double omega = Ebeam - k.Mag();
+  double QSq = q.Mag2() - sq(omega);
+
+  return sq(QSq/sq(mW))*sq(Vud)*sigma_eN(Ebeam, k, p, isProton);
+  
+}
+
 // Because DeForest uses the opposite Lorentz convention
 double dot4(double x0, TVector3 x, double y0, TVector3 y)
 {
   return ((x0*y0)-(x*y));
 }
 
-double eNCrossSection::sigmaCCn(double Ebeam, TVector3 k, TVector3 p, bool isProton, int n)
+double eNCrossSection::sigmaccn(double Ebeam, TVector3 k, TVector3 p, bool isProton, int n)
 
 {
   TVector3 q = TVector3(0.,0.,Ebeam) - k;
@@ -123,14 +133,14 @@ double eNCrossSection::sigmaCCn(double Ebeam, TVector3 k, TVector3 p, bool isPro
                        );
 }
 
-double eNCrossSection::sigmaCC1(double Ebeam, TVector3 k, TVector3 p, bool isProton)
+double eNCrossSection::sigmacc1(double Ebeam, TVector3 k, TVector3 p, bool isProton)
 {
-  return sigmaCCn(Ebeam, k, p, isProton, 1);
+  return sigmaccn(Ebeam, k, p, isProton, 1);
 }
 
-double eNCrossSection::sigmaCC2(double Ebeam, TVector3 k, TVector3 p, bool isProton)
+double eNCrossSection::sigmacc2(double Ebeam, TVector3 k, TVector3 p, bool isProton)
 {
-  return sigmaCCn(Ebeam, k, p, isProton, 2);
+  return sigmaccn(Ebeam, k, p, isProton, 2);
 }
 
 double eNCrossSection::sigma_onShell_by_Etheta(double Ebeam, TVector3 k, bool isProton)
