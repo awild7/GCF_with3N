@@ -9,7 +9,14 @@ Navigate to a build directory of your choice and execute the following:
 
 ```
 ccmake [path/to]/GCF_Generator_Suite/src
+```
+Press [c] and then [g]
+```
 make
+```
+The executables will then be located in subdirectories of the ```[build]/programs``` directory. For instance, the Quasielastic Scattering executable is located at:
+```
+[build]/programs/genQE/genQE
 ```
 
 ## Meta
