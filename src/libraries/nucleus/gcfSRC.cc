@@ -569,7 +569,7 @@ bool gcfSRC::set_Contacts_SS_r()
     }
   else if (((Z==20) && (N==20)) || ((Z==18) && (N==22)))
     {
-      if (u==AV4Pc)
+      if (u==AV18)
 	{
 	  Cpp0=0.723 * ( A * 0.5);
 	  d_Cpp0=0.081 * ( A * 0.5);
