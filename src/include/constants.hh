@@ -4,6 +4,7 @@
 #include "constants/particleMasses.hh"
 #include "constants/nuclearMasses.hh"
 #include "constants/pdgCodes.hh"
+#include "constants/geantCodes.hh"
 
 // misc constants
 const double GeVfm  =0.1973;
