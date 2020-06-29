@@ -290,6 +290,18 @@ bool gcfSRC::set_Contacts_SS_r()
 	  d_Cpn1=0.010 * ( A * 0.5);
 	  return true;
 	}
+      else if (u==NV2_1a)
+	{
+	  Cpp0=0.0 * ( A * 0.5);
+	  d_Cpp0=0.0 * ( A * 0.5);
+	  Cnn0=0.0 * ( A * 0.5);
+	  d_Cnn0=0.0 * ( A * 0.5);
+	  Cpn0=0.0 * ( A * 0.5);
+	  d_Cpn0=0.0 * ( A * 0.5);
+	  Cpn1=3.878 * ( A * 0.5);
+	  d_Cpn1=0.390 * ( A * 0.5);
+	  return true;
+	}
     }
   else if ((Z==1) && (N==2))
     {
@@ -382,7 +394,7 @@ bool gcfSRC::set_Contacts_SS_r()
 	}
       else if (u==N2LO_12)
 	{
-	  Cpp0=0.5239 * ( A * 0.5);
+	  Cpp0=0.239 * ( A * 0.5);
 	  d_Cpp0=0.041 * ( A * 0.5);
 	  Cnn0=0.0 * ( A * 0.5);
 	  d_Cnn0=0.0 * ( A * 0.5);
@@ -390,6 +402,18 @@ bool gcfSRC::set_Contacts_SS_r()
 	  d_Cpn0=0.022 * ( A * 0.5);
 	  Cpn1=5.705 * ( A * 0.5);
 	  d_Cpn1=0.870 * ( A * 0.5);
+	  return true;
+	}
+      else if (u==NV2_1a)
+	{
+	  Cpp0=0.310 * ( A * 0.5);
+	  d_Cpp0=0.031 * ( A * 0.5);
+	  Cnn0=0.0 * ( A * 0.5);
+	  d_Cnn0=0.0 * ( A * 0.5);
+	  Cpn0=0.234 * ( A * 0.5);
+	  d_Cpn0=0.053 * ( A * 0.5);
+	  Cpn1=1.637 * ( A * 0.5);
+	  d_Cpn1=0.573 * ( A * 0.5);
 	  return true;
 	}
     }
@@ -441,6 +465,18 @@ bool gcfSRC::set_Contacts_SS_r()
 	  d_Cpn0=0.062 * ( A * 0.5);
 	  Cpn1=11.111 * ( A * 0.5);
 	  d_Cpn1=2.595 * ( A * 0.5);
+	  return true;
+	}
+      else if (u==NV2_1a)
+	{
+	  Cpp0=0.333 * ( A * 0.5);
+	  d_Cpp0=0.034 * ( A * 0.5);
+	  Cnn0=0.333 * ( A * 0.5);
+	  d_Cnn0=0.034 * ( A * 0.5);
+	  Cpn0=0.333 * ( A * 0.5);
+	  d_Cpn0=0.034 * ( A * 0.5);
+	  Cpn1=9.200 * ( A * 0.5);
+	  d_Cpn1=0.928 * ( A * 0.5);
 	  return true;
 	}
     }
@@ -655,6 +691,18 @@ bool gcfSRC::set_Contacts_SS_k()
 	  d_Cpn1=0.032 * ( A * 0.5);
 	  return true;
 	}
+      else if (u==NV2_1a)
+	{
+	  Cpp0=0.0 * ( A * 0.5);
+	  d_Cpp0=0.0 * ( A * 0.5);
+	  Cnn0=0.0 * ( A * 0.5);
+	  d_Cnn0=0.0 * ( A * 0.5);
+	  Cpn0=0.0 * ( A * 0.5);
+	  d_Cpn0=0.0 * ( A * 0.5);
+	  Cpn1=3.840 * ( A * 0.5);
+	  d_Cpn1=0.398 * ( A * 0.5);
+	  return true;
+	}
     }
   else if ((Z==1) && (N==2))
     {
@@ -757,6 +805,18 @@ bool gcfSRC::set_Contacts_SS_k()
 	  d_Cpn1=0.730 * ( A * 0.5);
 	  return true;
 	}
+      else if (u==NV2_1a)
+	{
+	  Cpp0=0.336 * ( A * 0.5);
+	  d_Cpp0=0.034 * ( A * 0.5);
+	  Cnn0=0.0 * ( A * 0.5);
+	  d_Cnn0=0.0 * ( A * 0.5);
+	  Cpn0=0.233 * ( A * 0.5);
+	  d_Cpn0=0.024 * ( A * 0.5);
+	  Cpn1=4.885 * ( A * 0.5);
+	  d_Cpn1=0.491 * ( A * 0.5);
+	  return true;
+	}
     }
   else if ((Z==2) && (N==2))
     {
@@ -806,6 +866,18 @@ bool gcfSRC::set_Contacts_SS_k()
 	  d_Cpn0=0.133 * ( A * 0.5);
 	  Cpn1=10.446 * ( A * 0.5);
 	  d_Cpn1=2.223 * ( A * 0.5);
+	  return true;
+	}
+      else if (u==NV2_1a)
+	{
+	  Cpp0=0.355 * ( A * 0.5);
+	  d_Cpp0=0.039 * ( A * 0.5);
+	  Cnn0=0.355 * ( A * 0.5);
+	  d_Cnn0=0.039 * ( A * 0.5);
+	  Cpn0=0.504 * ( A * 0.5);
+	  d_Cpn0=0.059 * ( A * 0.5);
+	  Cpn1=10.143 * ( A * 0.5);
+	  d_Cpn1=1.022 * ( A * 0.5);
 	  return true;
 	}
     }
