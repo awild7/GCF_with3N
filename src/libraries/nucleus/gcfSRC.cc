@@ -51,6 +51,8 @@ void gcfSRC::set_Interaction(char* thisPType){
     set_Interaction(N3LO_600);
   else if (strcmp(thisPType,"AV4Pc")==0 or strcmp(thisPType,"AV4")==0 or strcmp(thisPType,"5")==0)
     set_Interaction(AV4Pc);
+  else if (strcmp(thisPType,"NV")==0 or strcmp(thisPType,"NV2_1a")==0 or strcmp(thisPType,"6")==0)
+    set_Interaction(NV2_1a);
   else{
     std::cerr <<"You are using an interaction not in the library. \n Aborting...\n";
   exit(-2);
@@ -80,6 +82,10 @@ void gcfSRC::set_Interaction(NNModel thisPType){
   else if(u == AV4Pc){
     fill_arrays_AV4Pc();
     std::cout <<"You are using the AV4' interaction.\n";
+  }
+  else if(u == NV2_1a){
+    fill_arrays_NV2_1a();
+    std::cout <<"You are using the NV2+Ia interaction.\n";
   }
   else{
     std::cerr <<"You are using an interaction not in the library. \n Aborting...\n";
