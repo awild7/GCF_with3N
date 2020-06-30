@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <unistd.h>
 #include "TFile.h"
 #include "TTree.h"
@@ -11,12 +12,16 @@ using namespace std;
 int nEvents;
 TFile * outfile;
 bool verbose = false;
+bool do_ascii = false;
 gcfNucleus * myInfo;
 TRandom3 * myRand;
 photoCrossSection * myCS;
 photoGenerator * myGen;
 TTree * outtree;
+ofstream * asciiWriter = nullptr;
 
+int numOut = 0;
+                    
 // Tree variables
 Double_t pMeson[3], pBaryon[3], pRec[3], pAm2[3];
 Double_t weight, Ephoton;
@@ -28,7 +33,32 @@ void Usage()
        << "Optional flags:\n"
        << "-v: Verbose\n"
        << "-P: Use text file to specify phase space\n"
+       << "-A: Specify ASCII file to deposit particle information in Hall D format. Weights will still be stored in ROOT file"
        << "-h: Print this message and exit\n\n\n";
+}
+
+void asciiWriteProton(int num, TLorentzVector v)
+{
+  (*asciiWriter) << "   " << num << " " << pCode_geant << " " << mN << endl;
+  (*asciiWriter) << "   " << 1 << " " << v.X() << " " << v.Y() << " " << v.Z() << " " << v.T() << endl;
+}
+
+void asciiWriteNeutron(int num, TLorentzVector v)
+{
+  (*asciiWriter) << "   " << num << " " << nCode_geant << " " << mN << endl;
+  (*asciiWriter) << "   " << 0 << " " << v.X() << " " << v.Y() << " " << v.Z() << " " << v.T() << endl;
+}
+
+void asciiWritePiPlus(int num, TLorentzVector v)
+{
+  (*asciiWriter) << "   " << num << " " << pipCode_geant << " " << mpip << endl;
+  (*asciiWriter) << "   " << 1 << " " << v.X() << " " << v.Y() << " " << v.Z() << " " << v.T() << endl;
+}
+
+void asciiWritePiMinus(int num, TLorentzVector v)
+{
+  (*asciiWriter) << "   " << num << " " << pimCode_geant << " " << mpip << endl;
+  (*asciiWriter) << "   " << -1 << " " << v.X() << " " << v.Y() << " " << v.Z() << " " << v.T() << endl;
 }
 
 bool init(int argc, char ** argv)
@@ -48,11 +78,12 @@ bool init(int argc, char ** argv)
   nEvents = atoi(argv[4]);
 
   // Optional flags
+  char * asciiFile;
   bool custom_ps = false;
   char * phase_space;
   
   int c;
-  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:h")) != -1)
+  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:A:h")) != -1)
     switch(c)
       {
 	
@@ -62,6 +93,10 @@ bool init(int argc, char ** argv)
       case 'P':
 	custom_ps = true;
 	phase_space = optarg;
+	break;
+      case 'A':
+	do_ascii = true;
+	asciiFile = optarg;
 	break;
       case 'h':
 	Usage();
@@ -84,15 +119,21 @@ bool init(int argc, char ** argv)
   // Set up the tree
   outfile->cd();
   outtree = new TTree("genTbuffer","Generator Tree");
-  outtree->Branch("Ephoton",&Ephoton,"Ephoton/D");
-  outtree->Branch("meson_type",&meson_type,"meson_type/I");
-  outtree->Branch("baryon_type",&baryon_type,"baryon_type/I");
-  outtree->Branch("rec_type",&rec_type,"rec_type/I");
-  outtree->Branch("pMeson",pMeson,"pMeson[3]/D");
-  outtree->Branch("pBaryon",pBaryon,"pBaryon[3]/D");
-  outtree->Branch("pRec",pRec,"pRec[3]/D");
-  outtree->Branch("pAm2",pAm2,"pAm2[3]/D");
+  if (not do_ascii)
+    {
+      outtree->Branch("Ephoton",&Ephoton,"Ephoton/D");
+      outtree->Branch("meson_type",&meson_type,"meson_type/I");
+      outtree->Branch("baryon_type",&baryon_type,"baryon_type/I");
+      outtree->Branch("rec_type",&rec_type,"rec_type/I");
+      outtree->Branch("pMeson",pMeson,"pMeson[3]/D");
+      outtree->Branch("pBaryon",pBaryon,"pBaryon[3]/D");
+      outtree->Branch("pRec",pRec,"pRec[3]/D");
+      outtree->Branch("pAm2",pAm2,"pAm2[3]/D");
+    }
   outtree->Branch("weight",&weight,"weight/D");
+
+  if (do_ascii)
+    asciiWriter = new ofstream(asciiFile);
   
   return true;
   
@@ -122,8 +163,52 @@ void evnt(int event)
   pAm2[2] = vAm2.Z();
 
   if (weight > 0.)
-    outtree->Fill();
-  
+    {
+      outtree->Fill();
+      if (do_ascii)
+	{
+	  (*asciiWriter) << "1 " << numOut << " 3 "<< Ephoton << endl;
+	  switch(meson_type)
+	    {
+	    case pipCode:
+	      asciiWritePiPlus(1,vMeson);
+	      break;
+	    case pimCode:
+	      asciiWritePiMinus(1,vMeson);
+	      break;
+	    default:
+	      cout << "Cannot write out this meson to ASCII format. Aborting...";
+	      abort();
+	    }
+	  switch(baryon_type)
+	    {
+	    case pCode:
+	      asciiWriteProton(2,vBaryon);
+	      break;
+	    case nCode:
+	      asciiWriteNeutron(2,vBaryon);
+	      break;
+	    default:
+	      cout << "Cannot write out this baryon to ASCII format. Aborting...";
+	      abort();
+	    }
+	  switch(rec_type)
+	    {
+	    case pCode:
+	      asciiWriteProton(3,vRec);
+	      break;
+	    case nCode:
+	      asciiWriteNeutron(3,vRec);
+	      break;
+	    default:
+	      cout << "Cannot write out this recoil to ASCII format. Aborting...";
+	      abort();
+	    }
+	    
+	}
+      numOut++;
+    }
+      
 }
 
 void fini()
@@ -132,6 +217,8 @@ void fini()
   outtree->Write();
   outfile->Delete("genTbuffer;*");
   outfile->Close();
+  
+  if ( asciiWriter ) delete asciiWriter;
 }
 
 int main(int argc, char ** argv)
