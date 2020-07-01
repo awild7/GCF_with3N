@@ -10,6 +10,7 @@
 
 gcfSRC::gcfSRC(int thisZ, int thisN, char* uType)
 {
+  fill_arrays();
   set_Interaction(uType);
   Z = thisZ;
   N = thisN;
@@ -19,6 +20,7 @@ gcfSRC::gcfSRC(int thisZ, int thisN, char* uType)
 
 gcfSRC::gcfSRC(int thisZ, int thisN, NNModel uType)
 {
+  fill_arrays();
   set_Interaction(uType);
   Z = thisZ;
   N = thisN;
@@ -62,29 +64,22 @@ void gcfSRC::set_Interaction(char* thisPType){
 
 void gcfSRC::set_Interaction(NNModel thisPType){
   u = thisPType;
-  fill_arrays();
   if (u == AV18){
-    fill_arrays_AV18();
     std::cout <<"You are using the AV18 interaction.\n";
   }
   else if (u == N2LO_10){
-    fill_arrays_n2lo_local();
     std::cout <<"You are using the N2L0 interaction calculated with 1.0 fm cutoff.\n";
   }
   else if (u == N3LO_600){
-    fill_arrays_n3lo_nonlocal();
     std::cout <<"You are using the N3L0 interaction\n";
   }
   else if (u == N2LO_12){
-    fill_arrays_n2lo_12_local();
     std::cout <<"You are using the N2L0 interaction calculated with 1.2 fm cutoff.\n";
   }
   else if(u == AV4Pc){
-    fill_arrays_AV4Pc();
     std::cout <<"You are using the AV4' interaction.\n";
   }
   else if(u == NV2_1a){
-    fill_arrays_NV2_1a();
     std::cout <<"You are using the NV2+Ia interaction.\n";
   }
   else{
