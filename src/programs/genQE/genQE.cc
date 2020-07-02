@@ -30,6 +30,9 @@ void Usage()
        << "Optional flags:\n"
        << "-v: Verbose\n"
        << "-P: Use text file to specify phase space\n"
+       << "-u: Specify NN interaction (default AV18)\n"
+       << "-s: Specify sigma_CM [GeV/c]\n"
+       << "-E: Specify E* [GeV]\n"
        << "-M: Use randomized E* according to Barack's values\n"
        << "-O: Turn on peaking radiation\n"
        << "-l: Use Lightcone cross section\n"
@@ -59,6 +62,9 @@ bool init(int argc, char ** argv)
   // Optional flags
   bool custom_ps = false;
   char * phase_space;
+  char * uType = "AV18";
+  double sigCM = 0.;
+  bool do_sigCM = false;
   double Estar = 0.;
   bool do_Estar = false;
   double sigmaE = 0.;
@@ -67,7 +73,7 @@ bool init(int argc, char ** argv)
   doLC = false;
   
   int c;
-  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:MOlh")) != -1)
+  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:u:s:E:MOlh")) != -1)
     switch(c)
       {
 	
@@ -78,6 +84,16 @@ bool init(int argc, char ** argv)
 	custom_ps = true;
 	phase_space = optarg;
 	break;
+      case 'u':
+	uType = optarg;
+	break;
+      case 's':
+	do_sigCM = true;
+	sigCM = atof(optarg);
+	break;
+      case 'E':
+	do_Estar = true;
+	Estar = atof(optarg);
       case 'M':
         do_Estar = true;
 	Estar = 0.01732;
@@ -99,10 +115,12 @@ bool init(int argc, char ** argv)
       }
 
   // Initialize objects
-  myInfo = new gcfNucleus(Z,N,AV18);
+  myInfo = new gcfNucleus(Z,N,uType);
   myRand = new TRandom3(0);
   myCS = new eNCrossSection(csMeth,ffMod);
-  
+
+  if (do_sigCM)
+    myInfo->set_sigmaCM(sigCM);
   if (do_Estar)
     myInfo->set_Estar(Estar);
   if (do_sigmaE)
