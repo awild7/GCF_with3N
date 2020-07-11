@@ -94,6 +94,7 @@ bool init(int argc, char ** argv)
       case 'E':
 	do_Estar = true;
 	Estar = atof(optarg);
+	break;
       case 'M':
         do_Estar = true;
 	Estar = 0.01732;
