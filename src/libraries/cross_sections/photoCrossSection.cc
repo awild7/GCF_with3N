@@ -40,7 +40,7 @@ double photoCrossSection::sigma_pi0_n(double s, double t)
   return sigma_pi0_p(s,t);
 }
 
-double photoCrossSection::sigma_pip_n(double s, double t)
+double photoCrossSection::sigma_pip_n(double s, double t, double u)
 {
   
   double a = 4.03;
@@ -53,25 +53,23 @@ double photoCrossSection::sigma_pip_n(double s, double t)
   double m_m = mpip;
   double m_B = mN;
 
+  double miSq = s + t + u - sq(m_m) - sq(m_B);
+
   double A = s;
   double B = sq(m_B) - sq(m_m) - s;
   double C = sq(m_m);
   double D = sq(B) - 4*A*C;
 
-  double k = (s - sq(mN))/(2.*mN);
-  double tmax = sq(m_m) - k*mN/s*(- B - sqrt(D));
-  double tmin = sq(m_m) - k*mN/s*(- B + sqrt(D));
+  double tmax = sq(m_m) - (s - miSq)/(2.*s)*(- B - sqrt(D));
+  double tmin = sq(m_m) - (s - miSq)/(2.*s)*(- B + sqrt(D));
   double x = (tmax - t)/(tmax - tmin);
-
-  x = min(x,0.9);
-  x = max(x,0.1);
       
   return pow(a/s,b)*pow(x,-c)*pow(1.-x,-d);
 }
 
-double photoCrossSection::sigma_pim_p(double s, double t)
+double photoCrossSection::sigma_pim_p(double s, double t, double u)
 {
-  return sigma_pip_n(s,t);
+  return sigma_pip_n(s,t,u);
 }
 
 double photoCrossSection::sigma_psi_p(double s, double t)
