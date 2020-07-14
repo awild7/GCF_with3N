@@ -4,6 +4,8 @@
 #include "helpers.hh"
 #include "constants.hh"
 
+using namespace std;
+
 photoCrossSection::photoCrossSection()
 {
 }
@@ -40,6 +42,7 @@ double photoCrossSection::sigma_pi0_n(double s, double t)
 
 double photoCrossSection::sigma_pip_n(double s, double t)
 {
+  
   double a = 4.03;
   double b = 8.52;
   double cplusd = 10.58;
@@ -59,7 +62,10 @@ double photoCrossSection::sigma_pip_n(double s, double t)
   double tmax = sq(m_m) - k*mN/s*(- B - sqrt(D));
   double tmin = sq(m_m) - k*mN/s*(- B + sqrt(D));
   double x = (tmax - t)/(tmax - tmin);
-  
+
+  x = min(x,0.9);
+  x = max(x,0.1);
+      
   return pow(a/s,b)*pow(x,-c)*pow(1.-x,-d);
 }
 
