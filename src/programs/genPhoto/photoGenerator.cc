@@ -83,11 +83,12 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
   
   double s = sq(mMeson) + sq(mBaryon) + 2.*vMeson_target.Dot(vBaryon_target);
   double t = sq(mMeson) - 2.*vphoton_target.Dot(vMeson_target);
+  double u = sq(mBaryon) - 2.*vphoton_target.Dot(vBaryon_target);
   
   // Calculate the flux factor on the cross section
   double vgamma1 = vphoton_target.Dot(v1_target)/(Ephoton*E1);
   
   // Calculate the weight
-  weight *= vgamma1*myCS->sigma_pip_n(s,t); // Photoproduction cross section
+  weight *= vgamma1*myCS->sigma_pip_n(s,t,u); // Photoproduction cross section
   
 }
