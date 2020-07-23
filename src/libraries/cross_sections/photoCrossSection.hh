@@ -8,8 +8,8 @@ class photoCrossSection
   ~photoCrossSection();
   double sigma_pi0_p(double s, double t);
   double sigma_pi0_n(double s, double t);
-  double sigma_pip_n(double s, double t);
-  double sigma_pim_p(double s, double t);
+  double sigma_pip_n(double s, double t, double u);
+  double sigma_pim_p(double s, double t, double u);
   double sigma_psi_p(double s, double t);
   double sigma_psi_p(double s, double t, double QSq);
   double R_psi_p(double QSq);
