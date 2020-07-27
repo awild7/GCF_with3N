@@ -194,26 +194,16 @@ void evnt(int event)
   else
     myGen->generate_event(weight, lead_type, rec_type, vk, vLead, vRec, vAm2);
 
-  // cout << "(" << vk.X() << ", " << vk.Y() << ", " << vk.Z() << ", " << vk.E() << ")" << endl;
-  // cout << "(" << vLead.X() << ", " << vLead.Y() << ", " << vLead.Z() << ", " << vLead.E() << ")" << endl;
+  if (doCoul) {
+    coulombCorrection(vk, -deltaECoul);
 
-  // if (doCoul) {
-  //   vk = coulombCorrection(vk, -deltaECoul);
-
-  //   if (lead_type == pCode) {
-  //     vLead = coulombCorrection(vLead, deltaECoul); 
-  //   }
-  //   if (rec_type == pCode) {
-  //     vRec = coulombCorrection(vRec, deltaECoul);
-  //   }
-  // }
-
-  // cout << "(" << vk.X() << ", " << vk.Y() << ", " << vk.Z() << ", " << vk.E() << ")" << endl;
-  // cout << "(" << vLead.X() << ", " << vLead.Y() << ", " << vLead.Z() << ", " << vLead.E() << ")" << endl;
-
-  // string testing;
-  // cin >> testing;
-  // cout << endl;
+    if (lead_type == pCode) {
+      coulombCorrection(vLead, deltaECoul); 
+    }
+    if (rec_type == pCode) {
+      coulombCorrection(vRec, deltaECoul);
+    }
+  }
   
   pe[0] = vk.X();
   pe[1] = vk.Y();
