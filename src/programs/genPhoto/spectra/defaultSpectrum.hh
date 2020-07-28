@@ -51,7 +51,7 @@ extern const double defaultSpectrum[280]={
 					  0,
 					  0,
 					  0,
-					  1.79885e+06,
+					  0,
 					  201965,
 					  96061.4,
 					  184246,
