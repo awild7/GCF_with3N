@@ -21,6 +21,13 @@ const double momega = 0.78265;
 const double mphi = 1.019461;
 const double mpsi = 3.096916;
 
+const double gammaDelta = 0.117;
+
+const double gammarhop = 0.1491;
+const double gammarho0 = 0.1478;
+const double gammaomega = 0.00849;
+const double gammaphi = 0.004249;
+
 const double mW = 80.379;
 
 #endif
