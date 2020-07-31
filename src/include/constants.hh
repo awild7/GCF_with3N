@@ -14,5 +14,6 @@ const double nbGeVSq = cmSqGeVSq*1.E33;
 const double Vud = 0.97417;
 const double mu_p=2.79;
 const double mu_n=-1.91;
+const double carbonDeltaECoulombGeV=0.0029;
 
 #endif

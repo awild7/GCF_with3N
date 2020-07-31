@@ -1,5 +1,6 @@
 #include <iostream>
 #include <unistd.h>
+#include <math.h>
 #include "TFile.h"
 #include "TTree.h"
 #include "QEGenerator.hh"
@@ -18,6 +19,8 @@ eNCrossSection * myCS;
 QEGenerator * myGen;
 TTree * outtree;
 bool doLC;
+bool doCoul = false;
+double deltaECoul = 0;
 
 // Tree variables
 Double_t pe[3], pLead[3], pRec[3], pAm2[3];
@@ -35,6 +38,7 @@ void Usage()
        << "-E: Specify E* [GeV]\n"
        << "-M: Use randomized E* according to Barack's values\n"
        << "-O: Turn on peaking radiation\n"
+       << "-C: Turn on coulomb correction\n"
        << "-l: Use Lightcone cross section\n"
        << "-h: Print this message and exit\n\n\n";
 }
@@ -73,7 +77,7 @@ bool init(int argc, char ** argv)
   doLC = false;
   
   int c;
-  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:u:s:E:MOlh")) != -1)
+  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:u:s:E:MOClh")) != -1)
     switch(c)
       {
 	
@@ -104,6 +108,9 @@ bool init(int argc, char ** argv)
       case 'O':
 	doRad = true;
 	break;
+      case 'C':
+  doCoul = true;
+  break;
       case 'l':
 	doLC = true;
 	break;
@@ -126,9 +133,13 @@ bool init(int argc, char ** argv)
     myInfo->set_Estar(Estar);
   if (do_sigmaE)
     myInfo->set_sigmaE(sigmaE);
+
+  // Coulomb correction only available on Carbon 12
+  if (doCoul && Z == 6 && N == 6)
+    deltaECoul = carbonDeltaECoulombGeV;
   
   // Initialize generator
-  myGen = new QEGenerator(Ebeam, myInfo, myCS, myRand);
+  myGen = new QEGenerator(Ebeam + deltaECoul, myInfo, myCS, myRand);
   if (custom_ps)
     myGen->parse_phase_space_file(phase_space);
   if (doRad)
@@ -149,6 +160,27 @@ bool init(int argc, char ** argv)
   
 }
 
+void coulombCorrection(TLorentzVector &p, double deltaE) 
+{
+  // If p is 0, don't correct
+  if(p.E() == 0) {
+    return;
+  }
+
+  TVector3 p3 = p.Vect();
+  double pMag = p3.Mag();
+
+  if(deltaE < 0 && pMag < abs(deltaE)) {
+    p.SetPxPyPzE(0, 0, 0, 0);
+    return;
+  }
+
+  double deltaP = - pMag + sqrt(pow(pMag, 2) + 2 * p.E() * deltaE + pow(deltaE, 2));
+  p3.SetMag(pMag + deltaP);
+
+  p.SetPxPyPzE(p3.X(), p3.Y(), p3.Z(), p.E() + deltaE);
+}
+
 void evnt(int event)
 {
 
@@ -161,6 +193,17 @@ void evnt(int event)
     myGen->generate_event_lightcone(weight, lead_type, rec_type, vk, vLead, vRec, vAm2);
   else
     myGen->generate_event(weight, lead_type, rec_type, vk, vLead, vRec, vAm2);
+
+  if (doCoul) {
+    coulombCorrection(vk, -deltaECoul);
+
+    if (lead_type == pCode) {
+      coulombCorrection(vLead, deltaECoul); 
+    }
+    if (rec_type == pCode) {
+      coulombCorrection(vRec, deltaECoul);
+    }
+  }
   
   pe[0] = vk.X();
   pe[1] = vk.Y();
