@@ -75,20 +75,19 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
   
   double E1 = mA - EAm2 - Erec;
   TLorentzVector v1_target(v1,E1);
-  
-  t_scatter(weight, mMeson, mBaryon, vphoton_target, v1_target, vMeson_target, vBaryon_target);
+
+  double cosThetaCM;
+  t_scatter(weight, mMeson, mBaryon, vphoton_target, v1_target, vMeson_target, vBaryon_target, cosThetaCM);
   
   if (weight <= 0.)
     return;
   
   double s = sq(mMeson) + sq(mBaryon) + 2.*vMeson_target.Dot(vBaryon_target);
-  double t = sq(mMeson) - 2.*vphoton_target.Dot(vMeson_target);
-  double u = sq(mBaryon) - 2.*vphoton_target.Dot(vBaryon_target);
   
   // Calculate the flux factor on the cross section
   double vgamma1 = vphoton_target.Dot(v1_target)/(Ephoton*E1);
   
   // Calculate the weight
-  weight *= vgamma1*myCS->sigma_pip_n(s,t,u); // Photoproduction cross section
+  weight *= vgamma1*myCS->sigma_pip_n(s,cosThetaCM); // Photoproduction cross section
   
 }
