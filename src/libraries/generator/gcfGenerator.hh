@@ -33,6 +33,7 @@ class gcfGenerator
   double get_mAm2(int lead_type, int rec_type, double &Estar);
 
   void t_scatter(double &weight, double m3, double m4, TLorentzVector v1, TLorentzVector v2, TLorentzVector &v3, TLorentzVector &v4);
+  void t_scatter(double &weight, double m3, double m4, TLorentzVector v1, TLorentzVector v2, TLorentzVector &v3, TLorentzVector &v4, double &cosThetaCM);
 
   TVector3 radiateElectron(TVector3 ve);
   double deltaHard(double QSq);

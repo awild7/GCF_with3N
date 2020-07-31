@@ -263,6 +263,12 @@ double gcfGenerator::get_mAm2(int lead_type, int rec_type, double &Estar)
 
 void gcfGenerator::t_scatter(double &weight, double m3, double m4, TLorentzVector v1, TLorentzVector v2, TLorentzVector &v3, TLorentzVector &v4)
 {
+  double cosThetaCM;
+  t_scatter(weight, m3, m4, v1, v2, v3, v4, cosThetaCM);
+}
+
+void gcfGenerator::t_scatter(double &weight, double m3, double m4, TLorentzVector v1, TLorentzVector v2, TLorentzVector &v3, TLorentzVector &v4, double &cosThetaCM)
+{
 
   TLorentzVector Z_lab = v1 + v2;
   double s = Z_lab.M2();
@@ -294,8 +300,8 @@ void gcfGenerator::t_scatter(double &weight, double m3, double m4, TLorentzVecto
 
   // Pick random CM scattering angle
   double phi_cm = 2.*M_PI*myRand->Rndm();
-  double cosTheta_cm = -1. + 2.*myRand->Rndm();
-  double theta_cm = acos(cosTheta_cm);
+  cosThetaCM = -1. + 2.*myRand->Rndm();
+  double theta_cm = acos(cosThetaCM);
 
   weight *= J * 4.*M_PI;
 
