@@ -38,20 +38,30 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
   weight *= 4.;
 
   // Decide what branching ratio to generate (Currently only implemented gamma p -> pi+ n and equivalent neutron channel)
-  double mMeson;
-  double mBaryon;
+  double mMesonMean;
+  double gammaMeson;
+  double mBaryonMean;
+  double gammaBaryon;
   if (lead_type == pCode)
     {
       meson_type = pipCode;
       baryon_type = nCode;
+      mMesonMean = mpip;
+      gammaMeson = 0.;
+      mBaryonMean = mN;
+      gammaBaryon = 0.;
     }
   else
     {
       meson_type = pimCode;
       baryon_type = pCode;
+      mMesonMean = mpip;
+      gammaMeson = 0.;
+      mBaryonMean = mN;
+      gammaBaryon = 0.;
     }
-  mMeson = mpip;
-  mBaryon = mN;
+  double mMeson = myRand->BreitWigner(mMesonMean,gammaMeson);
+  double mBaryon = myRand->BreitWigner(mBaryonMean,gammaBaryon);
   weight *= 1;
   
   // Determine mass of A-2 system
