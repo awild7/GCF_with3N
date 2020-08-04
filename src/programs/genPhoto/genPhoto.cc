@@ -33,7 +33,7 @@ void Usage()
        << "Optional flags:\n"
        << "-v: Verbose\n"
        << "-P: Use text file to specify phase space\n"
-       << "-A: Specify ASCII file to deposit particle information in Hall D format. Weights will still be stored in ROOT file"
+       << "-A: Specify ASCII file to deposit particle information in Hall D format. Weights will still be stored in ROOT file\n"
        << "-h: Print this message and exit\n\n\n";
 }
 
