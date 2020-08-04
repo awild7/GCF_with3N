@@ -80,6 +80,15 @@ double photoCrossSection::sigma_psi_p(double s, double t)
   return sig * dipole_F(t, tmin, tmax);
 }
 
+double photoCrossSection::sigma_rho0_p(double s, double cosThetaCM)
+{
+	const double b=-3.7;
+	const double c=-2.2;
+	const double a=5.82005e7;
+
+return pow(s,-7)*a*pow(1-cosThetaCM,b)*pow(1+cosThetaCM,c);
+}
+
 double photoCrossSection::sigma_psi_p(double s, double t, double QSq)
 {
   double sig0 = 11.3; //nb

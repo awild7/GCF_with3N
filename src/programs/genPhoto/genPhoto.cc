@@ -33,6 +33,7 @@ void Usage()
        << "Optional flags:\n"
        << "-v: Verbose\n"
        << "-P: Use text file to specify phase space\n"
+       << "-R: Specify the reaction, i.e. pi,rho\n"
        << "-A: Specify ASCII file to deposit particle information in Hall D format. Weights will still be stored in ROOT file\n"
        << "-h: Print this message and exit\n\n\n";
 }
@@ -81,9 +82,10 @@ bool init(int argc, char ** argv)
   char * asciiFile;
   bool custom_ps = false;
   char * phase_space;
+  reaction myReaction = pim;
   
   int c;
-  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:A:h")) != -1)
+  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:R:A:h")) != -1)
     switch(c)
       {
 	
@@ -93,6 +95,14 @@ bool init(int argc, char ** argv)
       case 'P':
 	custom_ps = true;
 	phase_space = optarg;
+	break;
+      case 'R':
+	if(strcmp(optarg, "pim")==0)
+	myReaction=pim;
+	else if (strcmp(optarg, "rho")==0)
+	myReaction=rho;
+	else {cerr << "We don't have this reaction yet.\n";
+	return -1;}
 	break;
       case 'A':
 	do_ascii = true;
@@ -112,7 +122,7 @@ bool init(int argc, char ** argv)
   myCS = new photoCrossSection();
   
   // Initialize generator
-  myGen = new photoGenerator(myInfo, myCS, myRand);
+  myGen = new photoGenerator(myInfo, myCS, myRand, myReaction);
   if (custom_ps)
     myGen->parse_phase_space_file(phase_space);
 
