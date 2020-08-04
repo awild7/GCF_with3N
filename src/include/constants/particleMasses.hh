@@ -30,4 +30,7 @@ const double gammaphi = 0.004249;
 
 const double mW = 80.379;
 
+//paritcle widths
+const double gammarho0 = 0.1462
+
 #endif
