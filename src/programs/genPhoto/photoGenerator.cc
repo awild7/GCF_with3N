@@ -56,6 +56,7 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
   double gammaMeson;
   double mBaryonMean;
   double gammaBaryon;
+  if (myReaction==pim){
   if (lead_type == pCode)
     {
       meson_type = pipCode;
@@ -74,9 +75,20 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
       mBaryonMean = mN;
       gammaBaryon = 0.;
     }
-  double mMeson = myRand->BreitWigner(mMesonMean,gammaMeson);
-  double mBaryon = myRand->BreitWigner(mBaryonMean,gammaBaryon);
-  weight *= 1;
+    }
+  else if (myReaction==rho){
+  meson_type = rho0Code;
+  baryon_type = lead_type;
+  mMesonMean = mrho0;
+  gammaMeson = gammarho0;
+  mBaryonMean = mN;
+  gammaBaryon = 0.;
+}
+
+
+  double mMeson = fabs(myRand->BreitWigner(mMesonMean,gammaMeson));
+  double mBaryon = fabs(myRand->BreitWigner(mBaryonMean,gammaBaryon));
+  
   
   // Determine mass of A-2 system
   double mAm2 = get_mAm2(lead_type, rec_type);
@@ -112,6 +124,13 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
   double vgamma1 = vphoton_target.Dot(v1_target)/(Ephoton*E1);
   
   // Calculate the weight
-  weight *= vgamma1*myCS->sigma_pip_n(s,cosThetaCM); // Photoproduction cross section
+  double thisCS=0;
+  if (myReaction==pim){
+  thisCS=myCS->sigma_pip_n(s,cosThetaCM);
+  }
+  else if (myReaction==rho){
+  thisCS=myCS->sigma_rho0_p(s,cosThetaCM);  
+  }
+  weight *= vgamma1*thisCS; // Photoproduction cross section
   
 }
