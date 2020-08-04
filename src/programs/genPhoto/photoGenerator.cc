@@ -10,6 +10,20 @@ photoGenerator::photoGenerator(gcfNucleus * thisInfo, photoCrossSection * thisCS
 {
   
   myCS = thisCS;
+  myReaction = pim;
+
+  photonSpectrum = new TH1D("photonEnergy","photonEnergy",280,5.,12.);
+  for (int i = 0; i < 280; i++) {
+    photonSpectrum->SetBinContent(i+1,defaultSpectrum[i]);
+  }
+
+}
+
+photoGenerator::photoGenerator(gcfNucleus * thisInfo, photoCrossSection * thisCS, TRandom3 * thisRand, reaction thisReaction) : gcfGenerator(thisInfo, thisRand)
+{
+  
+  myCS = thisCS;
+  myReaction = thisReaction;
 
   photonSpectrum = new TH1D("photonEnergy","photonEnergy",280,5.,12.);
   for (int i = 0; i < 280; i++) {

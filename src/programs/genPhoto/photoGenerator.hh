@@ -8,12 +8,13 @@
 #include "nucleus/gcfNucleus.hh"
 #include "cross_sections/photoCrossSection.hh"
 
+enum reaction {pim,rho};
 
-enum Reaction {pi,rho};
 class photoGenerator: public gcfGenerator
 {
 public:
-  photoGenerator(gcfNucleus * thisInfo, photoCrossSection * thisCS, TRandom3 * thisRand, Reaction thisreaction);
+  photoGenerator(gcfNucleus * thisInfo, photoCrossSection * thisCS, TRandom3 * thisRand);
+  photoGenerator(gcfNucleus * thisInfo, photoCrossSection * thisCS, TRandom3 * thisRand, reaction thisReaction);
   ~photoGenerator();
   void generate_event(double &weight, double &Ephoton, int &meson_type, int &baryon_type, int &rec_type, TLorentzVector &vMeson_target, TLorentzVector &vBaryon_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target);
   
@@ -22,7 +23,7 @@ private:
 
   TH1D * photonSpectrum;
 
-Reaction myreacion
+  reaction myReaction;
 
 };
 
