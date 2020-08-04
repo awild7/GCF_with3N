@@ -114,3 +114,11 @@ double photoCrossSection::dipole_F(double t, double tmin, double tmax)
 
   return pow(sq(Lambda) - t,-4.) * 3./(pow(sq(Lambda) - tmin,-3.) - pow(sq(Lambda) - tmax,-3.));
 }
+double photoCrossSection::sigma_rho0_p(double s, double cosThetaCM)
+{
+	const double b=-3.7;
+	const double c=-2.2;
+	const double a=5.82005e7;
+
+return pow(s,-7)*a*pow(1-cosThetaCM,b)*pow(1+cosThetaCM,c);
+}
