@@ -36,7 +36,7 @@ photoGenerator::~photoGenerator()
 {
 }
 
-void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_type, int &baryon_type, int &rec_type, TLorentzVector &vMeson_target, TLorentzVector &vBaryon_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target)
+void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_type, double &mMeson, int &baryon_type, double &mBaryon, int &rec_type, TLorentzVector &vMeson_target, TLorentzVector &vBaryon_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target)
 {
 
   Ephoton = photonSpectrum->GetRandom();
@@ -73,8 +73,8 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
       gammaBaryon = 0.;
     }
 
-  double mMeson = fabs(myRand->BreitWigner(mMesonMean,gammaMeson));
-  double mBaryon = fabs(myRand->BreitWigner(mBaryonMean,gammaBaryon));
+  mMeson = fabs(myRand->BreitWigner(mMesonMean,gammaMeson));
+  mBaryon = fabs(myRand->BreitWigner(mBaryonMean,gammaBaryon));
   
   // Decide recoil nucleon type
   rec_type = (myRand->Rndm() > 0.5) ? pCode:nCode;

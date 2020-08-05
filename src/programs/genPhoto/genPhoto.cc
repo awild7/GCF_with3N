@@ -24,7 +24,7 @@ int numOut = 0;
                     
 // Tree variables
 Double_t pMeson[3], pBaryon[3], pRec[3], pAm2[3];
-Double_t weight, Ephoton;
+Double_t weight, Ephoton, mMeson, mBaryon;
 Int_t meson_type, baryon_type, rec_type;
 
 void Usage()
@@ -138,7 +138,9 @@ bool init(int argc, char ** argv)
     {
       outtree->Branch("Ephoton",&Ephoton,"Ephoton/D");
       outtree->Branch("meson_type",&meson_type,"meson_type/I");
+      outtree->Branch("mMeson",&mMeson,"mMeson/D");
       outtree->Branch("baryon_type",&baryon_type,"baryon_type/I");
+      outtree->Branch("mBaryon",&mBaryon,"mBaryon/D");
       outtree->Branch("rec_type",&rec_type,"rec_type/I");
       outtree->Branch("pMeson",pMeson,"pMeson[3]/D");
       outtree->Branch("pBaryon",pBaryon,"pBaryon[3]/D");
@@ -162,7 +164,7 @@ void evnt(int event)
   TLorentzVector vRec;
   TLorentzVector vAm2;
 
-  myGen->generate_event(weight, Ephoton, meson_type, baryon_type, rec_type, vMeson, vBaryon, vRec, vAm2);
+  myGen->generate_event(weight, Ephoton, meson_type, mMeson, baryon_type, mBaryon, rec_type, vMeson, vBaryon, vRec, vAm2);
 
   pMeson[0] = vMeson.X();
   pMeson[1] = vMeson.Y();
