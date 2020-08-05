@@ -27,13 +27,8 @@ CCQEGenerator::~CCQEGenerator()
 {
 }
 
-void CCQEGenerator::generate_event(double &weight, double &Eneutrino, TLorentzVector& vk_target, TLorentzVector &vLead_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target)
-{
-  double Estar;
-  generate_event(weight,Eneutrino,vk_target,vLead_target,vRec_target,vAm2_target,Estar);
-}
 
-void CCQEGenerator::generate_event(double &weight, double &Eneutrino, TLorentzVector& vk_target, TLorentzVector &vLead_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target, double &Estar)
+void CCQEGenerator::generate_event(double &weight, double &Eneutrino, int &rec_type, TLorentzVector& vk_target, TLorentzVector &vLead_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target)
 {
   
   Eneutrino = neutrinoSpectrum->GetRandom();
@@ -45,12 +40,12 @@ void CCQEGenerator::generate_event(double &weight, double &Eneutrino, TLorentzVe
 
   // Decide what kind of proton or neutron pair we are dealing with (here fixed at np pairs)
   int lead_type = nCode;
-  int rec_type = pCode;
+  rec_type = pCode;
 
   double mk = mmu;
 
   // Determine mass of A-2 system
-  double mAm2 = get_mAm2(lead_type, rec_type, Estar);
+  double mAm2 = get_mAm2(lead_type, rec_type);
 
   // Sample decay function
   TVector3 v1, vRec;

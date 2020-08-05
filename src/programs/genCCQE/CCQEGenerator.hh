@@ -13,8 +13,7 @@ class CCQEGenerator: public gcfGenerator
  public:
   CCQEGenerator(gcfNucleus * thisInfo, eNCrossSection * thisCS, TRandom3 * thisRand);
   ~CCQEGenerator();
-  void generate_event(double &weight, double &Eneutrino, TLorentzVector& vk_target, TLorentzVector &vLead_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target);
-  void generate_event(double &weight, double &Eneutrino, TLorentzVector& vk_target, TLorentzVector &vLead_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target, double &Estar);
+  void generate_event(double &weight, double &Eneutrino, int &rec_type, TLorentzVector& vk_target, TLorentzVector &vLead_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target);
   
  private:
   eNCrossSection * myCS;

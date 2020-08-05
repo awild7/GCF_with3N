@@ -20,6 +20,7 @@ TTree * outtree;
 // Tree variables
 Double_t pk[3], pLead[3], pRec[3], pAm2[3];
 Double_t weight, Eneutrino;
+Int_t rec_type;
 
 void Usage()
 {
@@ -103,6 +104,7 @@ bool init(int argc, char ** argv)
   outfile->cd();
   outtree = new TTree("genTbuffer","Generator Tree");
   outtree->Branch("Eneutrino",&Eneutrino,"Eneutrino/D");
+  outtree->Branch("rec_type",&rec_type,"rec_type/I");
   outtree->Branch("pk",pk,"pk[3]/D");
   outtree->Branch("pLead",pLead,"pLead[3]/D");
   outtree->Branch("pRec",pRec,"pRec[3]/D");
@@ -121,7 +123,7 @@ void evnt(int event)
   TLorentzVector vRec;
   TLorentzVector vAm2;
 
-  myGen->generate_event(weight, Eneutrino, vk, vLead, vRec, vAm2);
+  myGen->generate_event(weight, Eneutrino, rec_type, vk, vLead, vRec, vAm2);
   
   pk[0] = vk.X();
   pk[1] = vk.Y();
