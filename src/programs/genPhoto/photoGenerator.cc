@@ -46,45 +46,40 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
   // Start with weight 1. Only multiply terms to weight. If trouble, set weight=0.
   weight = 1.;
 
-  // Decide what kind of proton or neutron pair we are dealing with
-  int lead_type = (myRand->Rndm() > 0.5) ? pCode:nCode;
-  rec_type = (myRand->Rndm() > 0.5) ? pCode:nCode;
-  weight *= 4.;
-
-  // Decide what branching ratio to generate (Currently only implemented gamma p -> pi+ n and equivalent neutron channel)
+  // Decide what branching ratio to generate.
+  int lead_type;
   double mMesonMean;
   double gammaMeson;
   double mBaryonMean;
   double gammaBaryon;
-  if (myReaction==pim){
-    if (lead_type == pCode)
-      {
-	meson_type = pipCode;
-	baryon_type = nCode;
-      }
-    else
-      {
-	meson_type = pimCode;
-	baryon_type = pCode;
-      }
-    mMesonMean = mpip;
-    gammaMeson = 0.;
-    mBaryonMean = mN;
-    gammaBaryon = 0.;
-  }
-  else if (myReaction==rho)
+  if (myReaction==pim)
     {
-    meson_type = rho0Code;
-    baryon_type = lead_type;
-    mMesonMean = mrho0;
-    gammaMeson = gammarho0;
-    mBaryonMean = mN;
-    gammaBaryon = 0.;
+      lead_type = nCode;
+      meson_type = pimCode;
+      baryon_type = pCode;
+      mMesonMean = mpip;
+      gammaMeson = 0.;
+      mBaryonMean = mN;
+      gammaBaryon = 0.;
+    }
+  else if (myReaction==rho0)
+    {
+      lead_type = pCode; 
+      meson_type = rho0Code;
+      baryon_type = pCode;
+      mMesonMean = mrho0;
+      gammaMeson = gammarho0;
+      mBaryonMean = mN;
+      gammaBaryon = 0.;
     }
 
   double mMeson = fabs(myRand->BreitWigner(mMesonMean,gammaMeson));
   double mBaryon = fabs(myRand->BreitWigner(mBaryonMean,gammaBaryon));
   
+  // Decide recoil nucleon type
+  rec_type = (myRand->Rndm() > 0.5) ? pCode:nCode;
+  weight *= 2.;
+
   // Determine mass of A-2 system
   double mAm2 = get_mAm2(lead_type, rec_type);
 
@@ -122,7 +117,7 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
   double thisCS=0;
   if (myReaction==pim)
     thisCS=myCS->sigma_pip_n(s,cosThetaCM);
-  else if (myReaction==rho)
+  else if (myReaction==rho0)
     thisCS=myCS->sigma_rho0_p(s,cosThetaCM);  
 
   weight *= vgamma1*thisCS; // Photoproduction cross section

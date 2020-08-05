@@ -33,7 +33,7 @@ void Usage()
        << "Optional flags:\n"
        << "-v: Verbose\n"
        << "-P: Use text file to specify phase space\n"
-       << "-R: Specify the reaction, i.e. pi,rho\n"
+       << "-R: Specify the reaction channel, default pim-proton. (pim, rho0)\n"
        << "-A: Specify ASCII file to deposit particle information in Hall D format. Weights will still be stored in ROOT file\n"
        << "-h: Print this message and exit\n\n\n";
 }
@@ -82,6 +82,7 @@ bool init(int argc, char ** argv)
   char * asciiFile;
   bool custom_ps = false;
   char * phase_space;
+  char * react;
   reaction myReaction = pim;
   
   int c;
@@ -97,12 +98,16 @@ bool init(int argc, char ** argv)
 	phase_space = optarg;
 	break;
       case 'R':
-	if(strcmp(optarg, "pim")==0)
-	myReaction=pim;
-	else if (strcmp(optarg, "rho")==0)
-	myReaction=rho;
-	else {cerr << "We don't have this reaction yet.\n";
-	return -1;}
+	react = optarg;
+	if (strcmp(react, "pim")==0)
+	  myReaction=pim;
+	else if (strcmp(react, "rho0")==0)
+	  myReaction=rho0;
+	else
+	  {
+	    cerr << "This reaction is not yet implemented.\n";
+	    exit(-1);
+	  }
 	break;
       case 'A':
 	do_ascii = true;
