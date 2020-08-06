@@ -103,6 +103,8 @@ bool init(int argc, char ** argv)
 	  myReaction=pim;
 	else if (strcmp(react, "rho0")==0)
 	  myReaction=rho0;
+	else if (strcmp(react, "omega")==0)
+	  myReaction=omega;
 	else
 	  {
 	    cerr << "This reaction is not yet implemented.\n";

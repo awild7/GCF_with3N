@@ -35,11 +35,6 @@ double photoCrossSection::sigma_pi0_p(double s, double t)
   return pow(a/s,b)*pow(x,c)*exp(d*sq(log(x)));
 }
 
-double photoCrossSection::sigma_pi0_n(double s, double t)
-{
-  return sigma_pi0_p(s,t);
-}
-
 double photoCrossSection::sigma_pip_n(double s, double cosThetaCM)
 {
   
@@ -55,10 +50,23 @@ double photoCrossSection::sigma_pip_n(double s, double cosThetaCM)
   return pow(a/s,b)*pow(x,-c)*pow(1.-x,-d);
 }
 
-double photoCrossSection::sigma_pim_p(double s, double cosThetaCM)
+double photoCrossSection::sigma_rho0_p(double s, double cosThetaCM)
 {
-  return sigma_pip_n(s,cosThetaCM);
+	const double b=-3.7;
+	const double c=-2.2;
+	const double a=5.82005e7;
+
+return 0.75*(pow(s,-7)*a*pow(1-cosThetaCM,b)*pow(1+cosThetaCM,c));
 }
+
+double photoCrossSection::sigma_omega_p(double s, double cosThetaCM)
+{
+	const double b=-3.7;
+	const double c=-2.2;
+	const double a=5.82005e7;
+
+return 0.25*(pow(s,-7)*a*pow(1-cosThetaCM,b)*pow(1+cosThetaCM,c));
+} 
 
 double photoCrossSection::sigma_psi_p(double s, double t)
 {
@@ -78,15 +86,6 @@ double photoCrossSection::sigma_psi_p(double s, double t)
   double tmax = sq(sq(mpsi))/(4.*s) - sq(pi - pf);
   
   return sig * dipole_F(t, tmin, tmax);
-}
-
-double photoCrossSection::sigma_rho0_p(double s, double cosThetaCM)
-{
-	const double b=-3.7;
-	const double c=-2.2;
-	const double a=5.82005e7;
-
-return 0.6*(pow(s,-7)*a*pow(1-cosThetaCM,b)*pow(1+cosThetaCM,c));
 }
 
 double photoCrossSection::sigma_psi_p(double s, double t, double QSq)
