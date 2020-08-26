@@ -34,6 +34,7 @@ void Usage()
        << "-v: Verbose\n"
        << "-P: Use text file to specify phase space\n"
        << "-u: Specify NN interaction (default AV18)\n"
+       << "-c: Specify eN cross section model (default cc1)\n"
        << "-s: Specify sigma_CM [GeV/c]\n"
        << "-E: Specify E* [GeV]\n"
        << "-M: Use randomized E* according to Barack's values\n"
@@ -60,13 +61,13 @@ bool init(int argc, char ** argv)
   outfile = new TFile(argv[4],"RECREATE");
   nEvents = atoi(argv[5]);
 
-  csMethod csMeth=cc1;
   ffModel ffMod=kelly;
   
   // Optional flags
   bool custom_ps = false;
   char * phase_space;
   char * uType = "AV18";
+  csMethod csMeth=cc1;
   double sigCM = 0.;
   bool do_sigCM = false;
   double Estar = 0.;
@@ -77,7 +78,7 @@ bool init(int argc, char ** argv)
   doLC = false;
   
   int c;
-  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:u:s:E:MOClh")) != -1)
+  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:u:c:s:E:MOClh")) != -1)
     switch(c)
       {
 	
@@ -90,6 +91,19 @@ bool init(int argc, char ** argv)
 	break;
       case 'u':
 	uType = optarg;
+	break;
+      case 'c':
+	if (strcmp(optarg,"onshell")==0)
+	  csMeth=onshell;
+	else if ((strcmp(optarg,"cc1")==0) or (atoi(optarg)==1))
+	  csMeth=cc1;
+	else if ((strcmp(optarg,"cc2")==0) or (atoi(optarg)==2))
+	  csMeth=cc2;
+	else
+	  {
+	    cerr << "Invalid cross section designation. Allowed values are onshell, cc1 and cc2. Aborting...\n";
+	    return -1;
+	  }
 	break;
       case 's':
 	do_sigCM = true;
