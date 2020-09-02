@@ -38,6 +38,7 @@ void Usage()
        << "-s: Specify sigma_CM [GeV/c]\n"
        << "-E: Specify E* [GeV]\n"
        << "-M: Use randomized E* according to Barack's values\n"
+       << "-R: Randomize E*, sigma_CM, and contacts\n"
        << "-O: Turn on peaking radiation\n"
        << "-C: Turn on coulomb correction\n"
        << "-l: Use Lightcone cross section\n"
@@ -75,10 +76,11 @@ bool init(int argc, char ** argv)
   double sigmaE = 0.;
   bool do_sigmaE = false;
   bool doRad = false;
+  bool randomize = false;
   doLC = false;
   
   int c;
-  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:u:c:s:E:MOClh")) != -1)
+  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:u:c:s:E:MROClh")) != -1)
     switch(c)
       {
 	
@@ -119,6 +121,9 @@ bool init(int argc, char ** argv)
         do_sigmaE = true;
 	sigmaE = 0.009571;
 	break;
+      case 'R':
+        randomize = true;
+  break;
       case 'O':
 	doRad = true;
 	break;
@@ -141,6 +146,8 @@ bool init(int argc, char ** argv)
   myRand = new TRandom3(0);
   myCS = new eNCrossSection(csMeth,ffMod);
 
+  if (randomize)
+    myInfo->randomize(myRand);
   if (do_sigCM)
     myInfo->set_sigmaCM(sigCM);
   if (do_Estar)
