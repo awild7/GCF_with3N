@@ -26,9 +26,10 @@ class gcfGenerator
   
   bool parse_phase_space_file(char* phase_space);
   
-  protected:
   void decay_function(double &weight, int lead_type, int rec_type, TVector3 &vi, TVector3 &vRec);
   void decay_function_lc(double &weight, int lead_type, int rec_type, double &alphai, TVector2 &vi_perp, double &alphaRec, TVector2 &vRec_perp);
+  
+  protected:
   double get_mAm2(int lead_type, int rec_type);
   double get_mAm2(int lead_type, int rec_type, double &Estar);
 
