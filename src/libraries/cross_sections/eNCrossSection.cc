@@ -151,7 +151,7 @@ double eNCrossSection::sigma_onShell_by_Etheta(double Ebeam, TVector3 k, bool is
   double tau = QSq/(4.*mN*mN);
   double GE = isProton ? GEp(QSq) : GEn(QSq);
   double GM = isProton ? GMp(QSq) : GMn(QSq);
-  double epsilon = epsilon = 1./(1.+2.*(1.+tau)*sq(tan(theta/2.)));
+  double epsilon = 1./(1.+2.*(1.+tau)*sq(tan(theta/2.)));
 
   double sigmaMott = nbGeVSq * sq(2.*alpha*E3 * cos(theta/2.)/QSq) * (E3/Ebeam);
 
