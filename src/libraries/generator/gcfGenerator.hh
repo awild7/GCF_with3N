@@ -23,7 +23,9 @@ class gcfGenerator
   void set_QSq_range(double low, double high);
   void set_phik_range(double low, double high);
   void set_phik_range_deg(double low, double high);
-  
+
+  void randomize_cutoff();
+
   bool parse_phase_space_file(char* phase_space);
   
   void decay_function(double &weight, int lead_type, int rec_type, TVector3 &vi, TVector3 &vRec);
@@ -54,6 +56,7 @@ class gcfGenerator
   bool doRad;
 
   double pRel_cut = 0.25;
+  double pRel_cut_range = 0.05;
   
   double pRelmin;
   double pRelmax;

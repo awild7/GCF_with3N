@@ -114,6 +114,11 @@ void gcfGenerator::set_phik_range_deg(double low, double high)
   phikmax = high*M_PI/180.;
 }
 
+void gcfGenerator::randomize_cutoff()
+{
+  pRel_cut = pRel_cut + (myRand->Uniform() - 0.5)*pRel_cut_range;
+}
+
 bool gcfGenerator::parse_phase_space_file(char* phase_space)
 {
 
