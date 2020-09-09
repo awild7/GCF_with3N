@@ -52,6 +52,8 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
   double gammaMeson;
   double mBaryonMean;
   double gammaBaryon;
+  double mM_min;
+  double mM_max;
   if (myReaction==pim)
     {
       lead_type = nCode;
@@ -61,6 +63,8 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
       gammaMeson = 0.;
       mBaryonMean = mN;
       gammaBaryon = 0.;
+      mM_min = 0;
+      mM_max = 1.5;
     }
   else if (myReaction==rho0)
     {
@@ -71,6 +75,8 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
       gammaMeson = gammarho0;
       mBaryonMean = mN;
       gammaBaryon = 0.;
+      mM_min = 2*mpip;
+      mM_max = 1.5;
     }
   else if (myReaction==omega)
     {
@@ -81,9 +87,14 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
       gammaMeson = gammaomega;
       mBaryonMean = mN;
       gammaBaryon = 0.;
+      mM_min = 2*mpip + mpi0;
+      mM_max = 1.5;
     }
 
-  mMeson = fabs(myRand->BreitWigner(mMesonMean,gammaMeson));
+  do
+    mMeson = myRand->BreitWigner(mMesonMean,gammaMeson);
+  while
+    ((mMeson < mM_min) or (mMeson > mM_max));
   mBaryon = fabs(myRand->BreitWigner(mBaryonMean,gammaBaryon));
   
   // Decide recoil nucleon type
