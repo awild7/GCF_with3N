@@ -124,12 +124,13 @@ void DISGenerator::generate_event(double &weight, int &lead_type, int &rec_type,
     }
   
   double y = (Ebeam - pe_Mag)/Ebeam;
+  double xP = xB/alpha1;
   
   // Calculate the weight
-  weight *= myCS->sigma_xQSq_DIS(xB/alpha1,y,QSq,lead_type)/(2.*M_PI); // DIS cross section
+  weight *= nbGeVSq*(2*sq(alpha))/(sq(QSq))*((1.-y-sq(xB*y*mN)/QSq)*myCS->F2(xP,QSq,lead_type)/xB + sq(y)*myCS->F1(xP,QSq,lead_type)/alpha1); // DIS cross section
   
   // Determine struck parton
-  ipart = myCS->getParton(xB/alpha1,QSq,lead_type,gRandom->Rndm());
+  ipart = myCS->getParton(xP,QSq,lead_type,gRandom->Rndm());
 	  
   
 }
