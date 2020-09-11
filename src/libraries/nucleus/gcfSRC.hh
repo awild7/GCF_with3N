@@ -3,7 +3,7 @@
 
 #include "TRandom3.h"
 
-enum NNModel {AV18, AV4Pc, N2LO_10, N2LO_12, N3LO_600, NV2_1a};
+enum NNModel {AV18, AV4Pc, N2LO_10, N2LO_12, N3LO_600, NV2_1a, AV18_deut};
 
 class gcfSRC
 {
@@ -38,10 +38,10 @@ class gcfSRC
   int N;
   int A;
   NNModel u;
-  double phiSq_pp0[6][100];
-  double phiSq_nn0[6][100];
-  double phiSq_pn0[6][100];
-  double phiSq_pn1[6][100];
+  double phiSq_pp0[7][100];
+  double phiSq_nn0[7][100];
+  double phiSq_pn0[7][100];
+  double phiSq_pn1[7][100];
   double Cpp0;
   double d_Cpp0;
   double Cnn0;
@@ -56,6 +56,7 @@ class gcfSRC
   void set_Contacts();
   bool set_Contacts_SS_r();
   bool set_Contacts_SS_k();
+  bool set_Contacts_deut();
   bool set_Contacts_EG2();
 
   void fill_arrays();
@@ -65,6 +66,7 @@ class gcfSRC
   void fill_arrays_n2lo_12_local();
   void fill_arrays_AV4Pc();
   void fill_arrays_NV2_1a();
+  void fill_arrays_AV18_deut();
     
 };
 

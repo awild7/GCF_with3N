@@ -6,6 +6,7 @@
 #include "universal_functions/N2LO_12.hh"
 #include "universal_functions/AV4Pc.hh"
 #include "universal_functions/NV2_1a.hh"
+#include "universal_functions/AV18_deut.hh"
 #include "constants.hh"
 
 gcfSRC::gcfSRC(int thisZ, int thisN, char* uType)
@@ -55,6 +56,8 @@ void gcfSRC::set_Interaction(char* thisPType){
     set_Interaction(AV4Pc);
   else if (strcmp(thisPType,"NV")==0 or strcmp(thisPType,"NV2_1a")==0 or strcmp(thisPType,"6")==0)
     set_Interaction(NV2_1a);
+  else if (strcmp(thisPType,"AV18_deut")==0 or strcmp(thisPType,"7")==0)
+    set_Interaction(AV18_deut);
   else{
     std::cerr <<"You are using an interaction not in the library. \n Aborting...\n";
   exit(-2);
@@ -81,6 +84,9 @@ void gcfSRC::set_Interaction(NNModel thisPType){
   }
   else if(u == NV2_1a){
     std::cout <<"You are using the NV2+Ia interaction.\n";
+  }
+  else if (u == AV18_deut){
+    std::cout <<"You are using the AV18 interaction valid at all momentum ranges.\n";
   }
   else{
     std::cerr <<"You are using an interaction not in the library. \n Aborting...\n";
@@ -219,6 +225,10 @@ void gcfSRC::set_Contacts()
   else if (set_Contacts_SS_r())
     {
       std::cout << "You are using r-space contact values from the Scale and Scheme paper.\n";
+    }
+  else if (set_Contacts_deut())
+    {
+      std::cout << "You are using a deuteron momentum distribution, and therefore have no contact dependence.\n";
     }
   else if (set_Contacts_EG2())
     {
@@ -1011,6 +1021,25 @@ bool gcfSRC::set_Contacts_SS_k()
   return false;
 }
 
+bool gcfSRC::set_Contacts_deut()
+{
+  if ((Z==1) && (N==1))
+    {
+      if (u==AV18_deut)
+	{
+	  Cpp0=0.0;
+	  d_Cpp0=0.0;
+	  Cnn0=0.0;
+	  d_Cnn0=0.0;
+	  Cpn0=0.0;
+	  d_Cpn0=0.0;
+	  Cpn1=100.0;
+	  d_Cpn1=0.0;
+	  return true;
+	}
+    }
+}
+
 bool gcfSRC::set_Contacts_EG2()
 {
   if ((Z==6) && (N==6))
@@ -1228,6 +1257,7 @@ void gcfSRC::fill_arrays()
   fill_arrays_n2lo_12_local();
   fill_arrays_AV4Pc();
   fill_arrays_NV2_1a();
+  fill_arrays_AV18_deut();
 }
 
 void gcfSRC::fill_arrays_AV18()
@@ -1241,7 +1271,6 @@ void gcfSRC::fill_arrays_AV18()
     }
 }
 
-
 void gcfSRC::fill_arrays_n2lo_local()
 {
   for (int i=0 ; i<100; i++)
@@ -1252,7 +1281,6 @@ void gcfSRC::fill_arrays_n2lo_local()
       phiSq_pn1[N2LO_10][i] = N2LO_pn1[i];
     }
 }
-
 
 void gcfSRC::fill_arrays_n3lo_nonlocal()
 {
@@ -1295,5 +1323,16 @@ void gcfSRC::fill_arrays_NV2_1a()
       phiSq_nn0[NV2_1a][i] = NV2_1a_pp0[i];
       phiSq_pn0[NV2_1a][i] = NV2_1a_pn0[i];
       phiSq_pn1[NV2_1a][i] = NV2_1a_pn1[i];
+    }
+}
+
+void gcfSRC::fill_arrays_AV18_deut()
+{
+  for (int i=0 ; i<100; i++)
+    {
+      phiSq_pp0[AV18_deut][i] = AV18_deut_pp0[i];
+      phiSq_nn0[AV18_deut][i] = AV18_deut_pp0[i];
+      phiSq_pn0[AV18_deut][i] = AV18_deut_pn0[i];
+      phiSq_pn1[AV18_deut][i] = AV18_deut_pn1[i];
     }
 }
