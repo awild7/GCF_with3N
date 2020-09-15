@@ -63,8 +63,16 @@ void QEGenerator::generate_event(double &weight, int &lead_type, int &rec_type, 
   TLorentzVector v1_target(v1,E1);
   double p1_minus = E1 - v1.Z();
 
+  TVector3 vbeam_int = vbeam;
+
+  // Initial Coulomb effect
+  if(doCoul) {
+    deltaECoul = calcCoulombEnergy();
+    vbeam_int.SetMag(vbeam_int.Mag() + deltaECoul);
+  }
+
   // Initial radiation
-  TVector3 vbeam_int = (doRad ? radiateElectron(vbeam) : vbeam);
+  vbeam_int = (doRad ? radiateElectron(vbeam_int) : vbeam_int);
   double Ebeam_int = vbeam_int.Mag();
   TLorentzVector vbeam_int_target(vbeam_int,Ebeam_int);
 
@@ -144,6 +152,19 @@ void QEGenerator::generate_event(double &weight, int &lead_type, int &rec_type, 
   // Radiation factors
   if (doRad)
     weight *= radiationFactor(Ebeam, Ek_int, QSq);
+
+  // Final Coulomb, shouldn't effect cross section
+  if (doCoul) {
+    deltaECoul = calcCoulombEnergy();
+    coulombCorrection(vk_target, -deltaECoul);
+
+    if (lead_type == pCode) {
+      coulombCorrection(vLead_target, deltaECoul); 
+    }
+    if (rec_type == pCode) {
+      coulombCorrection(vRec_target, deltaECoul);
+    }
+  }
   
 }
 
@@ -177,9 +198,17 @@ void QEGenerator::generate_event_lightcone(double &weight, int &lead_type, int &
   double alphaCM = alpha1 + alphaRec;
   double alphaAm2 = Anum - alphaCM;
   TVector2 vAm2_perp = -1.*v1_perp - vRec_perp;
+
+  TVector3 vbeam_int = vbeam;
+
+  // Initial Coulomb effect
+  if(doCoul) {
+    deltaE = calcCoulombEnergy();
+    vbeam_int.SetMag(vbeam_int.Mag() + deltaE);
+  }
   
   // Initial radiation
-  TVector3 vbeam_int = (doRad ? radiateElectron(vbeam) : vbeam);
+  vbeam_int = (doRad ? radiateElectron(vbeam_int) : vbeam_int);
   double Ebeam_int = vbeam_int.Mag();
   TLorentzVector vbeam_int_target(vbeam_int,Ebeam_int);
 
@@ -299,5 +328,18 @@ void QEGenerator::generate_event_lightcone(double &weight, int &lead_type, int &
   // Radiation factors
   if (doRad)
     weight *= radiationFactor(Ebeam, Ek_int, QSq);
+
+  // Final Coulomb, shouldn't effect cross section
+  if (doCoul) {
+    deltaECoul = calcCoulombEnergy();
+    coulombCorrection(vk_target, -deltaECoul);
+
+    if (lead_type == pCode) {
+      coulombCorrection(vLead_target, deltaECoul); 
+    }
+    if (rec_type == pCode) {
+      coulombCorrection(vRec_target, deltaECoul);
+    }
+  }
   
 }

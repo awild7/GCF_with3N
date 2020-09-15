@@ -12,6 +12,7 @@ class gcfGenerator
   gcfGenerator(gcfNucleus * thisInfo, TRandom3 * thisRand);
   ~gcfGenerator();
   void set_doRad(bool rad);
+  void set_doCoul(bool coul);
   void set_phiRel_range(double low, double high);
   void set_phiRel_range_deg(double low, double high);
   void set_thetaRel_range(double low, double high);
@@ -41,6 +42,9 @@ class gcfGenerator
   TVector3 radiateElectron(TVector3 ve);
   double deltaHard(double QSq);
   double radiationFactor(double Ebeam, double Ek, double QSq);
+
+  double calcCoulombEnergy();
+  void coulombCorrection(TLorentzVector &p, double deltaE);
   
   gcfNucleus * myInfo;
   TRandom3 * myRand;  
@@ -54,6 +58,7 @@ class gcfGenerator
   double sigCM;
   bool random_Estar;
   bool doRad;
+  bool doCoul;
 
   double pRel_cut = 0.25;
   double pRel_cut_range = 0.05;

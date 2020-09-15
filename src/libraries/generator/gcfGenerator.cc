@@ -22,6 +22,7 @@ gcfGenerator::gcfGenerator(gcfNucleus * thisInfo, TRandom3 * thisRand)
   sigCM = myInfo->get_sigmaCM();
   random_Estar = myInfo->get_Estar_randomization();
   doRad = false;
+  doCoul = false;
 
   pRelmin = 0.2;
   pRelmax = 1.05;
@@ -43,6 +44,11 @@ gcfGenerator::~gcfGenerator()
 void gcfGenerator::set_doRad(bool rad)
 {
   doRad = rad;
+}
+
+void gcfGenerator::set_doCoul(bool coul)
+{
+  doCoul = coul;
 }
 
 void gcfGenerator::set_phiRel_range(double low, double high)
@@ -350,4 +356,36 @@ double gcfGenerator::radiationFactor(double Ebeam, double Ek, double QSq)
   double lambda_ef = alpha/M_PI*(log(4*sq(Ek)/sq(me)) -1);
 
   return (1 - deltaHard(QSq)) * pow(Ebeam/sqrt(Ebeam*Ek),lambda_ei) * pow(Ek/sqrt(Ebeam*Ek),lambda_ef);
+}
+
+double gcfGenerator::calcCoulombEnergy() {
+  if (myInfo->get_Z() == 1 && myInfo->get_N() == 1) {
+    return 0;
+  }
+
+  double radius = ((1.1 * cbrt(Anum)) + (0.86 / cbrt(Anum))); // fm
+  double deltaE = 0.775 * ((3 * myInfo->get_Z() * alpha * GeVfm) / ( 2 * radius ));
+
+  return deltaE;
+}
+
+void gcfGenerator::coulombCorrection(TLorentzVector &p, double deltaE) 
+{
+  // If p is 0, don't correct
+  if(p.E() == 0) {
+    return;
+  }
+
+  TVector3 p3 = p.Vect();
+  double pMag = p3.Mag();
+
+  if(deltaE < 0 && pMag < abs(deltaE)) {
+    p.SetPxPyPzE(0, 0, 0, 0);
+    return;
+  }
+
+  double deltaP = - pMag + sqrt(pow(pMag, 2) + 2 * p.E() * deltaE + pow(deltaE, 2));
+  p3.SetMag(pMag + deltaP);
+
+  p.SetPxPyPzE(p3.X(), p3.Y(), p3.Z(), p.E() + deltaE);
 }
