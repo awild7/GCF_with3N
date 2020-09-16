@@ -170,7 +170,7 @@ void QEGenerator::generate_event_lightcone(double &weight, int &lead_type, int &
   double alpha1, alphaRec;
   TVector2 v1_perp, vRec_perp;
   decay_function_lc(weight, lead_type, rec_type, alpha1, v1_perp, alphaRec, vRec_perp);
-    
+  
   if (weight <= 0.)
     return;
     
@@ -194,6 +194,8 @@ void QEGenerator::generate_event_lightcone(double &weight, int &lead_type, int &
   double pAm2_minus = mbar*alphaAm2;
   double pRec_plus = (sq(mN) + vRec_perp.Mod2())/pRec_minus;
   double pAm2_plus = (sq(mAm2) + vAm2_perp.Mod2())/pAm2_minus;
+  if (mAm2 == 0)
+    pAm2_plus = 0.;
   double p1_plus = mA - pRec_plus - pAm2_plus;
   double virt = p1_plus*p1_minus- v1_perp.Mod2() - sq(mN);
   

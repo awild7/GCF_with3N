@@ -192,13 +192,22 @@ void gcfGenerator::decay_function(double &weight, int lead_type, int rec_type, T
   double pRel_Mag = pRelmin + (pRelmax - pRelmin)*myRand->Rndm();
   vRel.SetMagThetaPhi(pRel_Mag,thetaRel,phiRel);
 
+  if ((phiRelmax < phiRelmin) or (cosThetaRelmax < cosThetaRelmin) or (pRelmax < pRelmin))
+    {
+      weight = 0.;
+      return;
+    }
+  
   // Factor universal functions into the weights
   weight *= (phiRelmax-phiRelmin) * (cosThetaRelmax - cosThetaRelmin) * (pRelmax - pRelmin) // Phase Space
     * sq(pRel_Mag)*myInfo->get_S(pRel_Mag,lead_type,rec_type)/pow(2.*M_PI,3); // Contacts
 
   // Do a safeguard cut
   if (pRel_Mag < pRel_cut)
-    weight=0.;
+    {
+      weight=0.;
+      return;
+    }
 
   // Determine initial nucleon momenta
   vi = 0.5*vCM + vRel;
@@ -222,20 +231,29 @@ void gcfGenerator::decay_function_lc(double &weight, int lead_type, int rec_type
   TVector2 vRel_perp;
   vRel_perp.SetMagPhi(sqrt(kperpSq),phiRel);
 
-  // Factor universal functions into the weights
-  weight *= (alphaRelmax-alphaRelmin) * (pRelmax - max(pRelmin,kmin)) * (phiRelmax-phiRelmin) // Phase Space
-    *k*sqrt(sq(k)+sq(mN))*myInfo->get_S(k,lead_type,rec_type)/pow(2.*M_PI,3); // Contacts
+  if ((alphaRelmax < alphaRelmin) or (pRelmax < max(pRelmin,kmin)) or (phiRelmax < phiRelmin))
+    {
+      weight = 0.;
+      return;
+    }
 
+  // Factor universal functions into the weights
+  weight *= (alphaRelmax - alphaRelmin) * (pRelmax - max(pRelmin,kmin)) * (phiRelmax-phiRelmin) // Phase Space
+    *k*sqrt(sq(k)+sq(mN))*myInfo->get_S(k,lead_type,rec_type)/pow(2.*M_PI,3); // Contacts
+  
   // Do a safeguard cut
   if (k < pRel_cut)
-    weight=0.;
+    {
+      weight=0.;
+      return;
+    }
 
   // Determine initial nucleon momenta
   alphai = alphaRel*alphaCM/2.;
   vi_perp = alphai/alphaCM*vCM_perp + vRel_perp;
   alphaRec = alphaCM - alphai;
   vRec_perp = alphaRec/alphaCM*vCM_perp - vRel_perp;
-
+  
 }
 
 double gcfGenerator::get_mAm2(int lead_type, int rec_type)
