@@ -67,7 +67,7 @@ void QEGenerator::generate_event(double &weight, int &lead_type, int &rec_type, 
 
   // Initial Coulomb effect
   if(doCoul) {
-    deltaECoul = calcCoulombEnergy();
+    double deltaECoul = calcCoulombEnergy();
     vbeam_int.SetMag(vbeam_int.Mag() + deltaECoul);
   }
 
@@ -155,7 +155,7 @@ void QEGenerator::generate_event(double &weight, int &lead_type, int &rec_type, 
 
   // Final Coulomb, shouldn't effect cross section
   if (doCoul) {
-    deltaECoul = calcCoulombEnergy();
+    double deltaECoul = calcCoulombEnergy();
     coulombCorrection(vk_target, -deltaECoul);
 
     if (lead_type == pCode) {
@@ -203,7 +203,7 @@ void QEGenerator::generate_event_lightcone(double &weight, int &lead_type, int &
 
   // Initial Coulomb effect
   if(doCoul) {
-    deltaE = calcCoulombEnergy();
+    double deltaE = calcCoulombEnergy();
     vbeam_int.SetMag(vbeam_int.Mag() + deltaE);
   }
   
@@ -331,7 +331,7 @@ void QEGenerator::generate_event_lightcone(double &weight, int &lead_type, int &
 
   // Final Coulomb, shouldn't effect cross section
   if (doCoul) {
-    deltaECoul = calcCoulombEnergy();
+    double deltaECoul = calcCoulombEnergy();
     coulombCorrection(vk_target, -deltaECoul);
 
     if (lead_type == pCode) {
