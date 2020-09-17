@@ -38,6 +38,7 @@ void Usage()
        << "-s: Specify sigma_CM [GeV/c]\n"
        << "-E: Specify E* [GeV]\n"
        << "-M: Use randomized E* according to Barack's values\n"
+       << "-k: Specify pRel hard cutoff [GeV/c]\n"
        << "-O: Turn on peaking radiation\n"
        << "-C: Turn on coulomb correction\n"
        << "-r: Randomize nuclear properties\n"
@@ -75,12 +76,14 @@ bool init(int argc, char ** argv)
   bool do_Estar = false;
   double sigmaE = 0.;
   bool do_sigmaE = false;
+  double kCut = 0.25;
+  bool do_kCut = false;
   bool doRad = false;
   bool rand_flag = false;
   doLC = false;
   
   int c;
-  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:u:c:s:E:MOCrlh")) != -1)
+  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:u:c:s:E:Mk:OCrlh")) != -1)
     switch(c)
       {
 	
@@ -121,6 +124,10 @@ bool init(int argc, char ** argv)
         do_sigmaE = true;
 	sigmaE = 0.009571;
 	break;
+      case 'k':
+	do_kCut = true;
+	kCut = atof(optarg);
+	break;
       case 'O':
 	doRad = true;
 	break;
@@ -159,6 +166,8 @@ bool init(int argc, char ** argv)
   myGen = new QEGenerator(Ebeam + deltaECoul, myInfo, myCS, myRand);
   if (custom_ps)
     myGen->parse_phase_space_file(phase_space);
+  if (do_kCut)
+    myGen->set_pRel_cut(kCut);
   if (doRad)
     myGen->set_doRad(true);
   if (doCoul)
