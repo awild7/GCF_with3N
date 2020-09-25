@@ -33,6 +33,8 @@ void Usage()
        << "Optional flags:\n"
        << "-v: Verbose\n"
        << "-P: Use text file to specify phase space\n"
+       << "-u: Specify NN interaction (default AV18)\n"
+       << "-k: Specify pRel hard cutoff [GeV/c]\n"
        << "-R: Specify the reaction channel, default pim-proton. (pim, rho0)\n"
        << "-A: Specify ASCII file to deposit particle information in Hall D format. Weights will still be stored in ROOT file\n"
        << "-h: Print this message and exit\n\n\n";
@@ -82,11 +84,14 @@ bool init(int argc, char ** argv)
   char * asciiFile;
   bool custom_ps = false;
   char * phase_space;
+  char * uType = "AV18";
+  double kCut = 0.25;
+  bool do_kCut = false;
   char * react;
   reaction myReaction = pim;
   
   int c;
-  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:R:A:h")) != -1)
+  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:u:k:R:A:h")) != -1)
     switch(c)
       {
 	
@@ -96,6 +101,13 @@ bool init(int argc, char ** argv)
       case 'P':
 	custom_ps = true;
 	phase_space = optarg;
+	break;
+      case 'u':
+	uType = optarg;
+	break;
+      case 'k':
+	do_kCut = true;
+	kCut = atof(optarg);
 	break;
       case 'R':
 	react = optarg;
@@ -124,7 +136,7 @@ bool init(int argc, char ** argv)
       }
 
   // Initialize objects
-  myInfo = new gcfNucleus(Z,N,AV18);
+  myInfo = new gcfNucleus(Z,N,uType);
   myRand = new TRandom3(0);
   myCS = new photoCrossSection();
   
@@ -132,6 +144,8 @@ bool init(int argc, char ** argv)
   myGen = new photoGenerator(myInfo, myCS, myRand, myReaction);
   if (custom_ps)
     myGen->parse_phase_space_file(phase_space);
+  if (do_kCut)
+    myGen->set_pRel_cut(kCut);
 
   // Set up the tree
   outfile->cd();
