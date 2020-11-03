@@ -11,7 +11,9 @@ photoGenerator::photoGenerator(gcfNucleus * thisInfo, photoCrossSection * thisCS
   
   myCS = thisCS;
   myReaction = pim;
-
+  
+  usingfixedE=false;
+  fixedE=0;
   photonSpectrum = new TH1D("photonEnergy","photonEnergy",280,5.,12.);
   for (int i = 0; i < 280; i++) {
     photonSpectrum->SetBinContent(i+1,defaultSpectrum[i]);
@@ -25,6 +27,8 @@ photoGenerator::photoGenerator(gcfNucleus * thisInfo, photoCrossSection * thisCS
   myCS = thisCS;
   myReaction = thisReaction;
 
+  usingfixedE=false;
+  fixedE=0;
   photonSpectrum = new TH1D("photonEnergy","photonEnergy",280,5.,12.);
   for (int i = 0; i < 280; i++) {
     photonSpectrum->SetBinContent(i+1,defaultSpectrum[i]);
@@ -38,9 +42,13 @@ photoGenerator::~photoGenerator()
 
 void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_type, double &mMeson, int &baryon_type, double &mBaryon, int &rec_type, TLorentzVector &vMeson_target, TLorentzVector &vBaryon_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target)
 {
+	if (usingfixedE) {
 
-  Ephoton = photonSpectrum->GetRandom();
-  
+			Ephoton=fixedE;
+	}
+	else{Ephoton = photonSpectrum->GetRandom();
+
+	}	
   TLorentzVector vphoton_target(0.,0.,Ephoton,Ephoton);
   
   // Start with weight 1. Only multiply terms to weight. If trouble, set weight=0.
@@ -145,4 +153,10 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
 
   weight *= vgamma1*thisCS; // Photoproduction cross section
   
+}
+
+void photoGenerator::setfixedE(double newfixedE){
+usingfixedE=true;
+fixedE=newfixedE;
+
 }

@@ -37,6 +37,7 @@ void Usage()
        << "-k: Specify pRel hard cutoff [GeV/c]\n"
        << "-R: Specify the reaction channel, default pim-proton. (pim, rho0)\n"
        << "-A: Specify ASCII file to deposit particle information in Hall D format. Weights will still be stored in ROOT file\n"
+	   << "-B: Specify a fixed beam energy (default is HallD spectrum)\n"
        << "-h: Print this message and exit\n\n\n";
 }
 
@@ -89,9 +90,11 @@ bool init(int argc, char ** argv)
   bool do_kCut = false;
   char * react;
   reaction myReaction = pim;
+  bool usefixedE=false;
+  double fixedE=0;
   
   int c;
-  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:u:k:R:A:h")) != -1)
+  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:u:k:R:A:B:h")) != -1)
     switch(c)
       {
 	
@@ -126,6 +129,9 @@ bool init(int argc, char ** argv)
       case 'A':
 	do_ascii = true;
 	asciiFile = optarg;
+	  case 'B':
+	usefixedE=true;
+	fixedE=atof(optarg);
 	break;
       case 'h':
 	Usage();
@@ -146,6 +152,8 @@ bool init(int argc, char ** argv)
     myGen->parse_phase_space_file(phase_space);
   if (do_kCut)
     myGen->set_pRel_cut(kCut);
+  if (usefixedE)
+		  myGen->setfixedE(fixedE);
 
   // Set up the tree
   outfile->cd();
