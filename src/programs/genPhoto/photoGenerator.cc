@@ -145,7 +145,7 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
   // Calculate the weight
   double thisCS=0;
   if (myReaction==pim)
-    thisCS=myCS->sigma_pip_n(s,cosThetaCM);
+    thisCS=myCS->sigma_pim_p(s,cosThetaCM);
   else if (myReaction==rho0)
     thisCS=myCS->sigma_rho0_p(s,cosThetaCM);
   else if (myReaction==omega)
