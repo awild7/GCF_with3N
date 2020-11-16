@@ -48,7 +48,7 @@ double photoCrossSection::sigma_pip_n(double s, double cosThetaCM)
 double photoCrossSection::sigma_pim_p(double s, double cosThetaCM)
 {
 
-  double A = 9.490;
+  double A = 10.240;
   double b = 5.329;
   double c = 4.638;
       
