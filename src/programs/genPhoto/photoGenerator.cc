@@ -1,3 +1,4 @@
+#include <iostream>
 #include "TVector3.h"
 #include "photoGenerator.hh"
 #include "spectra/defaultSpectrum.hh"
@@ -34,6 +35,10 @@ photoGenerator::photoGenerator(gcfNucleus * thisInfo, photoCrossSection * thisCS
 
 photoGenerator::~photoGenerator()
 {
+  std::cerr << "The fraction of events in the coherent peak (8--9 GeV) is "
+	    << photonSpectrum->Integral(120,160) / photonSpectrum->Integral() << "\n";
+
+  delete photonSpectrum;
 }
 
 void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_type, double &mMeson, int &baryon_type, double &mBaryon, int &rec_type, TLorentzVector &vMeson_target, TLorentzVector &vBaryon_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target)

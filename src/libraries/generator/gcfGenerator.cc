@@ -334,7 +334,7 @@ void gcfGenerator::t_scatter(double &weight, double m3, double m4, TLorentzVecto
 
   weight *= J * 4.*M_PI;
 
-  // Set outgoind particle vetors
+  // Set outgoing particle vectors
   TVector3 v_cm;
   v_cm.SetMagThetaPhi(p_cm,theta_cm,phi_cm);
 

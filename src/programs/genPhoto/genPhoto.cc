@@ -146,6 +146,8 @@ bool init(int argc, char ** argv)
     myGen->parse_phase_space_file(phase_space);
   if (do_kCut)
     myGen->set_pRel_cut(kCut);
+  if (verbose)
+    myGen->print_beam_info();
 
   // Set up the tree
   outfile->cd();
