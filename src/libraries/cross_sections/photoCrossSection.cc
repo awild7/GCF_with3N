@@ -37,18 +37,24 @@ double photoCrossSection::sigma_pi0_p(double s, double t)
 
 double photoCrossSection::sigma_pip_n(double s, double cosThetaCM)
 {
-  
-  double a = 4.03;
-  double b = 8.52;
-  double cplusd = 10.58;
-  double cminusd = 0.67;
-  double c = 0.5*(cplusd + cminusd);
-  double d = 0.5*(cplusd - cminusd);
-  
-  double x = (1. + cosThetaCM)/2.;
+
+  double A = 9.490;
+  double b = 5.329;
+  double c = 4.638;
       
-  return pow(a/s,b)*pow(x,-c)*pow(1.-x,-d);
+  return pow(A/s,7)*pow(1-cosThetaCM,-b)*pow(1.+cosThetaCM,-c);
 }
+
+double photoCrossSection::sigma_pim_p(double s, double cosThetaCM)
+{
+
+  double A = 10.240;
+  double b = 5.329;
+  double c = 4.638;
+      
+  return pow(A/s,7)*pow(1-cosThetaCM,-b)*pow(1.+cosThetaCM,-c);
+}
+
 
 double photoCrossSection::sigma_rho0_p(double s, double cosThetaCM)
 {

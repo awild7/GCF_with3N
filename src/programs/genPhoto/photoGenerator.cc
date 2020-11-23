@@ -12,7 +12,9 @@ photoGenerator::photoGenerator(gcfNucleus * thisInfo, photoCrossSection * thisCS
   
   myCS = thisCS;
   myReaction = pim;
-
+  
+  usingfixedE=false;
+  fixedE=0;
   photonSpectrum = new TH1D("photonEnergy","photonEnergy",280,5.,12.);
   for (int i = 0; i < 280; i++) {
     photonSpectrum->SetBinContent(i+1,defaultSpectrum[i]);
@@ -26,6 +28,8 @@ photoGenerator::photoGenerator(gcfNucleus * thisInfo, photoCrossSection * thisCS
   myCS = thisCS;
   myReaction = thisReaction;
 
+  usingfixedE=false;
+  fixedE=0;
   photonSpectrum = new TH1D("photonEnergy","photonEnergy",280,5.,12.);
   for (int i = 0; i < 280; i++) {
     photonSpectrum->SetBinContent(i+1,defaultSpectrum[i]);
@@ -35,17 +39,18 @@ photoGenerator::photoGenerator(gcfNucleus * thisInfo, photoCrossSection * thisCS
 
 photoGenerator::~photoGenerator()
 {
-  std::cerr << "The fraction of events in the coherent peak (8--9 GeV) is "
-	    << photonSpectrum->Integral(120,160) / photonSpectrum->Integral() << "\n";
-
   delete photonSpectrum;
 }
 
 void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_type, double &mMeson, int &baryon_type, double &mBaryon, int &rec_type, TLorentzVector &vMeson_target, TLorentzVector &vBaryon_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target)
 {
+	if (usingfixedE) {
 
-  Ephoton = photonSpectrum->GetRandom();
-  
+			Ephoton=fixedE;
+	}
+	else{Ephoton = photonSpectrum->GetRandom();
+
+	}	
   TLorentzVector vphoton_target(0.,0.,Ephoton,Ephoton);
   
   // Start with weight 1. Only multiply terms to weight. If trouble, set weight=0.
@@ -142,7 +147,7 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
   // Calculate the weight
   double thisCS=0;
   if (myReaction==pim)
-    thisCS=myCS->sigma_pip_n(s,cosThetaCM);
+    thisCS=myCS->sigma_pim_p(s,cosThetaCM);
   else if (myReaction==rho0)
     thisCS=myCS->sigma_rho0_p(s,cosThetaCM);
   else if (myReaction==omega)
@@ -150,4 +155,23 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
 
   weight *= vgamma1*thisCS; // Photoproduction cross section
   
+}
+
+void photoGenerator::setfixedE(double newfixedE){
+usingfixedE=true;
+fixedE=newfixedE;
+
+}
+
+void photoGenerator::print_beam_info()
+{
+  if (usingfixedE)
+    {
+      std::cerr << "photoGenerator: using a fixed beam energy of " << fixedE << " GeV.\n";
+    }
+  else
+    {
+      std::cerr << "photoGenerator: using the Hall-D photon source spectrum\n"
+		<< "     " << 100.*photonSpectrum->Integral(120,160) / photonSpectrum->Integral() << " % falls within the coherent peak (8--9 GeV)\n";
+    }
 }
