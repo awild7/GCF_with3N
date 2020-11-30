@@ -1,3 +1,4 @@
+#include <iostream>
 #include "TVector3.h"
 #include "photoGenerator.hh"
 #include "spectra/defaultSpectrum.hh"
@@ -38,6 +39,7 @@ photoGenerator::photoGenerator(gcfNucleus * thisInfo, photoCrossSection * thisCS
 
 photoGenerator::~photoGenerator()
 {
+  delete photonSpectrum;
 }
 
 void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_type, double &mMeson, int &baryon_type, double &mBaryon, int &rec_type, TLorentzVector &vMeson_target, TLorentzVector &vBaryon_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target)
@@ -159,4 +161,17 @@ void photoGenerator::setfixedE(double newfixedE){
 usingfixedE=true;
 fixedE=newfixedE;
 
+}
+
+void photoGenerator::print_beam_info()
+{
+  if (usingfixedE)
+    {
+      std::cerr << "photoGenerator: using a fixed beam energy of " << fixedE << " GeV.\n";
+    }
+  else
+    {
+      std::cerr << "photoGenerator: using the Hall-D photon source spectrum\n"
+		<< "     " << 100.*photonSpectrum->Integral(120,160) / photonSpectrum->Integral() << " % falls within the coherent peak (8--9 GeV)\n";
+    }
 }

@@ -153,7 +153,9 @@ bool init(int argc, char ** argv)
   if (do_kCut)
     myGen->set_pRel_cut(kCut);
   if (usefixedE)
-		  myGen->setfixedE(fixedE);
+    myGen->setfixedE(fixedE);
+  if (verbose)
+    myGen->print_beam_info();
 
   // Set up the tree
   outfile->cd();
