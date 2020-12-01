@@ -230,10 +230,15 @@ void gcfGenerator::decay_function_lc(double &weight, int lead_type, int rec_type
   
   // Pick random relative motion
   double alphaRel = alphaRelmin + (alphaRelmax-alphaRelmin)*myRand->Rndm();
-  double kmin = abs(1.-alphaRel)/sqrt(alphaRel*(2.-alphaRel));
+  double kmin = abs(1.-alphaRel)/sqrt(alphaRel*(2.-alphaRel))*mN;
   double k = max(pRelmin,kmin) + (pRelmax - max(pRelmin,kmin))*myRand->Rndm();
   double phiRel = phiRelmin + (phiRelmax-phiRelmin)*myRand->Rndm();
   double kperpSq = alphaRel*(2.-alphaRel)*(sq(k)+sq(mN)) - sq(mN);
+  if (kperpSq < 0.)
+    {
+      weight=0.;
+      return;
+    }
   TVector2 vRel_perp;
   vRel_perp.SetMagPhi(sqrt(kperpSq),phiRel);
 
