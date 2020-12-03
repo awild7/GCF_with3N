@@ -85,7 +85,7 @@ bool init(int argc, char ** argv)
   char * asciiFile;
   bool custom_ps = false;
   char * phase_space;
-  char * uType = "AV18";
+  char * uType = (char *)"AV18";
   double kCut = 0.25;
   bool do_kCut = false;
   char * react;

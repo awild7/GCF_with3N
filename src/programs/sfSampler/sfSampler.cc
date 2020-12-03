@@ -3,7 +3,6 @@
 #include <math.h>
 #include "TFile.h"
 #include "TTree.h"
-#include "TH1D.h"
 #include "TGraphAsymmErrors.h"
 #include "generator/gcfGenerator.hh"
 #include "constants.hh"
@@ -58,7 +57,7 @@ bool init(int argc, char ** argv)
   // Optional flags
   bool custom_ps = false;
   char * phase_space;
-  char * uType = "AV18";
+  char * uType = (char *)"AV18";
   double sigCM = 0.;
   bool do_sigCM = false;
   double Estar = 0.;

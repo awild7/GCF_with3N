@@ -68,7 +68,7 @@ bool init(int argc, char ** argv)
   // Optional flags
   bool custom_ps = false;
   char * phase_space;
-  char * uType = "AV18";
+  char * uType = (char *)"AV18";
   csMethod csMeth=cc1;
   double sigCM = 0.;
   bool do_sigCM = false;
