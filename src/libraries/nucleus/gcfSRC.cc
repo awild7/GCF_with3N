@@ -1038,6 +1038,7 @@ bool gcfSRC::set_Contacts_deut()
 	  return true;
 	}
     }
+  return false;
 }
 
 bool gcfSRC::set_Contacts_EG2()
