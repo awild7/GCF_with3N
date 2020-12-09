@@ -212,7 +212,7 @@ double gcfSRC::get_phiSq(double *phiPtr, double k_rel)
   
   int b = bin;
   double x = bin - b;
-  return x*phiPtr[b] + (1.-x)*phiPtr[b-1];
+  return (x*phiPtr[b] + (1.-x)*phiPtr[b-1]) / pow(GeVfm,3) / 100.;
   
 }
 
