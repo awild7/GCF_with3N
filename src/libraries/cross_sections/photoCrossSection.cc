@@ -56,22 +56,34 @@ double photoCrossSection::sigma_pim_p(double s, double cosThetaCM)
 }
 
 
-double photoCrossSection::sigma_rho0_p(double s, double cosThetaCM)
+double photoCrossSection::sigma_rho0_p_old(double s, double cosThetaCM)
 {
-	const double b=-3.7;
-	const double c=-2.2;
-	const double a=5.82005e7;
+  const double b=-3.7;
+  const double c=-2.2;
+  const double a=5.82005e7;
+  
+  return 0.75*(pow(s,-7)*a*pow(1-cosThetaCM,b)*pow(1+cosThetaCM,c));
+}
 
-return 0.75*(pow(s,-7)*a*pow(1-cosThetaCM,b)*pow(1+cosThetaCM,c));
+double photoCrossSection::sigma_rho0_p(double s, double t, double cosThetaCM)
+{
+
+  const double A = 67621.88263175558;
+  const double B = 6.052575507613084;
+  const double C = 69880481.1275816;
+  const double D = 5.133425892196726;
+  const double E = 1.885280028435792;
+  
+  return A*exp(B*t)+C*pow(s,-7.)*pow(1.2-cosThetaCM,-D)*pow(1.05+cosThetaCM,-E);
 }
 
 double photoCrossSection::sigma_omega_p(double s, double cosThetaCM)
 {
-	const double b=-3.7;
-	const double c=-2.2;
-	const double a=5.82005e7;
-
-return 0.25*(pow(s,-7)*a*pow(1-cosThetaCM,b)*pow(1+cosThetaCM,c));
+  const double b=-3.7;
+  const double c=-2.2;
+  const double a=5.82005e7;
+  
+  return 0.25*(pow(s,-7)*a*pow(1-cosThetaCM,b)*pow(1+cosThetaCM,c));
 } 
 
 double photoCrossSection::sigma_psi_p(double s, double t)
