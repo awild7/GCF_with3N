@@ -152,7 +152,7 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
   else if (myReaction==rho0)
     thisCS=myCS->sigma_rho0_p(s,t,cosThetaCM);
   else if (myReaction==omega)
-    thisCS=myCS->sigma_omega_p(s,cosThetaCM);  
+    thisCS=myCS->sigma_omega_p(s,t,cosThetaCM);  
 
   weight *= vgamma1*thisCS; // Photoproduction cross section
   

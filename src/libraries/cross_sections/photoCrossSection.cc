@@ -77,7 +77,7 @@ double photoCrossSection::sigma_rho0_p(double s, double t, double cosThetaCM)
   return A*exp(B*t)+C*pow(s,-7.)*pow(1.2-cosThetaCM,-D)*pow(1.05+cosThetaCM,-E);
 }
 
-double photoCrossSection::sigma_omega_p(double s, double cosThetaCM)
+double photoCrossSection::sigma_omega_p_old(double s, double cosThetaCM)
 {
   const double b=-3.7;
   const double c=-2.2;
@@ -85,6 +85,12 @@ double photoCrossSection::sigma_omega_p(double s, double cosThetaCM)
   
   return 0.25*(pow(s,-7)*a*pow(1-cosThetaCM,b)*pow(1+cosThetaCM,c));
 } 
+
+double photoCrossSection::sigma_omega_p(double s, double t, double cosThetaCM)
+{
+  
+  return sigma_rho0_p(s,t,cosThetaCM)/3.;
+}
 
 double photoCrossSection::sigma_psi_p(double s, double t)
 {
