@@ -140,6 +140,7 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
     return;
   
   double s = sq(mMeson) + sq(mBaryon) + 2.*vMeson_target.Dot(vBaryon_target);
+  double t = sq(mMeson) - 2.*vMeson_target.Dot(vphoton_target);
   
   // Calculate the flux factor on the cross section
   double vgamma1 = vphoton_target.Dot(v1_target)/(Ephoton*E1);
@@ -149,7 +150,7 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
   if (myReaction==pim)
     thisCS=myCS->sigma_pim_p(s,cosThetaCM);
   else if (myReaction==rho0)
-    thisCS=myCS->sigma_rho0_p(s,cosThetaCM);
+    thisCS=myCS->sigma_rho0_p(s,t,cosThetaCM);
   else if (myReaction==omega)
     thisCS=myCS->sigma_omega_p(s,cosThetaCM);  
 
