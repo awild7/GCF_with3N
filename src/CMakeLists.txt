@@ -1,7 +1,7 @@
 # CMakeLists for GCF_Generator_Suite
 
 # Set up
-cmake_minimum_required (VERSION 2.8.15)
+cmake_minimum_required (VERSION 2.6)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules")
 find_package(ROOT REQUIRED)
 
