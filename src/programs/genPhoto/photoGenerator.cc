@@ -100,6 +100,30 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
       mM_min = 2*mpip + mpi0;
       mM_max = 1.5;
     }
+  else if (myReaction==phi)
+    {
+      lead_type = pCode; 
+      meson_type = phiCode;
+      baryon_type = pCode;
+      mMesonMean = mphi;
+      gammaMeson = gammaphi;
+      mBaryonMean = mN;
+      gammaBaryon = 0.;
+      mM_min = 2*mKp;
+      mM_max = 1.5;
+    }
+  else if (myReaction==phin)
+    {
+      lead_type = nCode; 
+      meson_type = phiCode;
+      baryon_type = nCode;
+      mMesonMean = mphi;
+      gammaMeson = gammaphi;
+      mBaryonMean = mN;
+      gammaBaryon = 0.;
+      mM_min = 2*mKp;
+      mM_max = 1.5;
+    }
 
   do
     mMeson = myRand->BreitWigner(mMesonMean,gammaMeson);
@@ -152,7 +176,11 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
   else if (myReaction==rho0)
     thisCS=myCS->sigma_rho0_p(s,t,cosThetaCM);
   else if (myReaction==omega)
-    thisCS=myCS->sigma_omega_p(s,t,cosThetaCM);  
+    thisCS=myCS->sigma_omega_p(s,t,cosThetaCM);
+  else if (myReaction==phi)
+    thisCS=myCS->sigma_phi_p(s,t,cosThetaCM);
+  else if (myReaction==phin)
+    thisCS=myCS->sigma_phi_n(s,t,cosThetaCM);
 
   weight *= vgamma1*thisCS; // Photoproduction cross section
   
