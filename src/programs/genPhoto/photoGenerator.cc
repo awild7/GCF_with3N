@@ -64,6 +64,8 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
   double gammaBaryon;
   double mM_min;
   double mM_max;
+  double mB_min=0;
+  double mB_max=5;
   if (myReaction==pim)
     {
       lead_type = nCode;
@@ -124,12 +126,29 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
       mM_min = 2*mKp;
       mM_max = 1.5;
     }
+  else if (myReaction==deltapp)
+  {
+	 lead_type = pCode; 
+      meson_type = pimCode;
+      baryon_type = DeltappCode;
+      mMesonMean = mpip;
+      gammaMeson = 0;
+      mBaryonMean = mDelta;
+      gammaBaryon = gammaDelta;
+      mM_min = 0;
+      mM_max = 1.5;
+  	  mB_min=mpip+mN;
+
+  }
 
   do
     mMeson = myRand->BreitWigner(mMesonMean,gammaMeson);
   while
     ((mMeson < mM_min) or (mMeson > mM_max));
-  mBaryon = fabs(myRand->BreitWigner(mBaryonMean,gammaBaryon));
+ do
+    mBaryon = myRand->BreitWigner(mBaryonMean,gammaBaryon);
+  while
+    ((mBaryon < mB_min) or (mBaryon > mB_max));
   
   // Decide recoil nucleon type
   rec_type = (myRand->Rndm() > 0.5) ? pCode:nCode;
@@ -181,6 +200,8 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
     thisCS=myCS->sigma_phi_p(s,t,cosThetaCM);
   else if (myReaction==phin)
     thisCS=myCS->sigma_phi_n(s,t,cosThetaCM);
+  else if (myReaction==deltapp)
+	thisCS=myCS->sigma_deltapp_pim(s,cosThetaCM);
 
   weight *= vgamma1*thisCS; // Photoproduction cross section
   

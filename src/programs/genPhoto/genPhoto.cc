@@ -35,7 +35,7 @@ void Usage()
        << "-P: Use text file to specify phase space\n"
        << "-u: Specify NN interaction (default AV18)\n"
        << "-k: Specify pRel hard cutoff [GeV/c]\n"
-       << "-R: Specify the reaction channel, default pim-proton. (pim, rho0, omega, phi, phin)\n"
+       << "-R: Specify the reaction channel, default pim-proton. (pim, rho0, omega, phi, phin, deltapp)\n"
        << "-A: Specify ASCII file to deposit particle information in Hall D format. Weights will still be stored in ROOT file\n"
 	   << "-B: Specify a fixed beam energy (default is HallD spectrum)\n"
        << "-h: Print this message and exit\n\n\n";
@@ -92,7 +92,9 @@ bool init(int argc, char ** argv)
   reaction myReaction = pim;
   bool usefixedE=false;
   double fixedE=0;
-  
+ 
+
+
   int c;
   while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:u:k:R:A:B:h")) != -1)
     switch(c)
@@ -124,6 +126,8 @@ bool init(int argc, char ** argv)
 	  myReaction=phi;
 	else if ((strcmp(react, "phin")==0) or (strcmp(react, "phiN")==0))
 	  myReaction=phin;
+	else if (strcmp(react, "deltapp")==0)
+	  myReaction=deltapp;
 	else
 	  {
 	    cerr << "This reaction is not yet implemented.\n";
@@ -144,6 +148,9 @@ bool init(int argc, char ** argv)
 	abort();
 	
       }
+
+
+
 
   // Initialize objects
   myInfo = new gcfNucleus(Z,N,uType);
@@ -181,7 +188,9 @@ bool init(int argc, char ** argv)
 
   if (do_ascii)
     asciiWriter = new ofstream(asciiFile);
-  
+ 
+cout<<"Setting up tree \n";
+
   return true;
   
 }

@@ -8,7 +8,7 @@
 #include "nucleus/gcfNucleus.hh"
 #include "cross_sections/photoCrossSection.hh"
 
-enum reaction {pim,rho0,omega,phi,phin};
+enum reaction {pim,rho0,omega,phi,phin,deltapp};
 
 class photoGenerator: public gcfGenerator
 {

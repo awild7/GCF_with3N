@@ -3,7 +3,7 @@
 
 const int pCode = 2212;
 const int nCode = 2112;
-const int DelatppCode = 2224;
+const int DeltappCode = 2224;
 const int DeltapCode = 2214;
 const int Delta0Code = 2114;
 const int DeltamCode = 1114;
