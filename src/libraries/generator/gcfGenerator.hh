@@ -24,6 +24,7 @@ class gcfGenerator
   void set_QSq_range(double low, double high);
   void set_phik_range(double low, double high);
   void set_phik_range_deg(double low, double high);
+  void set_deuteron();
 
   void randomize_cutoff();
 

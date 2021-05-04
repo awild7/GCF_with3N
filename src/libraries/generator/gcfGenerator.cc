@@ -120,6 +120,12 @@ void gcfGenerator::set_phik_range_deg(double low, double high)
   phikmax = high*M_PI/180.;
 }
 
+void gcfGenerator::set_deuteron()
+{
+  pRelmin = 0.;
+  pRel_cut = 0.;
+}
+
 void gcfGenerator::randomize_cutoff()
 {
   pRel_cut = pRel_cut + (myRand->Uniform() - 0.5)*pRel_cut_range;
@@ -227,6 +233,11 @@ void gcfGenerator::decay_function_lc(double &weight, int lead_type, int rec_type
   // Pick random CM motion
   double alphaCM = myRand->Gaus(2.,sigCM/mbar);
   TVector2 vCM_perp(myRand->Gaus(0.,sigCM),myRand->Gaus(0.,sigCM));
+  if (alphaCM < 0.)
+    {
+      weight=0.;
+      return;
+    }
   
   // Pick random relative motion
   double alphaRel = alphaRelmin + (alphaRelmax-alphaRelmin)*myRand->Rndm();
