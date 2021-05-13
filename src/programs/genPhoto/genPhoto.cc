@@ -36,8 +36,8 @@ void Usage()
        << "-u: Specify NN interaction (default AV18)\n"
        << "-k: Specify pRel hard cutoff [GeV/c]\n"
        << "-R: Specify the reaction channel, default pim-proton. (pim, rho0, omega, phi, phin)\n"
-       << "-A: Specify ASCII file to deposit particle information in Hall D format. Weights will still be stored in ROOT file\n"
-	   << "-B: Specify a fixed beam energy (default is HallD spectrum)\n"
+       << "-A: Use the energy spectrum of the amorphous GlueX radiator rather than the diamond radiator\n"
+       << "-B: Specify a fixed beam energy (default is HallD spectrum)\n"
        << "-h: Print this message and exit\n\n\n";
 }
 
@@ -89,6 +89,7 @@ bool init(int argc, char ** argv)
   double kCut = 0.25;
   bool do_kCut = false;
   char * react;
+  spectrum mySpectrum = diamond;
   reaction myReaction = pim;
   bool usefixedE=false;
   double fixedE=0;
@@ -96,7 +97,7 @@ bool init(int argc, char ** argv)
     uType = (char *)"AV18_deut";
   
   int c;
-  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:u:k:R:A:B:h")) != -1)
+  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:u:k:R:AB:h")) != -1)
     switch(c)
       {
 	
@@ -133,9 +134,9 @@ bool init(int argc, char ** argv)
 	  }
 	break;
       case 'A':
-	do_ascii = true;
-	asciiFile = optarg;
-	  case 'B':
+	mySpectrum = amorphous;
+        break;
+      case 'B':
 	usefixedE=true;
 	fixedE=atof(optarg);
 	break;
@@ -153,7 +154,7 @@ bool init(int argc, char ** argv)
   myCS = new photoCrossSection();
   
   // Initialize generator
-  myGen = new photoGenerator(myInfo, myCS, myRand, myReaction);
+  myGen = new photoGenerator(myInfo, myCS, myRand, mySpectrum, myReaction);
   if ((Z == 1) and (N == 1))
     myGen->set_deuteron();
   if (custom_ps)
