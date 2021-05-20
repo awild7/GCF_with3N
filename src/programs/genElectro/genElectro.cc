@@ -52,6 +52,9 @@ bool init(int argc, char ** argv)
   // Optional flags
   bool custom_ps = false;
   char * phase_space;
+  char * uType = (char *)"AV18";
+  if ((Z == 1) and (N == 1))
+    uType = (char *)"AV18_deut";
   
   int c;
   while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:h")) != -1)
@@ -74,12 +77,14 @@ bool init(int argc, char ** argv)
       }
 
   // Initialize objects
-  myInfo = new gcfNucleus(Z,N,AV18);
+  myInfo = new gcfNucleus(Z,N,uType);
   myRand = new TRandom3(0);
   myCS = new photoCrossSection();
   
   // Initialize generator
   myGen = new electroGenerator(Ebeam, myInfo, myCS, myRand);
+  if ((Z == 1) and (N == 1))
+    myGen->set_deuteron();
   if (custom_ps)
     myGen->parse_phase_space_file(phase_space);
 

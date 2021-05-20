@@ -65,6 +65,9 @@ bool init(int argc, char ** argv)
   double sigmaE = 0.;
   bool do_sigmaE = false;
   bool doRad = false;
+  char * uType = (char *)"AV18";
+  if ((Z == 1) and (N == 1))
+    uType = (char *)"AV18_deut";
   
   int c;
   while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:MOh")) != -1)
@@ -96,7 +99,7 @@ bool init(int argc, char ** argv)
       }
 
   // Initialize objects
-  myInfo = new gcfNucleus(Z,N,AV18);
+  myInfo = new gcfNucleus(Z,N,uType);
   myRand = new TRandom3(0);
   myCS = new eNCrossSection(csMeth,ffMod);
   
@@ -107,6 +110,8 @@ bool init(int argc, char ** argv)
   
   // Initialize generator
   myGen = new QEGenerator(Ebeam, myInfo, myCS, myRand);
+  if ((Z == 1) and (N == 1))
+    myGen->set_deuteron();
   if (custom_ps)
     myGen->parse_phase_space_file(phase_space);
   if (doRad)

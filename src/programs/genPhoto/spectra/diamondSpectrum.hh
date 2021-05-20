@@ -1,7 +1,7 @@
-#ifndef __DEFAULT_SPECTRUM_H__
-#define __DEFAULT_SPECTRUM_H__
+#ifndef __DIAMOND_SPECTRUM_H__
+#define __DIAMOND_SPECTRUM_H__
 
-extern const double defaultSpectrum[280]={
+extern const double diamondSpectrum[280]={
 					  0,
 					  0,
 					  0,

@@ -21,7 +21,7 @@ TTree * outtree;
 ofstream * asciiWriter = nullptr;
 
 int numOut = 0;
-                    
+
 // Tree variables
 Double_t pMeson[3], pBaryon[3], pRec[3], pAm2[3];
 Double_t weight, Ephoton, mMeson, mBaryon;
@@ -35,8 +35,8 @@ void Usage()
        << "-P: Use text file to specify phase space\n"
        << "-u: Specify NN interaction (default AV18)\n"
        << "-k: Specify pRel hard cutoff [GeV/c]\n"
-       << "-R: Specify the reaction channel, default pim-proton. (pim, rho0, omega, phi, phin, deltapp)\n"
-       << "-A: Specify ASCII file to deposit particle information in Hall D format. Weights will still be stored in ROOT file\n"
+       << "-R: Specify the reaction channel, default pim-proton. (pim, rho0, omega, phi, phin, delta++)\n"
+       << "-A: Use the energy spectrum of the amorphous GlueX radiator rather than the diamond radiator\n"
 	   << "-B: Specify a fixed beam energy (default is HallD spectrum)\n"
        << "-h: Print this message and exit\n\n\n";
 }
@@ -68,7 +68,7 @@ void asciiWritePiMinus(int num, TLorentzVector v)
 bool init(int argc, char ** argv)
 {
   int numargs = 5;
- 
+
   if (argc < numargs)
     {
       Usage();
@@ -89,17 +89,18 @@ bool init(int argc, char ** argv)
   double kCut = 0.25;
   bool do_kCut = false;
   char * react;
+  spectrum mySpectrum = diamond;
   reaction myReaction = pim;
   bool usefixedE=false;
   double fixedE=0;
- 
-
+  if ((Z == 1) and (N == 1))
+    uType = (char *)"AV18_deut";
 
   int c;
-  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:u:k:R:A:B:h")) != -1)
+  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:u:k:R:AB:h")) != -1)
     switch(c)
       {
-	
+
       case 'v':
 	verbose = true;
 	break;
@@ -135,9 +136,9 @@ bool init(int argc, char ** argv)
 	  }
 	break;
       case 'A':
-	do_ascii = true;
-	asciiFile = optarg;
-	  case 'B':
+	mySpectrum = amorphous;
+        break;
+      case 'B':
 	usefixedE=true;
 	fixedE=atof(optarg);
 	break;
@@ -146,7 +147,7 @@ bool init(int argc, char ** argv)
 	return false;
       default:
 	abort();
-	
+
       }
 
 
@@ -156,9 +157,11 @@ bool init(int argc, char ** argv)
   myInfo = new gcfNucleus(Z,N,uType);
   myRand = new TRandom3(0);
   myCS = new photoCrossSection();
-  
+
   // Initialize generator
-  myGen = new photoGenerator(myInfo, myCS, myRand, myReaction);
+  myGen = new photoGenerator(myInfo, myCS, myRand, mySpectrum, myReaction);
+  if ((Z == 1) and (N == 1))
+    myGen->set_deuteron();
   if (custom_ps)
     myGen->parse_phase_space_file(phase_space);
   if (do_kCut)
@@ -188,16 +191,16 @@ bool init(int argc, char ** argv)
 
   if (do_ascii)
     asciiWriter = new ofstream(asciiFile);
- 
+
 cout<<"Setting up tree \n";
 
   return true;
-  
+
 }
 
 void evnt(int event)
 {
-  
+
   TLorentzVector vMeson;
   TLorentzVector vBaryon;
   TLorentzVector vRec;
@@ -260,11 +263,11 @@ void evnt(int event)
 	      cout << "Cannot write out this recoil to ASCII format. Aborting...";
 	      abort();
 	    }
-	    
+
 	}
       numOut++;
     }
-      
+
 }
 
 void fini()
@@ -273,7 +276,7 @@ void fini()
   outtree->Write();
   outfile->Delete("genTbuffer;*");
   outfile->Close();
-  
+
   if ( asciiWriter ) delete asciiWriter;
 }
 
@@ -292,7 +295,7 @@ int main(int argc, char ** argv)
     }
 
   fini();
-  
+
   return 0;
-  
+
 }

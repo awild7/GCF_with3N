@@ -1,7 +1,8 @@
 #include <iostream>
 #include "TVector3.h"
 #include "photoGenerator.hh"
-#include "spectra/defaultSpectrum.hh"
+#include "spectra/diamondSpectrum.hh"
+#include "spectra/amorphousSpectrum.hh"
 #include "constants.hh"
 #include "helpers.hh"
 
@@ -15,14 +16,11 @@ photoGenerator::photoGenerator(gcfNucleus * thisInfo, photoCrossSection * thisCS
   
   usingfixedE=false;
   fixedE=0;
-  photonSpectrum = new TH1D("photonEnergy","photonEnergy",280,5.,12.);
-  for (int i = 0; i < 280; i++) {
-    photonSpectrum->SetBinContent(i+1,defaultSpectrum[i]);
-  }
+  fillDiamond();
 
 }
 
-photoGenerator::photoGenerator(gcfNucleus * thisInfo, photoCrossSection * thisCS, TRandom3 * thisRand, reaction thisReaction) : gcfGenerator(thisInfo, thisRand)
+photoGenerator::photoGenerator(gcfNucleus * thisInfo, photoCrossSection * thisCS, TRandom3 * thisRand, spectrum thisSpectrum, reaction thisReaction) : gcfGenerator(thisInfo, thisRand)
 {
   
   myCS = thisCS;
@@ -30,10 +28,10 @@ photoGenerator::photoGenerator(gcfNucleus * thisInfo, photoCrossSection * thisCS
 
   usingfixedE=false;
   fixedE=0;
-  photonSpectrum = new TH1D("photonEnergy","photonEnergy",280,5.,12.);
-  for (int i = 0; i < 280; i++) {
-    photonSpectrum->SetBinContent(i+1,defaultSpectrum[i]);
-  }
+  if (thisSpectrum == diamond)
+    fillDiamond();
+  else if (thisSpectrum == amorphous)
+    fillAmorphous();
 
 }
 
@@ -223,5 +221,24 @@ void photoGenerator::print_beam_info()
     {
       std::cerr << "photoGenerator: using the Hall-D photon source spectrum\n"
 		<< "     " << 100.*photonSpectrum->Integral(120,160) / photonSpectrum->Integral() << " % falls within the coherent peak (8--9 GeV)\n";
+    }
+}
+
+
+void photoGenerator::fillDiamond()
+{
+  photonSpectrum = new TH1D("photonEnergy","photonEnergy",280,5.,12.);
+  for (int i = 0; i < 280; i++)
+    {
+      photonSpectrum->SetBinContent(i+1,diamondSpectrum[i]);
+    }
+}
+
+void photoGenerator::fillAmorphous()
+{
+  photonSpectrum = new TH1D("photonEnergy","photonEnergy",1000,2.,12.);
+  for (int i = 0; i < 1000; i++)
+    {
+      photonSpectrum->SetBinContent(i+1,amorphousSpectrum[i]);
     }
 }

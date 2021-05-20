@@ -81,6 +81,8 @@ bool init(int argc, char ** argv)
   bool doRad = false;
   bool rand_flag = false;
   doLC = false;
+  if ((Z == 1) and (N == 1))
+    uType = (char *)"AV18_deut";
   
   int c;
   while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:u:c:s:E:Mk:OCrlh")) != -1)
@@ -164,6 +166,8 @@ bool init(int argc, char ** argv)
   
   // Initialize generator
   myGen = new QEGenerator(Ebeam + deltaECoul, myInfo, myCS, myRand);
+  if ((Z == 1) and (N == 1))
+    myGen->set_deuteron();
   if (custom_ps)
     myGen->parse_phase_space_file(phase_space);
   if (do_kCut)
