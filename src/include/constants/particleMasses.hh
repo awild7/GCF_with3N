@@ -19,7 +19,7 @@ const double mKp = 0.493677;
 const double mK0 = 0.497648;
 const double momega = 0.78265;
 const double mphi = 1.019461;
-const double mpsi = 3.096916;
+const double mJpsi = 3.096916;
 
 const double mW = 80.379;
 

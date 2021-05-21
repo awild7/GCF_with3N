@@ -41,15 +41,15 @@ void electroGenerator::generate_event(double &weight, int &meson_type, int &bary
   double mBaryon;
   if (lead_type == pCode)
     {
-      meson_type = psiCode;
+      meson_type = JpsiCode;
       baryon_type = nCode;
     }
   else
     {
-      meson_type = psiCode;
+      meson_type = JpsiCode;
       baryon_type = pCode;
     }
-  mMeson = mpsi;
+  mMeson = mJpsi;
   mBaryon = mN;
   weight *= 1;
 
@@ -82,10 +82,10 @@ void electroGenerator::generate_event(double &weight, int &meson_type, int &bary
   vk_target.SetT(vk.Mag());
   
   TLorentzVector vq_target = vbeam_target - vk_target;
-  r = (epsilon*myCS->R_psi_p(QSq))/(1. + epsilon*myCS->R_psi_p(QSq));
+  r = (epsilon*myCS->R_Jpsi_p(QSq))/(1. + epsilon*myCS->R_Jpsi_p(QSq));
   
   // Factor in photon flux
-  weight *= 1/(2.*M_PI) * photon_flux(nu,QSq) * (1. + epsilon*myCS->R_psi_p(QSq));
+  weight *= 1/(2.*M_PI) * photon_flux(nu,QSq);
   
   TVector3 v1, vRec;
   decay_function(weight, lead_type, rec_type, v1, vRec);
@@ -117,18 +117,30 @@ void electroGenerator::generate_event(double &weight, int &meson_type, int &bary
   double vgamma1 = vq_target.Dot(v1_target)/(nu*E1);
   
   // Calculate the weight
-  weight *= vgamma1*myCS->sigma_psi_p(s,t,QSq); // Photoproduction cross section
+  weight *= vgamma1*myCS->sigma_Jpsi_p(s,t,QSq); // Photoproduction cross section
   
 }
 
+//double electroGenerator::photon_flux(double nu, double QSq)
+//{
+//  double qSq = QSq + sq(nu);
+//  double Ek = Ebeam - nu;
+//  double costhetak = 1. - QSq/(2.*Ebeam*Ek);
+//  double thetak = acos(costhetak);
+//  double epsilon = 1./(1. + 2.*qSq/QSq*sq(tan(thetak/2.)));
+//  double K_gamma = nu - QSq/(2*mA);
+//  
+//  return alpha/(2.*M_PI)*K_gamma/sq(Ebeam)*1./QSq*1./(1. - epsilon);
+//}
+
 double electroGenerator::photon_flux(double nu, double QSq)
 {
-  double qSq = QSq + sq(nu);
-  double Ek = Ebeam - nu;
-  double costhetak = 1. - QSq/(2.*Ebeam*Ek);
-  double thetak = acos(costhetak);
-  double epsilon = 1./(1. + 2.*qSq/QSq*sq(tan(thetak/2.)));
-  double K_gamma = nu - QSq/(2*mA);
-  
-  return alpha/(2.*M_PI)*K_gamma/sq(Ebeam)*1./QSq*1./(1. - epsilon);
+  double y = nu/Ebeam;
+  double QSq_min = sq(y*me)/(1-y);
+
+  if (QSq < QSq_min)
+    return 0;
+  else
+    return alpha/M_PI*1/(nu*QSq)*(1. - y + sq(y)/2. - (1.-y)*QSq_min/QSq);
 }
+

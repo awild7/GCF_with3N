@@ -23,6 +23,6 @@ const int K0Code = 311;
 const int KmCode = -KpCode;
 const int omegaCode = 223;
 const int phiCode = 333;
-const int psiCode = 443;
+const int JpsiCode = 443;
 
 #endif

@@ -15,9 +15,9 @@ class photoCrossSection
   double sigma_omega_p(double s, double t, double cosThetaCM);
   double sigma_phi_p(double s, double t, double cosThetaCM);
   double sigma_phi_n(double s, double t, double cosThetaCM);
-  double sigma_psi_p(double s, double t);
-  double sigma_psi_p(double s, double t, double QSq);
-  double R_psi_p(double QSq);
+  double sigma_Jpsi_p(double s, double t);
+  double sigma_Jpsi_p(double s, double t, double QSq);
+  double R_Jpsi_p(double QSq);
   double sigma_deltapp_pim(double s, double cosThetaCM);
 
 private:
