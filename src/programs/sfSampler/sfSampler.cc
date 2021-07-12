@@ -26,7 +26,7 @@ Int_t lead_type, rec_type;
 
 void Usage()
 {
-  cerr << "Usage: ./genQE <Z> <N> <path/to/output.root> <# of events>\n\n"
+  cerr << "Usage: ./sfSampler <Z> <N> <path/to/output.root> <# of samples>\n\n"
        << "Optional flags:\n"
        << "-v: Verbose\n"
        << "-P: Use text file to specify phase space\n"
