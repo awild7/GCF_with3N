@@ -35,9 +35,9 @@ void Usage()
        << "-P: Use text file to specify phase space\n"
        << "-u: Specify NN interaction (default AV18)\n"
        << "-k: Specify pRel hard cutoff [GeV/c]\n"
-       << "-R: Specify the reaction channel, default pim-proton. (pim, rho0, omega, phi, phin, delta++)\n"
+       << "-R: Specify the reaction channel, default pim+proton. (pim, rho0, rhom, omega, phi, phin, delta++)\n"
        << "-A: Use the energy spectrum of the amorphous GlueX radiator rather than the diamond radiator\n"
-	   << "-B: Specify a fixed beam energy (default is HallD spectrum)\n"
+       << "-B: Specify a fixed beam energy (default is HallD spectrum)\n"
        << "-h: Print this message and exit\n\n\n";
 }
 
@@ -121,13 +121,15 @@ bool init(int argc, char ** argv)
 	  myReaction=pim;
 	else if (strcmp(react, "rho0")==0)
 	  myReaction=rho0;
+	else if ((strcmp(react, "rhom")==0) or (strcmp(react, "rho-")==0))
+	  myReaction=rhom;
 	else if (strcmp(react, "omega")==0)
 	  myReaction=omega;
 	else if (strcmp(react, "phi")==0)
 	  myReaction=phi;
 	else if ((strcmp(react, "phin")==0) or (strcmp(react, "phiN")==0))
 	  myReaction=phin;
-	else if (strcmp(react, "deltapp")==0)
+	else if ((strcmp(react, "deltapp")==0) or (strcmp(react, "delta++")==0))
 	  myReaction=deltapp;
 	else
 	  {
@@ -191,8 +193,6 @@ bool init(int argc, char ** argv)
 
   if (do_ascii)
     asciiWriter = new ofstream(asciiFile);
-
-cout<<"Setting up tree \n";
 
   return true;
 

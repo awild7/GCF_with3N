@@ -42,13 +42,13 @@ photoGenerator::~photoGenerator()
 
 void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_type, double &mMeson, int &baryon_type, double &mBaryon, int &rec_type, TLorentzVector &vMeson_target, TLorentzVector &vBaryon_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target)
 {
-	if (usingfixedE) {
+  if (usingfixedE) {
 
-			Ephoton=fixedE;
-	}
-	else{Ephoton = photonSpectrum->GetRandom();
+    Ephoton=fixedE;
+  }
+  else{Ephoton = photonSpectrum->GetRandom();
 
-	}	
+  }	
   TLorentzVector vphoton_target(0.,0.,Ephoton,Ephoton);
   
   // Start with weight 1. Only multiply terms to weight. If trouble, set weight=0.
@@ -88,6 +88,18 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
       mM_min = 2*mpip;
       mM_max = 1.5;
     }
+  else if (myReaction==rhom)
+    {
+      lead_type = nCode; 
+      meson_type = rhomCode;
+      baryon_type = pCode;
+      mMesonMean = mrhop;
+      gammaMeson = gammarhop;
+      mBaryonMean = mN;
+      gammaBaryon = 0.;
+      mM_min = mpip + mpi0;
+      mM_max = 1.5;
+    }
   else if (myReaction==omega)
     {
       lead_type = pCode; 
@@ -125,8 +137,8 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
       mM_max = 1.5;
     }
   else if (myReaction==deltapp)
-  {
-	 lead_type = pCode; 
+    {
+      lead_type = pCode; 
       meson_type = pimCode;
       baryon_type = DeltappCode;
       mMesonMean = mpip;
@@ -135,15 +147,15 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
       gammaBaryon = gammaDelta;
       mM_min = 0;
       mM_max = 1.5;
-  	  mB_min=mpip+mN;
+      mB_min=mpip+mN;
 
-  }
+    }
 
   do
     mMeson = myRand->BreitWigner(mMesonMean,gammaMeson);
   while
     ((mMeson < mM_min) or (mMeson > mM_max));
- do
+  do
     mBaryon = myRand->BreitWigner(mBaryonMean,gammaBaryon);
   while
     ((mBaryon < mB_min) or (mBaryon > mB_max));
@@ -192,6 +204,8 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
     thisCS=myCS->sigma_pim_p(s,cosThetaCM);
   else if (myReaction==rho0)
     thisCS=myCS->sigma_rho0_p(s,t,cosThetaCM);
+  else if (myReaction==rhom)
+    thisCS=myCS->sigma_rhom_p(s,t,cosThetaCM);
   else if (myReaction==omega)
     thisCS=myCS->sigma_omega_p(s,t,cosThetaCM);
   else if (myReaction==phi)
@@ -199,15 +213,15 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
   else if (myReaction==phin)
     thisCS=myCS->sigma_phi_n(s,t,cosThetaCM);
   else if (myReaction==deltapp)
-	thisCS=myCS->sigma_deltapp_pim(s,cosThetaCM);
+    thisCS=myCS->sigma_deltapp_pim(s,cosThetaCM);
 
   weight *= vgamma1*thisCS; // Photoproduction cross section
   
 }
 
 void photoGenerator::setfixedE(double newfixedE){
-usingfixedE=true;
-fixedE=newfixedE;
+  usingfixedE=true;
+  fixedE=newfixedE;
 
 }
 

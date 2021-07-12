@@ -9,7 +9,7 @@
 #include "cross_sections/photoCrossSection.hh"
 
 enum spectrum {diamond,amorphous};
-enum reaction {pim,rho0,omega,phi,phin,deltapp};
+enum reaction {pim,rho0,rhom,omega,phi,phin,deltapp};
 
 class photoGenerator: public gcfGenerator
 {
