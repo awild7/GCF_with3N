@@ -76,7 +76,7 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
       mM_min = 0;
       mM_max = 1.5;
     }
-  else if (myReaction==rho0)
+  else if (myReaction==proton_rho0)
     {
       lead_type = pCode; 
       meson_type = rho0Code;
@@ -88,7 +88,7 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
       mM_min = 2*mpip;
       mM_max = 1.5;
     }
-  else if (myReaction==rhom)
+  else if (myReaction==proton_rhoMinus)
     {
       lead_type = nCode; 
       meson_type = rhomCode;
@@ -100,7 +100,7 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
       mM_min = mpip + mpi0;
       mM_max = 1.5;
     }
-  else if (myReaction==omega)
+  else if (myReaction==proton_omega)
     {
       lead_type = pCode; 
       meson_type = omegaCode;
@@ -112,7 +112,7 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
       mM_min = 2*mpip + mpi0;
       mM_max = 1.5;
     }
-  else if (myReaction==phi)
+  else if (myReaction==proton_phi)
     {
       lead_type = pCode; 
       meson_type = phiCode;
@@ -124,7 +124,7 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
       mM_min = 2*mKp;
       mM_max = 1.5;
     }
-  else if (myReaction==phin)
+  else if (myReaction==neutron_phi)
     {
       lead_type = nCode; 
       meson_type = phiCode;
@@ -136,7 +136,7 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
       mM_min = 2*mKp;
       mM_max = 1.5;
     }
-  else if (myReaction==deltapp)
+  else if (myReaction==DeltaPlusPlus_piMinus)
     {
       lead_type = pCode; 
       meson_type = pimCode;
@@ -148,7 +148,19 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
       mM_min = 0;
       mM_max = 1.5;
       mB_min=mpip+mN;
-
+    }
+  else if (myReaction==DeltaPlus_piMinus)
+    {
+      lead_type = nCode; 
+      meson_type = pimCode;
+      baryon_type = DeltapCode;
+      mMesonMean = mpip;
+      gammaMeson = 0;
+      mBaryonMean = mDelta;
+      gammaBaryon = gammaDelta;
+      mM_min = 0;
+      mM_max = 1.5;
+      mB_min=mpip+mN;
     }
 
   do
@@ -202,18 +214,20 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
   double thisCS=0;
   if (myReaction==pim)
     thisCS=myCS->sigma_pim_p(s,cosThetaCM);
-  else if (myReaction==rho0)
+  else if (myReaction==proton_rho0)
     thisCS=myCS->sigma_rho0_p(s,t,cosThetaCM);
-  else if (myReaction==rhom)
+  else if (myReaction==proton_rhoMinus)
     thisCS=myCS->sigma_rhom_p(s,t,cosThetaCM);
-  else if (myReaction==omega)
+  else if (myReaction==proton_omega)
     thisCS=myCS->sigma_omega_p(s,t,cosThetaCM);
-  else if (myReaction==phi)
+  else if (myReaction==proton_phi)
     thisCS=myCS->sigma_phi_p(s,t,cosThetaCM);
-  else if (myReaction==phin)
+  else if (myReaction==neutron_phi)
     thisCS=myCS->sigma_phi_n(s,t,cosThetaCM);
-  else if (myReaction==deltapp)
+  else if (myReaction==DeltaPlusPlus_piMinus)
     thisCS=myCS->sigma_deltapp_pim(s,cosThetaCM);
+  else if (myReaction==DeltaPlus_piMinus)
+    thisCS=myCS->sigma_deltap_pim(s,cosThetaCM);
 
   weight *= vgamma1*thisCS; // Photoproduction cross section
   
