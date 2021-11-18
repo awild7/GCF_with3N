@@ -35,7 +35,7 @@ void Usage()
        << "-P: Use text file to specify phase space\n"
        << "-u: Specify NN interaction (default AV18)\n"
        << "-k: Specify pRel hard cutoff [GeV/c]\n"
-       << "-R: Specify the reaction channel, default pim+proton. (pim, rho0, rhom, omega, phi, phin, delta++, delta+pi-)\n"
+       << "-R: Specify the reaction channel, default pim+proton. (pim, rho0, rhom, omega, phi, phin, delta++pi-, delta+pi-)\n"
        << "-A: Use the energy spectrum of the amorphous GlueX radiator rather than the diamond radiator\n"
        << "-B: Specify a fixed beam energy (default is HallD spectrum)\n"
        << "-h: Print this message and exit\n\n\n";
@@ -90,7 +90,7 @@ bool init(int argc, char ** argv)
   bool do_kCut = false;
   char * react;
   spectrum mySpectrum = diamond;
-  reaction myReaction = pim;
+  reaction myReaction = proton_piMinus;
   bool usefixedE=false;
   double fixedE=0;
   if ((Z == 1) and (N == 1))
@@ -117,15 +117,15 @@ bool init(int argc, char ** argv)
 	break;
       case 'R':
 	react = optarg;
-	if (strcmp(react, "pim")==0)
-	  myReaction=pim;
-	else if (strcmp(react, "rho0")==0 or strcmp(react, "proton_rho0")==0)
+	if ((strcmp(react, "pim")==0) or (strcmp(react, "proton_piMinus")==0))
+	  myReaction=proton_piMinus;
+	else if ((strcmp(react, "rho0")==0) or (strcmp(react, "proton_rho0")==0))
 	  myReaction=proton_rho0;
 	else if ((strcmp(react, "rhom")==0) or (strcmp(react, "rho-")==0) or (strcmp(react, "proton_rhoMinus")==0))
 	  myReaction=proton_rhoMinus;
-	else if (strcmp(react, "omega")==0 or strcmp(react, "proton_omega")==0)
+	else if ((strcmp(react, "omega")==0) or (strcmp(react, "proton_omega")==0))
 	  myReaction=proton_omega;
-	else if (strcmp(react, "phi")==0 or strcmp(react, "proton_phi")==0)
+	else if ((strcmp(react, "phi")==0) or (strcmp(react, "proton_phi")==0))
 	  myReaction=proton_phi;
 	else if ((strcmp(react, "phin")==0) or (strcmp(react, "phiN")==0) or strcmp(react, "neutron_phi")==0)
 	  myReaction=neutron_phi;

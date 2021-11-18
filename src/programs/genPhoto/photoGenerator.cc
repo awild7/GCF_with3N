@@ -12,7 +12,7 @@ photoGenerator::photoGenerator(gcfNucleus * thisInfo, photoCrossSection * thisCS
 {
   
   myCS = thisCS;
-  myReaction = pim;
+  myReaction = proton_piMinus;
   
   usingfixedE=false;
   fixedE=0;
@@ -64,7 +64,7 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
   double mM_max;
   double mB_min=0;
   double mB_max=5;
-  if (myReaction==pim)
+  if (myReaction==proton_piMinus)
     {
       lead_type = nCode;
       meson_type = pimCode;
@@ -212,7 +212,7 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
   
   // Calculate the weight
   double thisCS=0;
-  if (myReaction==pim)
+  if (myReaction==proton_piMinus)
     thisCS=myCS->sigma_pim_p(s,cosThetaCM);
   else if (myReaction==proton_rho0)
     thisCS=myCS->sigma_rho0_p(s,t,cosThetaCM);
