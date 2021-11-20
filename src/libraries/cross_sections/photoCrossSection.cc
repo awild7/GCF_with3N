@@ -80,7 +80,7 @@ double photoCrossSection::sigma_rho0_p(double s, double t, double cosThetaCM)
 double photoCrossSection::sigma_rhom_p(double s, double t, double cosThetaCM)
 {
 
-  return sigma_rho0_p(s,t,cosThetaCM);
+  return (1.1/15.9)*sigma_rho0_p(s,t,cosThetaCM);
 }
 
 double photoCrossSection::sigma_omega_p_old(double s, double cosThetaCM)
