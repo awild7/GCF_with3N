@@ -165,3 +165,9 @@ double photoCrossSection::sigma_deltapp_pim(double s, double cosThetaCM)
 
   return pow(s,-7)*a*pow(1-cosThetaCM,-b)*pow(1+cosThetaCM,-c);
 }
+
+double photoCrossSection::sigma_deltap_pim(double s, double cosThetaCM)
+{
+
+  return sigma_deltapp_pim(s,cosThetaCM);
+}

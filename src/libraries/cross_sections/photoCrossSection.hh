@@ -20,6 +20,7 @@ class photoCrossSection
   double sigma_Jpsi_p(double s, double t, double QSq);
   double R_Jpsi_p(double QSq);
   double sigma_deltapp_pim(double s, double cosThetaCM);
+  double sigma_deltap_pim(double s, double cosThetaCM);
 
 private:
   double dipole_F(double t, double tmin, double tmax);
