@@ -38,6 +38,7 @@ void Usage()
        << "-R: Specify the reaction channel, default pim+proton. (pim, rho0, rhom, omega, phi, phin, delta++pi-, delta+pi-)\n"
        << "-A: Use the energy spectrum of the amorphous GlueX radiator rather than the diamond radiator\n"
        << "-B: Specify a fixed beam energy (default is HallD spectrum)\n"
+       << "-l: Use the lightcone cross section to generate events\n"
        << "-h: Print this message and exit\n\n\n";
 }
 
@@ -93,11 +94,12 @@ bool init(int argc, char ** argv)
   reaction myReaction = proton_piMinus;
   bool usefixedE=false;
   double fixedE=0;
+  bool doLC = false;
   if ((Z == 1) and (N == 1))
     uType = (char *)"AV18_deut";
 
   int c;
-  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:u:k:R:AB:h")) != -1)
+  while ((c = getopt (argc-numargs+1, &argv[numargs-1], "vP:u:k:R:AB:lh")) != -1)
     switch(c)
       {
 
@@ -146,6 +148,9 @@ bool init(int argc, char ** argv)
 	usefixedE=true;
 	fixedE=atof(optarg);
 	break;
+      case 'l':
+	doLC = true;
+	break;
       case 'h':
 	Usage();
 	return false;
@@ -174,6 +179,8 @@ bool init(int argc, char ** argv)
     myGen->setfixedE(fixedE);
   if (verbose)
     myGen->print_beam_info();
+  if (doLC)
+    myGen->setDoLC(true);
 
   // Set up the tree
   outfile->cd();

@@ -16,6 +16,7 @@ photoGenerator::photoGenerator(gcfNucleus * thisInfo, photoCrossSection * thisCS
   
   usingfixedE=false;
   fixedE=0;
+  doLC = false;
   fillDiamond();
 
 }
@@ -28,6 +29,7 @@ photoGenerator::photoGenerator(gcfNucleus * thisInfo, photoCrossSection * thisCS
 
   usingfixedE=false;
   fixedE=0;
+  doLC = false;
   if (thisSpectrum == diamond)
     fillDiamond();
   else if (thisSpectrum == amorphous)
@@ -179,24 +181,59 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
   // Determine mass of A-2 system
   double mAm2 = get_mAm2(lead_type, rec_type);
 
-  TVector3 v1, vRec;
-
-  decay_function(weight, lead_type, rec_type, v1, vRec);
-  
-  if (weight <= 0.)
-    return;
+  TLorentzVector v1_target;
+  if (!doLC)
+    {
+      TVector3 v1, vRec;
+      decay_function(weight, lead_type, rec_type, v1, vRec);
       
-  TVector3 vAm2 = - v1 - vRec;
-  double EAm2 = sqrt(vAm2.Mag2() + sq(mAm2));
-  vAm2_target.SetVect(vAm2);
-  vAm2_target.SetT(EAm2);
-  
-  double Erec = sqrt(sq(mN) + vRec.Mag2());
-  vRec_target.SetVect(vRec);
-  vRec_target.SetT(Erec);
-  
-  double E1 = mA - EAm2 - Erec;
-  TLorentzVector v1_target(v1,E1);
+      if (weight <= 0.)
+	return;
+      
+      TVector3 vAm2 = - v1 - vRec;
+      double EAm2 = sqrt(vAm2.Mag2() + sq(mAm2));
+      vAm2_target.SetVect(vAm2);
+      vAm2_target.SetT(EAm2);
+      
+      double Erec = sqrt(sq(mN) + vRec.Mag2());
+      vRec_target.SetVect(vRec);
+      vRec_target.SetT(Erec);
+      
+      double E1 = mA - EAm2 - Erec;
+      v1_target.SetVect(v1);
+      v1_target.SetT(E1);
+    }
+  else
+    {
+      TVector2 v1_perp, vRec_perp;
+      double alpha1, alphaRec;
+      decay_function_lc(weight, lead_type, rec_type, alpha1, v1_perp, alphaRec, vRec_perp);
+      double alphaAm2 = Anum - alpha1 - alphaRec;
+      TVector2 vAm2_perp = -1.*v1_perp - vRec_perp;
+
+      double p1_minus = mbar*alpha1;
+      double pRec_minus = mbar*alphaRec;
+      double pAm2_minus = mbar*alphaAm2;
+      double pRec_plus = (sq(mN) + vRec_perp.Mod2())/pRec_minus;
+      double pAm2_plus = (sq(mAm2) + vAm2_perp.Mod2())/pAm2_minus;
+      if (mAm2 == 0)
+	pAm2_plus = 0.;
+      double p1_plus = mA - pRec_plus - pAm2_plus;
+      
+      double E1 = 0.5*(p1_plus + p1_minus);
+      double p1_z = 0.5*(p1_plus - p1_minus);
+      double ERec = 0.5*(pRec_plus + pRec_minus);
+      double pRec_z = 0.5*(pRec_plus - pRec_minus);
+      double EAm2 = 0.5*(pAm2_plus + pAm2_minus);
+      double pAm2_z = 0.5*(pAm2_plus - pAm2_minus);
+
+      v1_target.SetXYZT(v1_perp.X(),v1_perp.Y(),p1_z,E1);
+      vRec_target.SetXYZT(vRec_perp.X(),vRec_perp.Y(),pRec_z,ERec);
+      vAm2_target.SetXYZT(vAm2_perp.X(),vAm2_perp.Y(),pAm2_z,EAm2);
+
+      (v1_target+vRec_target+vAm2_target).Print();
+      
+    }
 
   double cosThetaCM;
   t_scatter(weight, mMeson, mBaryon, vphoton_target, v1_target, vMeson_target, vBaryon_target, cosThetaCM);
@@ -208,7 +245,7 @@ void photoGenerator::generate_event(double &weight, double &Ephoton, int &meson_
   double t = sq(mMeson) - 2.*vMeson_target.Dot(vphoton_target);
   
   // Calculate the flux factor on the cross section
-  double vgamma1 = vphoton_target.Dot(v1_target)/(Ephoton*E1);
+  double vgamma1 = vphoton_target.Dot(v1_target)/(Ephoton*v1_target.T());
   
   // Calculate the weight
   double thisCS=0;
@@ -252,6 +289,12 @@ void photoGenerator::print_beam_info()
     }
 }
 
+void photoGenerator::setDoLC(bool newDoLC)
+{
+
+  doLC = newDoLC;
+  
+}
 
 void photoGenerator::fillDiamond()
 {
