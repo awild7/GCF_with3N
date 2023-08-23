@@ -32,6 +32,13 @@ void QEGenerator::generate_event(double &weight, int &lead_type, int &rec_type, 
 
 void QEGenerator::generate_event(double &weight, int &lead_type, int &rec_type, TLorentzVector& vk_target, TLorentzVector &vLead_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target, double &Estar)
 {
+  TVector3 vRel_target;
+  TLorentzVector q_target;
+  generate_event(weight,lead_type,rec_type,vk_target,vLead_target,vRec_target,vAm2_target,vRel_target,q_target,Estar);
+}
+
+void QEGenerator::generate_event(double &weight, int &lead_type, int &rec_type, TLorentzVector& vk_target, TLorentzVector &vLead_target, TLorentzVector &vRec_target, TLorentzVector &vAm2_target, TVector3 &vRel_target, TLorentzVector &q_target, double &Estar)
+{
   // Start with weight 1. Only multiply terms to weight. If trouble, set weight=0.
   weight = 1.;
 
@@ -54,6 +61,8 @@ void QEGenerator::generate_event(double &weight, int &lead_type, int &rec_type, 
   double EAm2 = sqrt(vAm2.Mag2() + sq(mAm2));
   vAm2_target.SetVect(vAm2);
   vAm2_target.SetT(EAm2);
+
+  vRel_target = 0.5*(v1 - vRec);
   
   double Erec = sqrt(sq(mN) + vRec.Mag2());  
   vRec_target.SetVect(vRec);
@@ -131,6 +140,8 @@ void QEGenerator::generate_event(double &weight, int &lead_type, int &rec_type, 
   TLorentzVector vk_int_target;
   vk_int_target.SetVect(vk_int);
   vk_int_target.SetT(Ek_int);
+
+  q_target = vbeam_int_target - vk_int_target;
 
   vLead_target = v1_target + vbeam_int_target - vk_int_target;
   TVector3 vLead = vLead_target.Vect();

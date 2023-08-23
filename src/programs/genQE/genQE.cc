@@ -23,7 +23,7 @@ bool doCoul = false;
 double deltaECoul = 0;
 
 // Tree variables
-Double_t pe[3], pLead[3], pRec[3], pAm2[3];
+Double_t pe[3], pLead[3], pRec[3], pAm2[3], pRel[3], q[3];
 Double_t weight;
 Int_t lead_type, rec_type;
 
@@ -186,6 +186,8 @@ bool init(int argc, char ** argv)
   outtree->Branch("pLead",pLead,"pLead[3]/D");
   outtree->Branch("pRec",pRec,"pRec[3]/D");
   outtree->Branch("pAm2",pAm2,"pAm2[3]/D");
+  outtree->Branch("pRel",pRel,"pRel[3]/D");
+  outtree->Branch("q",q,"q[3]/D");
   outtree->Branch("weight",&weight,"weight/D");
   
   return true;
@@ -199,11 +201,14 @@ void evnt(int event)
   TLorentzVector vLead;
   TLorentzVector vRec;
   TLorentzVector vAm2;
+  TVector3 vRel;
+  TLorentzVector vq;
+  double Estar;
 
   if (doLC)
     myGen->generate_event_lightcone(weight, lead_type, rec_type, vk, vLead, vRec, vAm2);
   else
-    myGen->generate_event(weight, lead_type, rec_type, vk, vLead, vRec, vAm2);
+    myGen->generate_event(weight, lead_type, rec_type, vk, vLead, vRec, vAm2, vRel, vq, Estar);
   
   pe[0] = vk.X();
   pe[1] = vk.Y();
@@ -217,7 +222,13 @@ void evnt(int event)
   pAm2[0] = vAm2.X();
   pAm2[1] = vAm2.Y();
   pAm2[2] = vAm2.Z();
-
+  pRel[0] = vRel.X();
+  pRel[1] = vRel.Y();
+  pRel[2] = vRel.Z();
+  q[0] = vq.X();
+  q[1] = vq.Y();
+  q[2] = vq.Z();
+  
   if (weight > 0.)
     outtree->Fill();
   
