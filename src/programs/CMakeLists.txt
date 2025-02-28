@@ -1,4 +1,5 @@
 add_subdirectory(genQE)
+add_subdirectory(genQE_3N)
 add_subdirectory(genDIS)
 add_subdirectory(genIon)
 add_subdirectory(genPhoto)
