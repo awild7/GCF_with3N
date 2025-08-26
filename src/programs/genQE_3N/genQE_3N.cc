@@ -7,6 +7,8 @@
 #include "constants.hh"
 #include "helpers.hh"
 
+#define ADIR ARRAY_DIR
+
 using namespace std;
 
 int nEvents;
@@ -47,7 +49,7 @@ bool init(int argc, char ** argv)
   double u = atoi(argv[2]);
   outfile = new TFile(argv[3],"RECREATE");
   nEvents = atoi(argv[4]);
-
+  
   ffModel ffMod=kelly;
   csMethod csMeth=cc1;
 

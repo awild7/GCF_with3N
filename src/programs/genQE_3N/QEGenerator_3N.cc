@@ -295,10 +295,10 @@ double QEGenerator_3N::get_rho_ptot_f1f2f3(double k_1, double k_2, double k_3){
 
 
 void QEGenerator_3N::fill_array(){
-  if(u==1){uType="array/AV8_1D.dnst";}
-  else if(u==2){uType="array/N2LO_1D.dnst";}
-  else if(u==3){uType="array/G3_1D.dnst";}
-  else if(u==4){uType="array/AV4_1D.dnst";}
+  if(u==1){uType=std::string(ADIR)+"/programs/genQE_3N/array/AV8_1D.dnst";}
+  else if(u==2){uType=std::string(ADIR)+"/programs/genQE_3N/array/N2LO_1D.dnst";}
+  else if(u==3){uType=std::string(ADIR)+"/programs/genQE_3N/array/G3_1D.dnst";}
+  else if(u==4){uType=std::string(ADIR)+"/programs/genQE_3N/array/AV4_1D.dnst";}
   std::ifstream densityFile(uType);
   if(!densityFile.is_open()){
     cout<<"3 nucleon distribution file failed to load.\n"

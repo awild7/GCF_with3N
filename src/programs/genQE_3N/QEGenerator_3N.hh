@@ -10,6 +10,8 @@
 #include <fstream>
 #include <iostream>
 
+#define ADIR ARRAY_DIR
+
 class QEGenerator_3N
 {
  public:
@@ -30,7 +32,7 @@ class QEGenerator_3N
   TRandom3 * myRand;
 
   int u;
-  char * uType = new char;
+  TString uType;
 
   double sigCM;
   double phi_a_max;
